@@ -1,14 +1,14 @@
-pub mod primitive;
-pub mod descent;
-pub mod gyro;
 pub mod asauchi;
-pub mod formula;
+pub mod bankai;
+pub mod chart;
+pub mod descent;
 pub mod entity;
 pub mod ephemeris;
-pub mod chart;
-pub mod zanpakuto;
+pub mod formula;
+pub mod gyro;
+pub mod primitive;
 pub mod shikai;
-pub mod bankai;
+pub mod zanpakuto;
 
 #[cfg(feature = "mcp")]
 pub mod mcp;
@@ -16,10 +16,16 @@ pub mod mcp;
 pub mod cli;
 
 pub mod prelude {
-    pub use crate::asauchi::Asauchi;
-    pub use crate::zanpakuto::Zanpakuto;
-    pub use crate::shikai::Shikai;
-    pub use crate::bankai::Bankai;
-    pub use crate::descent::DescentEngine;
-    pub use crate::gyro::Gyro;
+    pub use crate::asauchi::{compute_aspect, is_adjacent, is_conjunction, validate_graha_index};
+    pub use crate::bankai::{aggregate_confidence_scores, compute_confidence_score};
+    pub use crate::chart::{compute_planetary_aspect, determine_planet_house};
+    pub use crate::descent::{lowercase_string, tokenize_descent};
+    pub use crate::entity::{compute_entity_hash, validate_entity_id};
+    pub use crate::ephemeris::{compute_vsop87_approximation, julian_day_to_date};
+    pub use crate::formula::{extract_formula_domain, validate_formula_id};
+    pub use crate::gyro::{compute_next_position, map_graha_to_position};
+    pub use crate::primitive::arithmetic::{add_unsigned_8, full_adder, half_adder};
+    pub use crate::primitive::nand::{and_gate, nand_gate, not_gate, or_gate, xor_gate};
+    pub use crate::shikai::{extract_numerical_values, parse_query_intent};
+    pub use crate::zanpakuto::{extract_keywords, normalize_query_text};
 }

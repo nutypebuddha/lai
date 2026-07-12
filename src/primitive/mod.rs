@@ -1,2 +1,2 @@
-pub mod nand;
 pub mod arithmetic;
+pub mod nand;

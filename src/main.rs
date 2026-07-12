@@ -32,7 +32,14 @@ fn main() {
             println!("edition 2021");
         }
         Commands::Solve { query } => {
-            println!("solving: {query}");
+            let intent = laverna::shikai::parse_query_intent(&query);
+            let keywords = laverna::zanpakuto::extract_keywords(
+                &laverna::zanpakuto::normalize_query_text(&query),
+            );
+            let domain = laverna::shikai::determine_query_domain(&query);
+            println!("intent: {intent}");
+            println!("domain: {domain}");
+            println!("keywords: {keywords:?}");
         }
         Commands::Mcp => {
             #[cfg(feature = "mcp")]

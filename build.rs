@@ -70,12 +70,27 @@ fn main() {
             }
         }
 
-        src.push_str(&format!("pub const FORMULAS_TOML: &str = {:?};\n", formulas));
-        src.push_str(&format!("pub const SYNONYMS_TOML: &str = {:?};\n", synonyms));
-        src.push_str(&format!("pub const ENTITIES_TOML: &str = {:?};\n", entities));
+        src.push_str(&format!(
+            "pub const FORMULAS_TOML: &str = {:?};\n",
+            formulas
+        ));
+        src.push_str(&format!(
+            "pub const SYNONYMS_TOML: &str = {:?};\n",
+            synonyms
+        ));
+        src.push_str(&format!(
+            "pub const ENTITIES_TOML: &str = {:?};\n",
+            entities
+        ));
         src.push_str(&format!("pub const NONMATH_TOML: &str = {:?};\n", nonmath));
-        src.push_str(&format!("pub const SHIKAI_FORM_TOML: &str = {:?};\n", shikai_form));
-        src.push_str(&format!("pub const EVENTS_TOML: &str = {:?};\n", events_toml));
+        src.push_str(&format!(
+            "pub const SHIKAI_FORM_TOML: &str = {:?};\n",
+            shikai_form
+        ));
+        src.push_str(&format!(
+            "pub const EVENTS_TOML: &str = {:?};\n",
+            events_toml
+        ));
     } else {
         src.push_str("// portable feature not enabled — data loaded at runtime from CWD\n");
     }
