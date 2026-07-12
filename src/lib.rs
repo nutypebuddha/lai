@@ -2,13 +2,16 @@ pub mod asauchi;
 pub mod bankai;
 pub mod chart;
 pub mod descent;
+pub mod economy;
 pub mod entity;
 pub mod ephemeris;
 pub mod formula;
 pub mod gyro;
+pub mod pachinko;
 pub mod primitive;
 pub mod shikai;
 pub mod tanto;
+pub mod validation;
 pub mod zanpakuto;
 
 #[cfg(feature = "mcp")]
@@ -21,6 +24,10 @@ pub mod prelude {
     pub use crate::bankai::{aggregate_confidence_scores, compute_confidence_score};
     pub use crate::chart::{compute_planetary_aspect, determine_planet_house};
     pub use crate::descent::{lowercase_string, tokenize_descent};
+    pub use crate::economy::budget::Budget;
+    pub use crate::economy::conversation::ConversationTracker;
+    pub use crate::economy::cost::CostTracker;
+    pub use crate::economy::tray::BallEconomy;
     pub use crate::entity::{compute_entity_hash, validate_entity_id};
     pub use crate::ephemeris::{compute_vsop87_approximation, julian_day_to_date};
     pub use crate::formula::{extract_formula_domain, validate_formula_id};
