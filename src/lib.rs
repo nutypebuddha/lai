@@ -8,6 +8,7 @@ pub mod formula;
 pub mod gyro;
 pub mod primitive;
 pub mod shikai;
+pub mod tanto;
 pub mod zanpakuto;
 
 #[cfg(feature = "mcp")]
@@ -27,5 +28,8 @@ pub mod prelude {
     pub use crate::primitive::arithmetic::{add_unsigned_8, full_adder, half_adder};
     pub use crate::primitive::nand::{and_gate, nand_gate, not_gate, or_gate, xor_gate};
     pub use crate::shikai::{extract_numerical_values, parse_query_intent};
+    pub use crate::tanto::{
+        compute_formula, create_env, evaluate_expr, evaluate_nl, evaluate_pipeline, solve_problem,
+    };
     pub use crate::zanpakuto::{extract_keywords, normalize_query_text};
 }
