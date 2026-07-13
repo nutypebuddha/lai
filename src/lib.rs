@@ -19,6 +19,9 @@ pub mod zanpakuto;
 #[cfg(feature = "mcp")]
 pub mod mcp;
 
+#[cfg(feature = "llm")]
+pub mod inference;
+
 pub mod cli;
 
 pub mod prelude {
