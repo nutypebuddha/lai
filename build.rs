@@ -6,8 +6,6 @@ fn main() {
 
     println!("cargo:rerun-if-changed=formulas/");
     println!("cargo:rerun-if-changed=entities/");
-    println!("cargo:rerun-if-changed=shikai_form.toml");
-    println!("cargo:rerun-if-changed=events.toml");
 
     let embedded = out_dir.join("embedded.rs");
     let mut src = String::new();
@@ -19,9 +17,7 @@ fn main() {
         "formulas/atomic_seed.toml",
         "formulas/atomic_dynamic.toml",
         "formulas/bridging_seed.toml",
-        "formulas/bridging_dynamic.toml",
         "formulas/vortex_seed.toml",
-        "formulas/vortex_dynamic.toml",
     ];
 
     let mut formulas = String::new();
@@ -36,10 +32,7 @@ fn main() {
     let synonyms_path = manifest.join("formulas/search_synonyms.toml");
     let synonyms = std::fs::read_to_string(&synonyms_path).unwrap_or_default();
 
-    let nonmath_files = [
-        "formulas/nonmath_seed.toml",
-        "formulas/nonmath_dynamic.toml",
-    ];
+    let nonmath_files = ["formulas/nonmath_seed.toml"];
     let mut nonmath = String::new();
     for rel in nonmath_files {
         let path = manifest.join(rel);

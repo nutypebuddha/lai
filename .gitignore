@@ -1,1 +1,25 @@
 /target
+/export
+
+# Editor / IDE
+*.swp
+*.swo
+*~
+.idea/
+.vscode/
+*.code-workspace
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment / secrets
+.env
+.env.*
+
+# Profiling / benchmarks
+*.profraw
+*.profdata
+flamegraph.svg
+criterion/
+pprof-
