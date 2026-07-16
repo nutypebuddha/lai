@@ -1,10 +1,10 @@
 [package]
 name = "laverna"
-version = "0.1.0"
+version = "0.3.0"
 edition = "2021"
 description = "Vedic reasoning engine — 9-graha wheel, NAND-to-bankai compute"
 authors = ["nutypebuddha <nutypebuddha@proton.me>"]
-license = "MIT"
+license = "Apache-2.0"
 publish = false
 keywords = ["reasoning", "vedic", "formula", "cross-domain", "mcp"]
 categories = ["science", "mathematics", "compilers"]
@@ -17,7 +17,6 @@ rustdoc-args = ["--cfg", "docsrs"]
 # Serialization
 serde = { version = "1", features = ["derive", "rc"] }
 serde_json = "1"
-postcard = { version = "1", features = ["use-std"] }
 
 # Pattern matching
 regex = "1"
@@ -30,25 +29,27 @@ libc = "0.2"
 # TOML parsing
 toml = "0.8"
 
+# Timezone resolution (IANA tz database) — Part 1.1 mandatory explicit timezone
+chrono = "0.4"
+chrono-tz = "0.10"
+
 # Compute
 vsop87 = "3.0.0"
 astro = "2.0.0"
-sha2 = "0.10"
 xalen-vedic = "0.6"
 xalen-houses = "0.6"
 xalen-ayanamsa = "0.6"
 xalen-time = "0.6"
 xalen-coords = "0.6"
 
-# MCP Server (optional)
-rmcp = { version = "1.4", features = ["server", "transport-io"], optional = true }
-tokio = { version = "1", features = ["io-util", "rt", "rt-multi-thread"], optional = true }
-
 # Web search / World Bank stats (optional)
 ureq = { version = "2", default-features = false, features = ["json", "tls"], optional = true }
 
-# LLM Integration (optional)
-llama-gguf = { version = "0.10", features = ["cpu"], optional = true }
+# MILP solver (optional, T46)
+good_lp = { version = "1", default-features = false, features = ["microlp"], optional = true }
+
+# Graph algorithms (optional, T47)
+petgraph = { version = "0.8", optional = true }
 
 # Benchmark harness (optional)
 criterion = { version = "0.5", features = ["html_reports"], optional = true }
@@ -59,11 +60,13 @@ pprof = { version = "0.14", features = ["criterion", "flamegraph"] }
 
 [features]
 default = []  # minimal: no heavy deps, fast builds
-mcp = ["dep:rmcp", "dep:tokio", "websearch"]
+mcp = ["websearch"]
 websearch = ["dep:ureq"]
 budget = []
 bench = ["dep:criterion"]
-llm = ["dep:llama-gguf", "dep:tokio"]
+llm = []  # marker only — stub inference module, no heavy deps
+milp = ["dep:good_lp"]
+graph = ["dep:petgraph"]
 
 [profile.release]
 lto = "fat"
