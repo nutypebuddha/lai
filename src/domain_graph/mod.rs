@@ -3,7 +3,7 @@ mod edges;
 mod graph;
 mod nodes;
 
-pub use axis::{BleachLayer, CurriculumBand, UnderstandingAxis, LEVELS_PER_CYCLE, MAX_LEVEL};
+pub use axis::{CurriculumBand, MasteryLayer, UnderstandingAxis, LEVELS_PER_CYCLE, MAX_LEVEL};
 pub use edges::{CompositionAspect, Relationship};
 pub use graph::WheelGraph;
 pub use nodes::{compute_all_nodes, Domain, Node, ALL_DOMAINS};

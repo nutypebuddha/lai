@@ -16,7 +16,7 @@ use crate::nlp::is_stopword;
 
 /// Strategic principle carried by each graha (archetypal force). This is the
 /// "upward" leg of reverse routing: force → recommended action framework.
-pub fn strategy_principle(graha: Domain) -> &'static str {
+pub fn principle_of_strategy(graha: Domain) -> &'static str {
     match graha {
         Domain::Surya => "Protect the irreducible core; lead from first principles",
         Domain::Chandra => "Listen, adapt, and respect natural cycles",
@@ -106,7 +106,7 @@ impl StrategyReport {
                     graha.archetype(),
                     weight,
                     share * 100.0,
-                    strategy_principle(*graha),
+                    principle_of_strategy(*graha),
                 ));
             }
         }
@@ -133,7 +133,7 @@ impl StrategyReport {
                 "  PRIMARY:    {} ({}) — {}\n",
                 g.archetype(),
                 g.name(),
-                strategy_principle(g),
+                principle_of_strategy(g),
             )),
             None => out.push_str("  PRIMARY:    (none)\n"),
         }
@@ -142,7 +142,7 @@ impl StrategyReport {
                 "  SECONDARY:  {} ({}) — {}\n",
                 g.archetype(),
                 g.name(),
-                strategy_principle(g),
+                principle_of_strategy(g),
             )),
             None => out.push_str("  SECONDARY:  (none)\n"),
         }
@@ -151,7 +151,7 @@ impl StrategyReport {
                 "  TERTIARY:   {} ({}) — {}\n",
                 g.archetype(),
                 g.name(),
-                strategy_principle(g),
+                principle_of_strategy(g),
             )),
             None => out.push_str("  TERTIARY:   (none)\n"),
         }

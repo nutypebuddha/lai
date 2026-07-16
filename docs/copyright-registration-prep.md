@@ -28,7 +28,7 @@
   1. `src/main.rs` (entry point, ~4,136 lines) — first ~500 lines + last ~500 lines.
   2. `src/lib.rs` (crate root, lists all modules) — full (short).
   3. `build.rs` (corpus embedding logic) — full.
-  4. One representative deep module, e.g. `src/tanto/solver.rs` or `src/bankai/verifier.rs` — first + last portions.
+  4. One representative deep module, e.g. `src/compute/solver.rs` or `src/verify/verifier.rs` — first + last portions.
   5. `Cargo.toml` (shows `license = "Apache-2.0"`, version, author).
 - **Include the copyright notice page:** ensure a `// Copyright 2026 nutypebuddha` header appears in the deposited excerpt (present in `lib.rs`/`main.rs`).
 

@@ -528,14 +528,14 @@ fn factorial(x: f64) -> f64 {
         return f64::NAN;
     }
     let n = x.round() as u64;
-    let mut acc = 1u64;
+    let mut accumulator = 1u64;
     for i in 2..=n {
-        acc = acc.saturating_mul(i);
-        if acc == u64::MAX {
+        accumulator = accumulator.saturating_mul(i);
+        if accumulator == u64::MAX {
             break;
         }
     }
-    acc as f64
+    accumulator as f64
 }
 
 /// Pure function: greatest common divisor via the Euclidean algorithm.

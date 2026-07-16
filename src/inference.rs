@@ -1,6 +1,6 @@
 //! Inference — LLM copilot integration (stub).
 //!
-//! Provides the `SandwichCopilot` type used by descent when built with `--features llm`.
+//! Provides the `Copilot` type used by descent when built with `--features llm`.
 //! Full implementation pending llama-gguf integration.
 
 /// Hint from the LLM copilot for token descent.
@@ -14,9 +14,9 @@ pub struct DescentHint {
 
 /// Qwen copilot for semantic token resolution hints.
 #[derive(Debug, Clone, Default)]
-pub struct SandwichCopilot;
+pub struct Copilot;
 
-impl SandwichCopilot {
+impl Copilot {
     pub fn descend_token(
         &self,
         _token: &str,
@@ -26,6 +26,6 @@ impl SandwichCopilot {
     }
 }
 
-pub mod sandwich {
-    pub use super::{DescentHint, SandwichCopilot};
+pub mod copilot {
+    pub use super::{Copilot, DescentHint};
 }

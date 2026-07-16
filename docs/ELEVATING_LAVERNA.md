@@ -20,13 +20,13 @@ Laverna is **genuinely original** — no other project fuses Vedic Navagraha cla
 The README at the public repo confirms what black-box testing inferred. Laverna is layered:
 
 ```
-Layer 3 — Bankai       Expression verification, diagnostics, confidence scoring, feedback protocol
-Layer 2 — Zanpakutō    NLP tokenization, intent parsing, domain classification
-Layer 1 — Asauchi      Formula registry, entity registry, ephemeris, charts
-Layer 0 — Primitive    NAND gates, descent engine, gyro router (the 9-graha wheel)
+Layer 3 — verify       Expression verification, diagnostics, confidence scoring, feedback protocol
+Layer 2 — nlp/query    NLP tokenization, intent parsing, domain classification
+Layer 1 — aspect       Formula registry, entity registry, ephemeris, charts
+Layer 0 — primitive    NAND gates, descent engine, router (the 9-graha wheel)
 ```
 
-Pipeline: `query → zanpakuto_nlp → descent_engine → shikai_process → bankai_solve`
+Pipeline: `query → nlp_parse → descent_engine → query_process → verify_solve`
 
 ### 1.1 The 7-layer descent cascade (concrete, observed)
 
@@ -158,7 +158,7 @@ Laverna should **stop trying to be a better Vedic astrology engine**. It should 
 
 ### 4.1 Current state
 
-The binary leaks 8 source-module paths (from `strings`): `src/bankai/verifier.rs`, `src/descent/mod.rs`, `src/entity/mod.rs`, `src/main.rs`, `src/optimize/mod.rs`, `src/tanto/parser.rs`, `src/tanto/pipeline.rs`, `src/validation/math_gate.rs`. Plus inferred: `wheel/`, `astrology/`, `chart/`, `ephemeris/`, `formula/`, `pachinko/`, `mcp/`, `gyro/`.
+The binary leaks 8 source-module paths (from `strings`): `src/verify/verifier.rs`, `src/descent/mod.rs`, `src/entity/mod.rs`, `src/main.rs`, `src/optimize/mod.rs`, `src/compute/parser.rs`, `src/compute/pipeline.rs`, `src/validation/math_gate.rs`. Plus inferred: `domain_graph/`, `astrology/`, `chart/`, `ephemeris/`, `formula/`, `scoring/`, `mcp/`, `router/`.
 
 The architecture is **clean but monolithic** — everything is compiled into one 7 MB binary, including the ephemeris tables.
 

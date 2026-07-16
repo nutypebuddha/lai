@@ -237,8 +237,8 @@ fn aspect_modifier_value(aspect: Aspect) -> f64 {
 }
 
 fn aspect_modifier_reason(aspect: Aspect, a: Graha, b: Graha) -> String {
-    let a_name = pillar_name_from_graha(a);
-    let b_name = pillar_name_from_graha(b);
+    let a_name = pillar_name_for_graha(a);
+    let b_name = pillar_name_for_graha(b);
     match aspect {
         Aspect::Conjunction => {
             format!("{a_name} fused with {b_name} — mutual reinforcement")
@@ -258,7 +258,7 @@ fn aspect_modifier_reason(aspect: Aspect, a: Graha, b: Graha) -> String {
     }
 }
 
-fn pillar_name_from_graha(graha: Graha) -> &'static str {
+fn pillar_name_for_graha(graha: Graha) -> &'static str {
     graha_to_pillar(graha)
         .map(|p| p.name())
         .unwrap_or_else(|| match graha {

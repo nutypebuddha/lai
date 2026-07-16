@@ -239,10 +239,10 @@ fn verify_arithmetic(input: &str, context: &str, report: &mut DiagnosticReport) 
 
     // If input contains '=', verify both sides evaluate.
     if let Some(eq_pos) = input.find('=') {
-        let lhs = input[..eq_pos].trim();
-        let rhs = input[eq_pos + 1..].trim();
-        let lhs_val = crate::compute::evaluate_pipeline(lhs, &env);
-        let rhs_val = crate::compute::evaluate_pipeline(rhs, &env);
+        let left_operand = input[..eq_pos].trim();
+        let right_operand = input[eq_pos + 1..].trim();
+        let lhs_val = crate::compute::evaluate_pipeline(left_operand, &env);
+        let rhs_val = crate::compute::evaluate_pipeline(right_operand, &env);
 
         match (lhs_val, rhs_val) {
             (Some(l), Some(r)) => {
@@ -252,7 +252,7 @@ fn verify_arithmetic(input: &str, context: &str, report: &mut DiagnosticReport) 
                             DiagnosticGate::Math,
                             format!("Equation does not balance: {} != {}", l, r),
                         )
-                        .with_expected(format!("{} = {}", lhs, rhs))
+                        .with_expected(format!("{} = {}", left_operand, right_operand))
                         .with_got(format!("{} != {}", l, r))
                         .with_constraint_id("math.equation_balance")
                         .with_fix_suggestion(
@@ -265,7 +265,7 @@ fn verify_arithmetic(input: &str, context: &str, report: &mut DiagnosticReport) 
                 report.push(
                     Diagnostic::error(
                         DiagnosticGate::Math,
-                        format!("Left side '{}' could not be evaluated", lhs),
+                        format!("Left side '{}' could not be evaluated", left_operand),
                     )
                     .with_constraint_id("math.evaluable_expression")
                     .with_fix_suggestion("Ensure the left side is a valid arithmetic expression"),
@@ -275,7 +275,7 @@ fn verify_arithmetic(input: &str, context: &str, report: &mut DiagnosticReport) 
                 report.push(
                     Diagnostic::error(
                         DiagnosticGate::Math,
-                        format!("Right side '{}' could not be evaluated", rhs),
+                        format!("Right side '{}' could not be evaluated", right_operand),
                     )
                     .with_constraint_id("math.evaluable_expression")
                     .with_fix_suggestion("Ensure the right side is a valid arithmetic expression"),

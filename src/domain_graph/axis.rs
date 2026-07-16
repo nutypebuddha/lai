@@ -6,48 +6,48 @@ pub const MAX_LEVEL: u8 = 12;
 /// Total levels per cycle (K + 12 grades).
 pub const LEVELS_PER_CYCLE: u16 = 13;
 
-/// The four Bleach layers mapped to K-12 understanding levels.
+/// The four mastery layers mapped to K-12 understanding levels.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
-pub enum BleachLayer {
-    Asauchi,
-    Zanpakuto,
-    Shikai,
-    Bankai,
+pub enum MasteryLayer {
+    Unknown,
+    Aware,
+    Learning,
+    Known,
 }
 
-impl BleachLayer {
-    /// The K-12 level corresponding to this Bleach layer.
+impl MasteryLayer {
+    /// The K-12 level corresponding to this mastery layer.
     pub fn level(self) -> u8 {
         match self {
-            BleachLayer::Asauchi => 0,
-            BleachLayer::Zanpakuto => 3,
-            BleachLayer::Shikai => 6,
-            BleachLayer::Bankai => 12,
+            MasteryLayer::Unknown => 0,
+            MasteryLayer::Aware => 3,
+            MasteryLayer::Learning => 6,
+            MasteryLayer::Known => 12,
         }
     }
 
     /// The human-readable state name for this layer.
     pub fn state(self) -> &'static str {
         match self {
-            BleachLayer::Asauchi => "Unknown",
-            BleachLayer::Zanpakuto => "Aware",
-            BleachLayer::Shikai => "Learning",
-            BleachLayer::Bankai => "Known",
+            MasteryLayer::Unknown => "Unknown",
+            MasteryLayer::Aware => "Aware",
+            MasteryLayer::Learning => "Learning",
+            MasteryLayer::Known => "Known",
         }
     }
 
-    /// Derive the Bleach layer from a K-12 level.
+    /// Derive the mastery layer from a K-12 level.
     pub fn from_level(level: u8) -> Self {
         match level {
-            0 => BleachLayer::Asauchi,
-            1..=3 => BleachLayer::Zanpakuto,
-            4..=6 => BleachLayer::Shikai,
-            _ => BleachLayer::Bankai,
+            0 => MasteryLayer::Unknown,
+            1..=3 => MasteryLayer::Aware,
+            4..=6 => MasteryLayer::Learning,
+            _ => MasteryLayer::Known,
         }
     }
 }
 
-impl std::fmt::Display for BleachLayer {
+impl std::fmt::Display for MasteryLayer {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{} ({})", self.state(), self.level())
     }
@@ -136,8 +136,8 @@ impl UnderstandingAxis {
     }
 
     /// The Bleach layer corresponding to this understanding level.
-    pub fn bleach_layer(self) -> BleachLayer {
-        BleachLayer::from_level(self.level)
+    pub fn layer_index(self) -> MasteryLayer {
+        MasteryLayer::from_level(self.level)
     }
 
     /// Full description.
@@ -147,14 +147,14 @@ impl UnderstandingAxis {
             self.cycle,
             self.level_name(),
             self.band(),
-            self.bleach_layer().state(),
-            self.bleach_layer().level(),
+            self.layer_index().state(),
+            self.layer_index().level(),
         )
     }
 
     /// Shorter description.
-    pub fn describe_bleach(self) -> String {
-        let layer = self.bleach_layer();
+    pub fn describe_layer(self) -> String {
+        let layer = self.layer_index();
         format!(
             "{} ({}) — Level {}/{}",
             layer.state(),
@@ -294,31 +294,31 @@ mod tests {
     }
 
     #[test]
-    fn test_bleach_layer_mapping() {
+    fn test_layer_index_mapping() {
         assert_eq!(
-            UnderstandingAxis::new(0, 0).bleach_layer(),
-            BleachLayer::Asauchi
+            UnderstandingAxis::new(0, 0).layer_index(),
+            MasteryLayer::Unknown
         );
         assert_eq!(
-            UnderstandingAxis::new(3, 0).bleach_layer(),
-            BleachLayer::Zanpakuto
+            UnderstandingAxis::new(3, 0).layer_index(),
+            MasteryLayer::Aware
         );
         assert_eq!(
-            UnderstandingAxis::new(6, 0).bleach_layer(),
-            BleachLayer::Shikai
+            UnderstandingAxis::new(6, 0).layer_index(),
+            MasteryLayer::Learning
         );
         assert_eq!(
-            UnderstandingAxis::new(12, 0).bleach_layer(),
-            BleachLayer::Bankai
+            UnderstandingAxis::new(12, 0).layer_index(),
+            MasteryLayer::Known
         );
-        assert_eq!(BleachLayer::from_level(10), BleachLayer::Bankai);
+        assert_eq!(MasteryLayer::from_level(10), MasteryLayer::Known);
     }
 
     #[test]
-    fn test_describe_bleach() {
+    fn test_describe_layer() {
         let axis = UnderstandingAxis::new(6, 0);
-        assert_eq!(axis.describe_bleach(), "Learning (6) — Level 6/12");
+        assert_eq!(axis.describe_layer(), "Learning (6) — Level 6/12");
         let axis = UnderstandingAxis::new(12, 0);
-        assert_eq!(axis.describe_bleach(), "Known (12) — Level 12/12");
+        assert_eq!(axis.describe_layer(), "Known (12) — Level 12/12");
     }
 }

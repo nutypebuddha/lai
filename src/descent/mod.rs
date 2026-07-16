@@ -371,7 +371,7 @@ impl SettlingMatrix {
                     ti.western_classification.dominant_sign(),
                     tj.western_classification.dominant_sign(),
                 ) {
-                    let aspect = SignAspect::between_sign_indices(si.index(), sj.index());
+                    let aspect = SignAspect::indices_between_signs(si.index(), sj.index());
                     aspects.push((ti.text.clone(), tj.text.clone(), aspect));
                 }
             }
@@ -1297,7 +1297,7 @@ pub struct DescentEngine {
     /// Optional Qwen copilot for semantic descent hints.
     /// Only available when built with `--features llm`.
     #[cfg(feature = "llm")]
-    pub copilot: Option<crate::inference::sandwich::SandwichCopilot>,
+    pub copilot: Option<crate::inference::Copilot>,
 }
 
 impl Clone for DescentEngine {
@@ -1332,7 +1332,7 @@ impl DescentEngine {
 
     /// Attach a Qwen copilot for semantic token resolution hints.
     #[cfg(feature = "llm")]
-    pub fn with_copilot(mut self, copilot: crate::inference::sandwich::SandwichCopilot) -> Self {
+    pub fn with_copilot(mut self, copilot: crate::inference::Copilot) -> Self {
         self.copilot = Some(copilot);
         self
     }

@@ -9,9 +9,9 @@ fn eval_tanto(expr: &str) -> Option<f64> {
 
 fn check_equation_correctness(token: &str) -> (bool, f64) {
     if let Some(eq_pos) = token.find('=') {
-        let lhs = token[..eq_pos].trim();
-        let rhs = token[eq_pos + 1..].trim();
-        match (eval_tanto(lhs), eval_tanto(rhs)) {
+        let left_operand = token[..eq_pos].trim();
+        let right_operand = token[eq_pos + 1..].trim();
+        match (eval_tanto(left_operand), eval_tanto(right_operand)) {
             (Some(l_val), Some(r_val)) => {
                 if (l_val - r_val).abs() < 1e-10 {
                     return (true, 0.98);

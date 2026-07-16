@@ -33,7 +33,7 @@ mod tests {
     use crate::astrology::Graha;
 
     #[test]
-    fn gyro_state_new() {
+    fn create_router_state() {
         let gyro = GyroState::new();
         assert!((gyro.current_jd - 2451545.0).abs() < 1e-6);
         assert_eq!(gyro.angular_velocity, 0.0);
@@ -41,7 +41,7 @@ mod tests {
     }
 
     #[test]
-    fn gyro_spin_to() {
+    fn spin_router_to() {
         let mut gyro = GyroState::new();
         let initial_jd = gyro.current_jd;
         gyro.spin_to(initial_jd + 1.0);
@@ -49,7 +49,7 @@ mod tests {
     }
 
     #[test]
-    fn gyro_dominant_graha() {
+    fn dominant_graha_of_router() {
         let mut gyro = GyroState::new();
         gyro.graha_weights[0] = 1.0;
         let (g, w) = gyro.dominant_graha_info();

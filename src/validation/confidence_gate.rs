@@ -2,14 +2,14 @@ use crate::scoring::ball::{Ball, GateResult};
 use crate::scoring::pin::GateKind;
 
 #[derive(Debug, Clone)]
-pub struct Platt {
+pub struct PlattCalibrator {
     pub a: f64,
     pub b: f64,
 }
 
-impl Platt {
+impl PlattCalibrator {
     pub fn new(a: f64, b: f64) -> Self {
-        Platt { a, b }
+        PlattCalibrator { a, b }
     }
 
     pub fn calibrate(&self, raw: f64) -> f64 {
@@ -19,18 +19,18 @@ impl Platt {
     }
 
     pub fn identity() -> Self {
-        Platt { a: 0.0, b: 0.0 }
+        PlattCalibrator { a: 0.0, b: 0.0 }
     }
 }
 
 #[derive(Debug, Clone)]
-pub struct TemperatureScaling {
+pub struct TemperatureScalingCalibrator {
     pub temperature: f64,
 }
 
-impl TemperatureScaling {
+impl TemperatureScalingCalibrator {
     pub fn new(temperature: f64) -> Self {
-        TemperatureScaling {
+        TemperatureScalingCalibrator {
             temperature: temperature.max(0.01),
         }
     }
@@ -147,18 +147,18 @@ pub fn adjust_overconfidence(raw_confidence: f64) -> f64 {
     }
 }
 
-fn domain_platt(context: &str) -> Platt {
+fn domain_platt(context: &str) -> PlattCalibrator {
     let lower = context.to_lowercase();
     if lower.contains("math") {
-        Platt::new(10.0, -5.0)
+        PlattCalibrator::new(10.0, -5.0)
     } else if lower.contains("science") {
-        Platt::new(8.0, -4.0)
+        PlattCalibrator::new(8.0, -4.0)
     } else if lower.contains("code") {
-        Platt::new(12.0, -6.0)
+        PlattCalibrator::new(12.0, -6.0)
     } else if lower.contains("fact") {
-        Platt::new(7.0, -3.5)
+        PlattCalibrator::new(7.0, -3.5)
     } else {
-        Platt::identity()
+        PlattCalibrator::identity()
     }
 }
 
@@ -235,7 +235,7 @@ mod tests {
 
     #[test]
     fn test_platt_calibration() {
-        let platt = Platt::new(10.0, -5.0);
+        let platt = PlattCalibrator::new(10.0, -5.0);
         let low = platt.calibrate(0.2);
         let mid = platt.calibrate(0.5);
         let high = platt.calibrate(0.8);
@@ -246,7 +246,7 @@ mod tests {
 
     #[test]
     fn test_platt_identity() {
-        let platt = Platt::identity();
+        let platt = PlattCalibrator::identity();
         let cal = platt.calibrate(0.7);
         assert!((cal - 0.5).abs() < 0.01);
     }

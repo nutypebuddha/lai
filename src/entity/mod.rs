@@ -310,7 +310,7 @@ impl EntityRegistry {
         let sign_a = a.dominant_sign()?;
         let sign_b = b.dominant_sign()?;
 
-        let aspect = SignAspect::between_sign_indices(sign_a.index(), sign_b.index());
+        let aspect = SignAspect::indices_between_signs(sign_a.index(), sign_b.index());
         Some((aspect, a, b))
     }
 

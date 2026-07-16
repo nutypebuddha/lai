@@ -53,9 +53,9 @@ pub fn solve_csp(
 
     // State-space guard
     const CSP_STATE_CAP: usize = 1_000_000;
-    let total_states = variables
-        .iter()
-        .try_fold(1usize, |acc, v| acc.checked_mul(v.domain.len()));
+    let total_states = variables.iter().try_fold(1usize, |accumulator, v| {
+        accumulator.checked_mul(v.domain.len())
+    });
     match total_states {
         None | Some(0) => {
             return Err(
@@ -99,9 +99,9 @@ pub fn solve_csp_one(
     }
 
     const CSP_STATE_CAP: usize = 1_000_000;
-    let total_states = variables
-        .iter()
-        .try_fold(1usize, |acc, v| acc.checked_mul(v.domain.len()));
+    let total_states = variables.iter().try_fold(1usize, |accumulator, v| {
+        accumulator.checked_mul(v.domain.len())
+    });
     match total_states {
         None | Some(0) => {
             return Err(
@@ -142,9 +142,9 @@ pub fn count_csp_solutions(
     }
 
     const CSP_STATE_CAP: usize = 1_000_000;
-    let total_states = variables
-        .iter()
-        .try_fold(1usize, |acc, v| acc.checked_mul(v.domain.len()));
+    let total_states = variables.iter().try_fold(1usize, |accumulator, v| {
+        accumulator.checked_mul(v.domain.len())
+    });
     match total_states {
         None | Some(0) => {
             return Err(

@@ -51,8 +51,8 @@ impl GyroRouter {
 
     /// Classify a token to a sign index (simple hash-based heuristic).
     pub fn classify_token(&self, token: &str) -> Sign {
-        let hash: usize = token.bytes().fold(0usize, |acc, b| {
-            acc.wrapping_mul(31).wrapping_add(b as usize)
+        let hash: usize = token.bytes().fold(0usize, |accumulator, b| {
+            accumulator.wrapping_mul(31).wrapping_add(b as usize)
         });
         let idx = hash % 12;
         // SAFETY: 0..11 maps directly to Sign variants

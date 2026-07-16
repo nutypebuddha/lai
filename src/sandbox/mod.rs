@@ -36,14 +36,14 @@ impl SandboxStep {
 
 /// Outcome of a single gated step: allowed (all gates passed) or denied, with the audit trail.
 #[derive(Debug, Clone)]
-pub struct SandboxOutcome {
+pub struct SandboxResult {
     pub step_id: u32,
     pub allowed: bool,
     pub total_score: f64,
     pub audit: Vec<GateResult>,
 }
 
-impl SandboxOutcome {
+impl SandboxResult {
     /// Human-readable one-line verdict for the audit trail.
     pub fn verdict(&self) -> String {
         let gates: Vec<String> = self
@@ -64,7 +64,7 @@ impl SandboxOutcome {
 /// Append-only, deterministic audit log of sandbox decisions.
 #[derive(Debug, Default)]
 pub struct AuditLog {
-    entries: VecDeque<SandboxOutcome>,
+    entries: VecDeque<SandboxResult>,
 }
 
 impl AuditLog {
@@ -72,7 +72,7 @@ impl AuditLog {
         AuditLog::default()
     }
 
-    pub fn record(&mut self, outcome: SandboxOutcome) {
+    pub fn record(&mut self, outcome: SandboxResult) {
         self.entries.push_back(outcome);
     }
 
@@ -92,7 +92,7 @@ impl AuditLog {
         self.entries.iter().filter(|o| !o.allowed).count()
     }
 
-    pub fn iter(&self) -> impl Iterator<Item = &SandboxOutcome> {
+    pub fn iter(&self) -> impl Iterator<Item = &SandboxResult> {
         self.entries.iter()
     }
 }
@@ -122,11 +122,11 @@ impl Sandbox {
 
     /// Gate a step through the deterministic pipeline. The step is "executed" only if every
     /// gate passes — the deterministic analogue of mana-core's sandbox admission, with no ML.
-    pub fn run(&mut self, step: SandboxStep) -> SandboxOutcome {
+    pub fn run(&mut self, step: SandboxStep) -> SandboxResult {
         let candidate = TokenCandidate::new(step.id, &step.command, 0.0);
         let mut ball = Ball::new(candidate);
         validate_ball(&mut ball, &self.pins, &step.context);
-        let outcome = SandboxOutcome {
+        let outcome = SandboxResult {
             step_id: step.id,
             allowed: ball.all_passed(),
             total_score: ball.total_score,

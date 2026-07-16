@@ -749,9 +749,12 @@ fn run_solve(query: &str) -> SolveResult {
     if numerical.len() >= 2 {
         if let Some(expr) = extract_arithmetic_expression(query) {
             if let Some(eq_pos) = expr.find('=') {
-                let lhs = expr[..eq_pos].trim();
-                let rhs = expr[eq_pos + 1..].trim();
-                match (evaluate_expr(lhs, &env), rhs.parse::<f64>().ok()) {
+                let left_operand = expr[..eq_pos].trim();
+                let right_operand = expr[eq_pos + 1..].trim();
+                match (
+                    evaluate_expr(left_operand, &env),
+                    right_operand.parse::<f64>().ok(),
+                ) {
                     (Some(l_val), Some(r_val)) => {
                         let matches = (l_val - r_val).abs() < 1e-9;
                         num_exprs.push(NumExpr {
@@ -2012,7 +2015,7 @@ fn cmd_route_repos(repos_csv: &str, verbose: bool, explain: bool, format: Output
                 "    force:  {} {} — {}",
                 g.symbol(),
                 g.name(),
-                laverna::strategy::strategy_principle(g)
+                laverna::strategy::principle_of_strategy(g)
             ),
             None => println!("    force:  (no graha force resolved)"),
         }
@@ -4125,8 +4128,8 @@ mod t36_tests {
         assert!(expr.contains('='));
         let env = create_env();
         let eq = expr.find('=').unwrap();
-        let lhs = &expr[..eq];
-        let val = evaluate_expr(lhs, &env).expect("eval lhs");
+        let left_operand = &expr[..eq];
+        let val = evaluate_expr(left_operand, &env).expect("eval left_operand");
         assert!((val - 5.0).abs() < 1e-9, "expected 5, got {val}");
     }
 
@@ -4138,11 +4141,14 @@ mod t36_tests {
         assert!(expr.contains('%'), "expr dropped modulo: {expr:?}");
         let env = create_env();
         let eq = expr.find('=').unwrap();
-        let lhs = &expr[..eq];
-        let val = evaluate_expr(lhs, &env).expect("eval lhs");
+        let left_operand = &expr[..eq];
+        let val = evaluate_expr(left_operand, &env).expect("eval left_operand");
         assert!((val - 1.0).abs() < 1e-9, "expected 1, got {val}");
-        let rhs: f64 = expr[eq + 1..].trim().parse().unwrap();
-        assert!((val - rhs).abs() < 1e-9, "lhs {val} != rhs {rhs}");
+        let right_operand: f64 = expr[eq + 1..].trim().parse().unwrap();
+        assert!(
+            (val - right_operand).abs() < 1e-9,
+            "left_operand {val} != right_operand {right_operand}"
+        );
     }
 
     #[test]

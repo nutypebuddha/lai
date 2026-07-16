@@ -11,7 +11,7 @@ pub enum SignAspect {
 }
 
 impl SignAspect {
-    pub fn between_sign_indices(a: usize, b: usize) -> Self {
+    pub fn indices_between_signs(a: usize, b: usize) -> Self {
         let diff = (a as isize - b as isize).abs();
         let min_diff = if diff < 12 - diff { diff } else { 12 - diff };
         match min_diff {
@@ -58,11 +58,11 @@ mod tests {
     #[test]
     fn test_conjunction() {
         assert_eq!(
-            SignAspect::between_sign_indices(0, 0),
+            SignAspect::indices_between_signs(0, 0),
             SignAspect::Conjunction
         );
         assert_eq!(
-            SignAspect::between_sign_indices(5, 5),
+            SignAspect::indices_between_signs(5, 5),
             SignAspect::Conjunction
         );
     }
@@ -70,18 +70,18 @@ mod tests {
     #[test]
     fn test_opposition() {
         assert_eq!(
-            SignAspect::between_sign_indices(0, 6),
+            SignAspect::indices_between_signs(0, 6),
             SignAspect::Opposition
         );
         assert_eq!(
-            SignAspect::between_sign_indices(3, 9),
+            SignAspect::indices_between_signs(3, 9),
             SignAspect::Opposition
         );
     }
 
     #[test]
     fn test_trine() {
-        assert_eq!(SignAspect::between_sign_indices(0, 3), SignAspect::Trine);
-        assert_eq!(SignAspect::between_sign_indices(0, 9), SignAspect::Trine);
+        assert_eq!(SignAspect::indices_between_signs(0, 3), SignAspect::Trine);
+        assert_eq!(SignAspect::indices_between_signs(0, 9), SignAspect::Trine);
     }
 }
