@@ -3243,7 +3243,7 @@ fn print_strategize_json(
 
 #[cfg(feature = "mcp")]
 fn cmd_mcp() {
-    use std::io::{BufRead, BufReader, Write};
+    use std::io::{BufRead, Write};
 
     eprintln!("laverna mcp: starting JSON-RPC server on stdin/stdout");
 
@@ -4342,10 +4342,11 @@ fn world_bank_lookup(indicator: &str, country: &str, year: Option<u32>) -> Resul
     let url = format!(
         "https://api.worldbank.org/v2/country/{country}/indicator/{indicator}?format=json&date={date}&per_page=1000"
     );
-    let agent = ureq::Agent::new_with_config(ureq::config::Config {
-        timeout_global: Some(std::time::Duration::from_secs(10)),
-        ..Default::default()
-    });
+    let agent = ureq::Agent::new_with_config(
+        ureq::config::Config::builder()
+            .timeout_global(Some(std::time::Duration::from_secs(10)))
+            .build(),
+    );
     let response = agent
         .get(&url)
         .call()

@@ -24,7 +24,7 @@ const PORT = process.env.PORT || 3000;
 const startTime = Date.now();
 const URL_FILE = path.resolve(__dirname, '..', 'current-url.txt');
 const URL_FILE_ALT = path.resolve(__dirname, '..', 'current-url-alt.txt');
-const CID_BINARY = process.env.CID_BINARY || path.resolve(__dirname, '../../target/release/lai-gate');
+const CID_BINARY = process.env.CID_BINARY || path.resolve(__dirname, '../../target/release/lai');
 
 // --- helpers ---
 

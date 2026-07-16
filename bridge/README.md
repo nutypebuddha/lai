@@ -27,7 +27,7 @@ The bridge translates each platform's message format into CID validation calls a
 git clone https://codeberg.org/NutypeBuddha/cid-bridge.git
 cd cid-bridge
 npm install
-CID_BINARY=../target/release/lai-gate npm start
+CID_BINARY=../target/release/lai npm start
 ```
 
 ## API

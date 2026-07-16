@@ -76,7 +76,7 @@ pkill -f "cid-bridge" 2>/dev/null || true
 pkill -f "localhost.run" 2>/dev/null || true
 pkill -f "cloudflared tunnel" 2>/dev/null || true
 sleep 1
-CID_BINARY=/root/Laverna/target/release/lai-gate PORT=3000 \
+CID_BINARY=/root/Laverna/target/release/lai PORT=3000 \
   nohup node "$BRIDGE_DIR/src/index.js" > "$BRIDGE_LOG" 2>&1 &
 sleep 2
 echo "  ✓ cid-bridge running on port 3000"

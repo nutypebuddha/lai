@@ -10,9 +10,9 @@ npm install --production
 
 # 2. Ensure CID binary exists
 echo "[2/5] check CID binary"
-CID=${CID_BINARY:-$(find /root/Laverna/target/release/lai-gate -maxdepth 0 2>/dev/null || true)}
+CID=${CID_BINARY:-$(find /root/Laverna/target/release/lai -maxdepth 0 2>/dev/null || true)}
 if [ -z "$CID" ] || [ ! -f "$CID" ]; then
-  echo "ERROR: lai-gate binary not found. Build first or set CID_BINARY env var."
+  echo "ERROR: lai binary not found. Build first or set CID_BINARY env var."
   exit 1
 fi
 
