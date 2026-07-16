@@ -1,5 +1,4 @@
 /target
-/export
 
 # Editor / IDE
 *.swp
@@ -23,3 +22,7 @@ Thumbs.db
 flamegraph.svg
 criterion/
 pprof-
+
+# laverna-wasm build artifacts
+laverna-wasm/target/
+laverna-wasm/www/

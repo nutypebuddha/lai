@@ -48,6 +48,22 @@ cargo clippy --features "graph,milp,llm" -- -D warnings
 cargo test --lib --features "graph,milp"
 ```
 
+### WebAssembly (Ł.AI · Proof in the browser)
+
+`laverna-wasm/` compiles the deterministic `solve` / `evaluate` / `verify` /
+`sha256` functions to a ~590KB WASM module (mirrors `cid`'s `cid-wasm`).
+
+```bash
+cd laverna-wasm
+bash build.sh                 # -> www/ (JS + .wasm bindings)
+cd www && python3 -m http.server 8080
+# open http://localhost:8080
+```
+
+The browser demo calls the pure functions directly — no server, fully offline.
+`laverna-wasm` exposes: `init`, `evaluate(expr)`, `solve(schema_json)`,
+`verify(proof_json)`, `sha256(input)`.
+
 Exports are produced as `x86_64-unknown-linux-gnu` binaries (the target platform
 for Termux). `cargo build --target x86_64-unknown-linux-gnu ...` then copy the
 binary to an executable location.
