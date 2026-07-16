@@ -2264,7 +2264,7 @@ fn print_solve(result: &SolveResult, verbose: bool, explain: bool, format: Outpu
         println!();
         println!("graha decomposition:");
         for token in &result.matrix.tokens {
-            let g = laverna::strategy::dominant_graha_of(token).map(|d| d.name().to_string());
+            let g = laverna::strategy::dominant_graha_display(token).map(|d| d.name().to_string());
             println!(
                 "  \"{}\" → {}",
                 token.text,
@@ -2351,7 +2351,8 @@ fn solve_to_json(result: &SolveResult) -> Value {
     if let Value::Array(arr) = &mut tokens {
         for (i, tok_val) in arr.iter_mut().enumerate() {
             if let Some(tok) = result.matrix.tokens.get(i) {
-                let graha = laverna::strategy::dominant_graha_of(tok).map(|d| d.name().to_string());
+                let graha =
+                    laverna::strategy::dominant_graha_display(tok).map(|d| d.name().to_string());
                 if let Value::Object(o) = tok_val {
                     o.insert(
                         "dominant_graha".to_string(),
@@ -2737,7 +2738,7 @@ fn cmd_route_repos(repos_csv: &str, verbose: bool, explain: bool, format: Output
         if verbose || explain {
             println!("    decomposition:");
             for token in &matrix.tokens {
-                match laverna::strategy::dominant_graha_of(token) {
+                match laverna::strategy::dominant_graha_display(token) {
                     Some(g) => println!("      \"{}\" → {} ({})", token.text, g.symbol(), g.name()),
                     None => println!("      \"{}\" → (no graha force)", token.text),
                 }
@@ -5526,11 +5527,38 @@ fn cmd_tanto_formula(name: &str, args: &[String]) {
             cid::tanto::math::format_f64(fr.result),
             fr.formula
         ),
-        None => {
-            eprintln!("Error: unknown formula '{}'", query);
-            std::process::exit(1);
-        }
+        None => match eval_corpus_formula(name, args) {
+            Some((result, expr)) => println!(
+                "{} = {}  [{}]",
+                name,
+                cid::tanto::math::format_f64(result),
+                expr
+            ),
+            None => {
+                eprintln!("Error: unknown formula '{}'", query);
+                std::process::exit(1);
+            }
+        },
     }
+}
+
+/// Evaluate a named corpus formula (proof `FormulaRegistry`) by binding the
+/// provided positional args to its declared `inputs` in order. Falls back here
+/// when the gate tanto formula set has no match (multi-arg corpus formulas such
+/// as `add 2 3`, `electrical_power 12 2`, `annuity_value 100 0.05 10`).
+fn eval_corpus_formula(name: &str, args: &[String]) -> Option<(f64, String)> {
+    let reg = load_formula_registry();
+    let formula = reg.get(name)?;
+    if args.len() != formula.inputs.len() {
+        return None;
+    }
+    let mut env = create_env();
+    for (input, arg) in formula.inputs.iter().zip(args.iter()) {
+        let val = arg.parse::<f64>().ok()?;
+        env.insert(input.clone(), val);
+    }
+    let result = evaluate_expr(&formula.expression, &env)?;
+    Some((result, formula.expression.clone()))
 }
 
 fn cmd_tanto_solve(equation: &str) {

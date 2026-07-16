@@ -183,6 +183,22 @@ pub fn dominant_graha_of(token: &SettledToken) -> Option<Domain> {
     }
 }
 
+/// Display/downstream view of a token's dominant graha. `domains` is the
+/// authoritative classification used for unification (keyword→formula
+/// `DomainClassification` voting and the FormulaMatch shortcut), whereas
+/// `dominant_graha_of` reads the auxiliary `vedic_classification` vector that
+/// is populated through a *separate* sign→ruler mapping and is not kept in
+/// sync with `domains` (T53: null on FormulaMatch, or disagreement on ties).
+/// For any display purpose we prefer the actual winning domain so the shown
+/// graha always agrees with `domains`; routing stays on the pure vedic signal
+/// via `dominant_graha_of`.
+pub fn dominant_graha_display(token: &SettledToken) -> Option<Domain> {
+    if let Some(domain) = token.domains.first() {
+        return Some(*domain);
+    }
+    dominant_graha_of(token)
+}
+
 /// Build the per-token `TokenForce` classification for a descent matrix token.
 ///
 /// - Stopwords (function words) are filtered out before scoring (T55).
@@ -477,5 +493,42 @@ mod tests {
         assert!((pillars[Pillar::Stone.index()] - 0.5).abs() < 1e-9);
         let total: f64 = pillars.iter().sum();
         assert!((total - 0.5).abs() < 1e-9);
+    }
+
+    #[test]
+    fn t53_dominant_graha_display_prefers_resolved_domains() {
+        // T53: when a token resolves via the FormulaMatch shortcut its
+        // `vedic_classification.grahas` vector is never populated, so a
+        // vedic-only `dominant_graha_of` (used for routing) comes back null.
+        // The display view `dominant_graha_display` must fall back to
+        // `domains[0]` — the actual unification result.
+        let mut token = crate::descent::SettledToken::new("electrical_power");
+        token.domains.push(Domain::Shukra);
+        // Empty vedic vector (the bug condition): pure routing signal is null.
+        assert!(dominant_graha_of(&token).is_none());
+        // Display view reflects the resolved domain.
+        let dg = dominant_graha_display(&token);
+        assert_eq!(dg, Some(Domain::Shukra));
+        assert!(token.domains.contains(&dg.expect("resolved")));
+    }
+
+    #[test]
+    fn t53_dominant_graha_display_agrees_with_tie_domains() {
+        // T53 mode 1: a 3-way DomainClassification tie yields multiple domains;
+        // the display `dominant_graha` must report `domains[0]`, never a graha
+        // absent from `domains`, even when a stale vedic signal would win.
+        let mut token = crate::descent::SettledToken::new("ecosystem_resilience");
+        token.domains.push(Domain::Rahu);
+        token.domains.push(Domain::Brihaspati);
+        token.domains.push(Domain::Chandra);
+        // Simulate a competing (stale) vedic signal that would otherwise win.
+        token.vedic_classification.set_graha(Domain::Mangala, 0.9);
+        // Pure routing signal follows the vedic vector (Mangala) — that's the
+        // T54 purity contract and must NOT change.
+        assert_eq!(dominant_graha_of(&token), Some(Domain::Mangala));
+        // Display view follows the resolved domain.
+        let dg = dominant_graha_display(&token);
+        assert_eq!(dg, Some(Domain::Rahu));
+        assert!(token.domains.contains(&dg.expect("resolved")));
     }
 }

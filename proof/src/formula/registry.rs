@@ -1110,4 +1110,33 @@ mod tests {
             "Missing 'climate_anxiety_vortex' from vortex_seed"
         );
     }
+
+    #[test]
+    fn t52_corpus_formula_multi_arg_eval() {
+        // T52: a corpus formula with arity >= 2 must be evaluable by binding
+        // positional args to its declared `inputs`, in order. This mirrors the
+        // `eval_corpus_formula` fallback used by `lai tanto formula`.
+        let mut r = FormulaRegistry::new();
+        r.register_all(sample_formulas()).unwrap();
+
+        let cases: &[(&str, &[f64], f64)] =
+            &[("add", &[2.0, 3.0], 5.0), ("nand", &[0.0, 1.0], 1.0)];
+        for (id, args, want) in cases {
+            let f = r.get(id).expect("formula present");
+            assert_eq!(f.inputs.len(), args.len(), "{id} arity");
+            let mut env: std::collections::HashMap<String, f64> = std::collections::HashMap::new();
+            for (input, arg) in f.inputs.iter().zip(args.iter()) {
+                env.insert(input.clone(), *arg);
+            }
+            let val = crate::compute::evaluate_expr(&f.expression, &env).expect("eval");
+            assert!(
+                (val - want).abs() < 1e-9,
+                "{id}: expected {want}, got {val}"
+            );
+        }
+
+        // Wrong arity must be rejected, not silently evaluated.
+        let f = r.get("add").unwrap();
+        assert_ne!(f.inputs.len(), 1);
+    }
 }

@@ -1706,6 +1706,10 @@ impl DescentEngine {
         if let Some(f) = self.formula_registry.get(&token_lower) {
             st.formulas.push(f.id.clone());
             st.domains.push(f.domain);
+            // Keep the auxiliary vedic signal in sync with the resolved domain
+            // (T53: the FormulaMatch shortcut otherwise leaves the grahas
+            // vector empty, so a vedic-only dominant read would come back null).
+            st.vedic_classification.set_graha(f.domain, 0.6);
             st.settled_layer = DescentLayer::Formula;
             st.confidence = 0.6;
             st.provenance.push(ProvenanceStep::FormulaMatch {
