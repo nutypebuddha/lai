@@ -1,21 +1,48 @@
-# Ł.AI · Proof — *Laverna*
+# L.ai · Proof — *Laverna*
 
-**Deterministic verification engine** — a 9-graha (Navagraha) wheel, a
-NAND-to-verify compute cascade, and verifiable proof objects. Rust, edition 2021.
+> **Verify, don't trust.**
 
-*Laverna* is the code name for **Ł.AI · Proof**: the deterministic-proof pure
-function in the Ł.AI substrate (see [`docs/brand.md`](docs/brand.md)). The other
-Ł.AI functions are **Ł.AI · Gate** (CID, per-token validation) and
-**Ł.AI · Bridge** (CID-Bridge, chatbot fan-out).
+**L.ai** is an offline, deterministic verification engine. It answers factual,
+numeric, and computable questions by running them through a NAND-to-verify
+compute cascade and an embedded, content-addressed corpus — then hands back a
+machine-checkable **proof object** or a typed **refusal**. No guessing, no
+hallucination, no network required at runtime.
 
-Ł.AI · Proof never guesses and fails loud: every result either carries a
-derivation back to primitive NAND gates or is explicitly marked unproven
-(e.g. LLM-estimated steps, confidence-penalized). No hallucination, no silent
-fallback.
+*Laverna* is the internal code name for **L.ai · Proof** (see
+[`docs/brand.md`](docs/brand.md)). The sibling L.ai functions are **L.ai · Gate**
+(CID, per-token validation) and **L.ai · Bridge** (CID-Bridge, chatbot fan-out).
 
-> **Thesis.** The differentiator is the **NAND-to-verify proof cascade** plus the
-> **fail-loud, no-hallucination contract** plus **deterministic optimization** —
-> not the Vedic chart. The astrology layer is a *classifier profile*, not the product.
+L.ai · Proof never guesses and fails loud: every result either carries a
+derivation back to primitive NAND gates or is explicitly marked unproven. The
+differentiator is the **NAND-to-verify proof cascade** plus the **fail-loud,
+no-hallucination contract** plus **deterministic optimization** — not the Vedic
+chart. The astrology layer is a *classifier profile*, not the product.
+
+---
+
+## 5-minute offline assistant
+
+You get a plain-talking assistant that checks every factual claim before it
+answers — all on-device.
+
+```bash
+# 1. Build with the local-LLM + MCP features
+cargo build --release --features "mcp websearch budget llm milp graph"
+
+# 2. Fetch a small model (one command; no API key, no auth)
+./scripts/get-model.sh
+
+# 3. Talk to it over MCP (any MCP client, or the bundled stdio server)
+./target/release/laverna mcp
+```
+
+No model? The assistant still answers from the verified engine and tells you
+it did — it never fabricates. Run `./scripts/get-model.sh` to give it a voice.
+
+Prebuilt static binaries + the bundled llama.cpp engine are attached to each
+GitHub release (see the `laverna-x86_64-bundle.tar.gz` asset).
+
+---
 
 ## Architecture
 
@@ -33,7 +60,7 @@ Pipeline: `query → nlp_parse → descent_engine → query_process → verify_s
 The embedded corpus (528 formulas, 214 entities) is compiled into the binary by
 `build.rs`, so it works from any working directory.
 
-## Build
+## Build & test
 
 ```bash
 # Default (minimal) build
@@ -42,16 +69,16 @@ cargo build --release
 # Full-features build (all capabilities)
 cargo build --release --features "mcp websearch budget llm milp graph"
 
-# Run the test suite + lints (CI gate)
+# CI gate
 cargo fmt -- --check
 cargo clippy --features "graph,milp,llm" -- -D warnings
 cargo test --lib --features "graph,milp"
 ```
 
-### WebAssembly (Ł.AI · Proof in the browser)
+### WebAssembly (L.ai · Proof in the browser)
 
 `laverna-wasm/` compiles the deterministic `solve` / `evaluate` / `verify` /
-`sha256` functions to a ~590KB WASM module (mirrors `cid`'s `cid-wasm`).
+`sha256` functions to a ~590KB WASM module.
 
 ```bash
 cd laverna-wasm
@@ -63,10 +90,6 @@ cd www && python3 -m http.server 8080
 The browser demo calls the pure functions directly — no server, fully offline.
 `laverna-wasm` exposes: `init`, `evaluate(expr)`, `solve(schema_json)`,
 `verify(proof_json)`, `sha256(input)`.
-
-Exports are produced as `x86_64-unknown-linux-gnu` binaries (the target platform
-for Termux). `cargo build --target x86_64-unknown-linux-gnu ...` then copy the
-binary to an executable location.
 
 ## Subcommands
 
@@ -106,9 +129,11 @@ seed corpus; a same-id entry **overrides** the seed. `info` reports
 
 `laverna solve --proof-out proof.json` emits a machine-checkable proof object;
 `laverna verify proof.json` re-derives and checks it. The same surface is exposed
-over MCP (protocol `2025-11-25`) with 9 tools, including `route` and `build`.
-This is the **Ł.AI · Proof** MCP surface; **Ł.AI · Gate** (CID) exposes 13 tools
-and **Ł.AI · Bridge** fans both out to chatbots.
+over MCP (protocol `2025-11-25`) with 10 tools, including `route`, `build`, and
+`laverna_companion` (the plain-language assistant). This is the **L.ai · Proof**
+MCP surface; **L.ai · Gate** (CID) exposes 13 tools and **L.ai · Bridge** fans
+both out to chatbots. See [`docs/mcp-registry.md`](docs/mcp-registry.md) to list
+L.ai in an MCP registry.
 
 ## Determinism
 
@@ -118,9 +143,9 @@ same outputs and the same proof object.
 
 ## Brand
 
-Part of the **Ł.AI** umbrella (offline, WASM-native, fail-loud verification
-substrate). *Laverna* is the code name for **Ł.AI · Proof**. See
-[`docs/brand.md`](docs/brand.md). Commercial mark: **Ł.AI** (DBA "Wintermore
+Part of the **L.ai** umbrella (offline, WASM-native, fail-loud verification
+substrate). *Laverna* is the code name for **L.ai · Proof**. See
+[`docs/brand.md`](docs/brand.md). Commercial mark: **L.ai** (DBA "Wintermore
 Housekeeping"); "Laverna" is not filed as a trademark.
 
 ## License
