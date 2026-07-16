@@ -5,9 +5,9 @@ After=network.target
 [Service]
 Type=simple
 User=root
-WorkingDirectory=/root/cid-bridge
-ExecStart=/usr/bin/node /root/cid-bridge/src/index.js
-Environment=CID_BINARY=/root/cid/target/release/cid
+WorkingDirectory=/root/Laverna/bridge
+ExecStart=/usr/bin/node /root/Laverna/bridge/src/index.js
+Environment=CID_BINARY=/root/Laverna/target/release/lai-gate
 Environment=PORT=3000
 Restart=always
 RestartSec=5

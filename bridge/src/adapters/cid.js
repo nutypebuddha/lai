@@ -1,7 +1,7 @@
 const { execSync } = require('child_process');
 const path = require('path');
 
-const CID_BINARY = process.env.CID_BINARY || path.resolve(__dirname, '../../../cid/target/release/cid');
+const CID_BINARY = process.env.CID_BINARY || path.resolve(__dirname, '../../target/release/lai-gate');
 
 async function cidValidate(text, context, metadata) {
   try {

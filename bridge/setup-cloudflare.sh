@@ -9,7 +9,7 @@
 #   1. A Cloudflare account (https://dash.cloudflare.com/sign-up)
 #   2. A domain whose nameservers point to Cloudflare
 #   3. cloudflared installed (already present: /usr/local/bin/cloudflared)
-#   4. A built CID binary (already present: /root/cid/target/release/cid)
+#   4. A built lai-gate binary (already present: /root/Laverna/target/release/lai-gate)
 #
 # Usage:
 #   chmod +x setup-cloudflare.sh
@@ -21,7 +21,7 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 BRIDGE_DIR="$SCRIPT_DIR"
 CLOUDFLARED_DIR="$HOME/.cloudflared"
-CID_BINARY="/root/cid/target/release/cid"
+CID_BINARY="/root/Laverna/target/release/lai-gate"
 
 echo ""
 echo "╔══════════════════════════════════════════════════════════════╗"
@@ -36,7 +36,7 @@ echo "[0/6] Checking prerequisites..."
 
 if [ ! -f "$CID_BINARY" ]; then
     echo "  ⚠ CID binary not found at $CID_BINARY"
-    echo "  → Build it first: cd /root/cid && make release"
+    echo "  → Build it first: cd /root/Laverna && cargo build --release -p lai-gate"
     exit 1
 fi
 echo "  ✓ CID binary: $CID_BINARY ($(du -h "$CID_BINARY" | cut -f1))"
@@ -144,9 +144,9 @@ After=network.target
 [Service]
 Type=simple
 User=root
-WorkingDirectory=/root/cid-bridge
-ExecStart=/usr/bin/node /root/cid-bridge/src/index.js
-Environment=CID_BINARY=/root/cid/target/release/cid
+WorkingDirectory=/root/Laverna/bridge
+ExecStart=/usr/bin/node /root/Laverna/bridge/src/index.js
+Environment=CID_BINARY=/root/Laverna/target/release/lai-gate
 Environment=PORT=3000
 Environment=NODE_ENV=production
 Restart=always
