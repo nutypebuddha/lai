@@ -42,12 +42,4 @@ Public, committed, no euphemism. Documented bugs with scope and status.
 **Repro:** `laverna websearch "GDP India"` (behind egress proxy)
 **Detail:** HTTP client rejects proxy-intercepted TLS certificates. This is an environment-specific issue, not a code bug. The subcommand works correctly on standard networks. No fix planned — this is expected behavior for sandboxed builds.
 
----
 
-### [COSMETIC] `route` output may vary across runs on identical input
-
-**Status:** known, unscheduled
-**Affects:** `laverna route --query <same-query>` (output ordering)
-**Does not affect:** correctness of individual route suggestions, `solve`, `verify`
-**Repro:** `laverna route --query "system design" | md5sum` (run twice, compare)
-**Detail:** Route scoring uses internal `HashMap` iteration for weight aggregation. While individual scores are deterministic, final ranking tie-breaking may vary. Not a correctness issue — all suggested routes are valid. Sorted by domain index for stable output where possible.
