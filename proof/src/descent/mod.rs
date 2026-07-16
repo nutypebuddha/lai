@@ -172,6 +172,27 @@ pub enum ProvenanceStep {
 
 // ─── Settled Token ──────────────────────────────────────────────────────────
 
+/// Serialize `domains` in a stable, sorted-by-name order. `domains` is built
+/// by pushing from HashMap-backed sources, so insertion order is not
+/// deterministic; sorting on output keeps proofs byte-reproducible.
+fn serialize_domains_sorted<S>(domains: &[Domain], s: S) -> Result<S::Ok, S::Error>
+where
+    S: serde::Serializer,
+{
+    let mut sorted: Vec<Domain> = domains.to_vec();
+    sorted.sort_by_key(|d| d.name());
+    sorted.serialize(s)
+}
+
+/// Inverse of `serialize_domains_sorted`. Order is irrelevant on read.
+fn deserialize_domains<'de, D>(d: D) -> Result<Vec<Domain>, D::Error>
+where
+    D: serde::Deserializer<'de>,
+{
+    let sorted: Vec<Domain> = Vec::<Domain>::deserialize(d)?;
+    Ok(sorted)
+}
+
 /// A single token after descent — resolved to its deepest layer.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SettledToken {
@@ -188,6 +209,14 @@ pub struct SettledToken {
     pub vedic_classification: VedicClassification,
 
     /// Domain(s) matched for this token.
+    ///
+    /// Serialized in a stable (sorted-by-name) order because `domains` is
+    /// assembled by pushing from HashMap-backed sources, so its insertion
+    /// order is non-deterministic across runs. Sorting on output keeps proofs
+    /// byte-reproducible (verify is recomputation) without disturbing the
+    /// in-memory order used by `domains[0]` (dominant_graha) logic.
+    #[serde(serialize_with = "serialize_domains_sorted")]
+    #[serde(deserialize_with = "deserialize_domains")]
     pub domains: Vec<Domain>,
 
     /// Formula(s) matched (if settled at Formula layer or deeper).
@@ -195,6 +224,12 @@ pub struct SettledToken {
 
     /// Entity matched (if settled at Entity layer or deeper).
     pub entity: Option<String>,
+
+    /// Whether `entity` came from a *real* resolution (a token that names or
+    /// maps to a concrete entity via forms/events) versus a speculative
+    /// domain-based `Unification` binding. Only real entities can grant NAND
+    /// absoluteness — a unification binding is a soft hint, not bedrock grounding.
+    pub entity_is_real: bool,
 
     /// NAND confidence [0, 1] at the settled layer.
     pub confidence: f64,
@@ -221,6 +256,7 @@ impl SettledToken {
             domains: Vec::new(),
             formulas: Vec::new(),
             entity: None,
+            entity_is_real: false,
             confidence: 0.0,
             is_absolute: false,
             formal_expression: None,
@@ -285,7 +321,7 @@ impl SettlingMatrix {
     /// - If a token's Western sign matches a graha's rashi → +15% confidence
     /// - If a token's Vedic graha has a graha actually there → +20% confidence
     /// - The aggregate classification is nudged toward the chart's lagna
-    pub fn with_chart(tokens: Vec<SettledToken>, chart: Option<ChartSnapshot>) -> Self {
+    pub fn with_chart(mut tokens: Vec<SettledToken>, chart: Option<ChartSnapshot>) -> Self {
         let mut aggregate_western = AtomClassification::new();
         let mut aggregate_vedic = VedicClassification::new();
         let mut dominant_domains = Vec::new();
@@ -380,6 +416,14 @@ impl SettlingMatrix {
         let n_tokens = tokens.len().max(1);
         let average_depth = total_depth as f64 / n_tokens as f64;
         let resolution_score = total_formula_plus as f64 / n_tokens as f64;
+
+        // ── Determinism: confidence is accumulated from many small additions
+        // whose order depends on HashMap iteration (domains/formulas/neighbors),
+        // so float rounding leaves 1-ULP differences between runs. Round to a
+        // fixed precision so a recomputed proof byte-matches the recorded one.
+        for t in &mut tokens {
+            t.confidence = (t.confidence * 1e6).round() / 1e6;
+        }
 
         SettlingMatrix {
             tokens,
@@ -1654,6 +1698,7 @@ impl DescentEngine {
             .clone();
         if !de.forms.is_empty() || !de.events.is_empty() {
             st.entity = Some(de.id.clone());
+            st.entity_is_real = true;
             // Apply merged Vedic classification from forms + birth charts
             st.vedic_classification
                 .merge_max_into(&de.vedic_classification);
@@ -1923,10 +1968,19 @@ impl DescentEngine {
             return;
         }
 
-        // Search formulas by keyword
+        // Search formulas by keyword. Only accept a hit when the token is a
+        // whole word in the formula's identifier surface (id / output / inputs),
+        // so a fragment like the digit "2" substring-matching "bernoulli_equation"
+        // does NOT count as a grounding formula. Corpus ids use `_` as a word
+        // boundary (e.g. "bridge_resonance"), so splitting on non-alphanumerics
+        // keeps legitimate keyword matches (bridge, resonance, ...) while
+        // rejecting incidental substring noise that would otherwise freeze the
+        // resolution dial at 100%.
         let results = self.formula_registry.search(&token_lower);
         for f in results.iter().take(3) {
-            st.formulas.push(f.id.clone());
+            if token_is_whole_word_in_formula(f, &token_lower) {
+                st.formulas.push(f.id.clone());
+            }
         }
     }
 
@@ -1948,6 +2002,7 @@ impl DescentEngine {
             .clone();
         if !de.forms.is_empty() || !de.events.is_empty() {
             st.entity = Some(de.id.clone());
+            st.entity_is_real = true;
             st.vedic_classification
                 .merge_max_into(&de.vedic_classification);
             // Apply birth chart graha positions
@@ -1975,6 +2030,25 @@ impl DescentEngine {
     /// Property names rarely match directly, so we unify by shared domain.
     fn unify_formula_with_entities(&self, st: &mut SettledToken) -> bool {
         if st.formulas.is_empty() || st.entity.is_some() {
+            return false;
+        }
+
+        // Only the *matched* formula (the one unification actually binds) can
+        // be meaningfully unified with an entity — its variables bind to the
+        // entity's properties. `st.formulas` also carries unrelated "related"
+        // formulas from the same domain (noise), so we must check the matched
+        // formula specifically, not any formula. A constant (0-input) matched
+        // formula is a lookup value, not a derivation; binding it to a
+        // same-domain seed entity would be a spurious grounding that fakes
+        // NAND-level resolution (the dial would read 100% on trivial tokens
+        // like "zero"). Skip unification for constant-only matches.
+        let matched_has_inputs = st
+            .formulas
+            .first()
+            .and_then(|id| self.formula_registry.get(id))
+            .map(|f| !f.inputs.is_empty())
+            .unwrap_or(false);
+        if !matched_has_inputs {
             return false;
         }
 
@@ -2013,10 +2087,17 @@ impl DescentEngine {
 
     /// Attempt to resolve the token to NAND absolute truth.
     ///
-    /// A token reaches NAND (absolute truth) if ANY of:
-    /// 1. Its entity has birth charts (event-anchored in time)
-    /// 2. Its first matched formula has no inputs (it's a constant)
-    /// 3. Both entity AND formula are resolved (dual grounding)
+    /// A token reaches NAND (absolute truth) via a *real* grounding cross-check:
+    /// 1. Its entity is event-anchored in time (birth charts), OR
+    /// 2. Both a real entity AND a real (input-bearing) formula are resolved
+    ///    (dual grounding).
+    ///
+    /// A speculative, domain-based `Unification` binding (entity inferred from
+    /// the formula's domain, not from the token actually naming an entity) is
+    /// NOT a grounding cross-check — it only proves the token shares a domain
+    /// with some seed entity, not that it is that entity. Counting it would
+    /// make every token that matches any formula report perfect clarity and
+    /// freeze the resolution dial at 100%.
     fn resolve_nand(
         &self,
         st: &mut SettledToken,
@@ -2036,14 +2117,38 @@ impl DescentEngine {
         let has_formula = !st.formulas.is_empty();
         let settled = crate::primitive::digital::nand(!has_entity, !has_formula);
 
+        // Only a *real* entity resolution (the token names/maps to a concrete
+        // entity via forms/events) can ground a token to NAND. A speculative
+        // unification binding cannot.
+        let real_entity = st.entity_is_real;
+
         // Absolute (NAND-level) truth requires the token to be settled AND to
-        // satisfy at least one strong cross-check:
-        //   - dual grounding (entity AND formula agree), OR
-        //   - a time-anchored entity (birth charts), OR
-        //   - a constant (no-input) formula.
-        let dual = has_entity && has_formula;
+        // satisfy at least one strong cross-check that actually *traces* the
+        // token to bedrock:
+        //   - dual grounding: a real entity AND a real (input-bearing) formula
+        //     agree — the formula must consume inputs, otherwise it is just a
+        //     constant lookup and proves nothing about this token, OR
+        //   - a time-anchored real entity (birth charts) grounds it in real
+        //     events.
+        //
+        // A bare constant (0-input) formula is a value, not a derivation, so it
+        // no longer grants absoluteness on its own — otherwise every token that
+        // happens to match a constant (pi, e, zero, ...) reports perfect clarity
+        // and the resolution dial freezes at 100% regardless of query depth.
+        let has_input_formula = st.formulas.iter().any(|id| {
+            self.formula_registry
+                .get(id)
+                .map(|f| !f.inputs.is_empty())
+                .unwrap_or(false)
+        });
+        // Dual grounding: an entity (real OR a domain-unified seed) AND a real
+        // input-bearing formula. An input-bearing formula is itself a genuine
+        // grounding — it computes — so the entity need not be a real match.
+        let dual = has_entity && has_input_formula;
         let token_lower = st.text.to_lowercase();
-        let time_anchored = has_entity
+        // Time-anchoring requires a *real* entity (birth charts ground it in
+        // actual events); a speculative unification binding does not count.
+        let time_anchored = real_entity
             && !entity_cache
                 .entry(token_lower.clone())
                 .or_insert_with(|| {
@@ -2051,16 +2156,21 @@ impl DescentEngine {
                 })
                 .birth_charts
                 .is_empty();
-        let constant = has_formula
-            && st
-                .formulas
-                .first()
-                .and_then(|id| self.formula_registry.get(id))
-                .map(|f| f.inputs.is_empty())
-                .unwrap_or(false);
 
-        st.is_absolute = settled && (dual || time_anchored || constant);
+        st.is_absolute = settled && (dual || time_anchored);
     }
+}
+
+/// True when `token` appears as a whole word (delimited by non-alphanumeric
+/// characters, with `_` treated as a boundary) in a formula's identifier
+/// surface — its `id`, `output`, or any `input` name. Used to reject incidental
+/// substring matches (a digit "2" inside "bernoulli_equation") from counting as
+/// a keyword formula grounding.
+fn token_is_whole_word_in_formula(f: &crate::formula::Formula, token: &str) -> bool {
+    let surface = format!("{} {} {}", f.id, f.output, f.inputs.join(" "));
+    surface
+        .split(|c: char| !c.is_alphanumeric())
+        .any(|w| w.eq_ignore_ascii_case(token))
 }
 
 // ─── Helper: Sign from Domain ──────────────────────────────────────────────

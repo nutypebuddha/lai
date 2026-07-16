@@ -99,12 +99,11 @@ impl RemoteBackend {
             })?
             .into_body()
             .read_to_string()
-            .map_err(|e| {
-                InferenceError::InferenceFailed(format!("response read failed: {}", e))
-            })
+            .map_err(|e| InferenceError::InferenceFailed(format!("response read failed: {}", e)))
             .and_then(|body| {
-                serde_json::from_str(&body)
-                    .map_err(|e| InferenceError::InferenceFailed(format!("response parsing failed: {}", e)))
+                serde_json::from_str(&body).map_err(|e| {
+                    InferenceError::InferenceFailed(format!("response parsing failed: {}", e))
+                })
             })?;
 
         let text = response
@@ -140,17 +139,17 @@ impl RemoteBackend {
             Ok(resp) => {
                 if let Ok(body) = resp.into_body().read_to_string() {
                     if let Ok(health) = serde_json::from_str::<HealthResponse>(&body) {
-                    return Ok(HealthStatus {
-                        healthy: true,
-                        model_loaded: health.model_path,
-                        backend_kind: BackendKind::Remote,
-                        context_size: None,
-                        message: format!(
-                            "Remote backend healthy: {} slots available",
-                            health.slots_idle.unwrap_or(0)
-                        ),
-                    });
-                }
+                        return Ok(HealthStatus {
+                            healthy: true,
+                            model_loaded: health.model_path,
+                            backend_kind: BackendKind::Remote,
+                            context_size: None,
+                            message: format!(
+                                "Remote backend healthy: {} slots available",
+                                health.slots_idle.unwrap_or(0)
+                            ),
+                        });
+                    }
                 }
                 Ok(HealthStatus {
                     healthy: true,

@@ -1540,6 +1540,11 @@ fn build_proof_payload(result: &SolveResult) -> serde_json::Value {
                 "text": t.text,
                 "settled_layer": t.settled_layer.name(),
                 "depth": t.settled_layer.depth(),
+                // `domains` serializes in a stable sorted-by-name order via the
+                // `SettledToken` custom serializer, so emitted order is
+                // deterministic across runs (verify is recomputation, not an
+                // echo). The in-memory `t.domains` order is untouched, so
+                // `domains[0]` (dominant_graha) semantics are unaffected.
                 "domains": t.domains.iter().map(|d| d.name()).collect::<Vec<_>>(),
                 "formulas": t.formulas,
                 "entity": t.entity,
