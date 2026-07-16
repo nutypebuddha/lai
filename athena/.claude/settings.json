@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__athena",
+      "Bash(cargo *)",
+      "Bash(athena *)",
+      "Bash(/root/athena/target/release/athena *)",
+      "Bash(/root/.cargo/bin/athena *)",
+      "Bash(df *)"
+    ]
+  },
+  "enableAllProjectMcpServers": true
+}

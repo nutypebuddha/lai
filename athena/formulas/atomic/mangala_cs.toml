@@ -1,0 +1,242 @@
+# ♏ Scorpio — Computer Science & AI — Atomic Formulas
+# Fixed Water | 8th House | Ruler: Mars (trad) / Pluto (modern) | Exaltation: None | Fall: Moon | Detriment: Venus
+# Element: Water (depth, transformation, data flow, recursion, intuition, penetration)
+# Modality: Fixed (persistence, depth-first, sustained computation, stability, debugging patience)
+# House: 8th (transformation, sexuality, death/rebirth, hidden knowledge, secrets, cryptography, shared resources, inheritance)
+# Anatomical: Reproductive/excretory (generation, elimination, purification, hidden processes)
+# Mathematical Archetype: The Transformer — depth-first computation, recursion, cryptography, compression, hidden layer extraction, transformation of state
+
+# ─── Water: Computation & State Transformation (Mars = Execution, Water = Flow) ────
+# Fixed Water = sustained transformation, execution persistence, deep state mutation.
+
+[[formula]]
+id = "turing_machine_delta"
+tags = ["computation", "turing", "transition", "state", "fixed", "water", "mars", "depth"]
+domain = "mangala"
+level = 12
+inputs = ["current_state", "symbol"]
+output = "next_config"
+expression = "current_state + symbol"
+description = "Turing machine transition: δ(state, symbol) → (state', symbol', direction) — Fixed Water: state mutation, Mars execution, 8th House transformation"
+evidence = "Turing 1936: δ: Q×Γ → Q×Γ×{L,R} — the atomic unit of computation; all computation reduces to state transitions"
+
+[[formula]]
+id = "halting_oracle"
+tags = ["computability", "halting", "undecidable", "oracle", "fixed", "water", "depth"]
+domain = "mangala"
+level = 12
+inputs = ["program", "input"]
+output = "halts"
+expression = "program + input"
+description = "Halting problem: no Turing machine decides H(P,I) — Fixed Water: undecidable depth, 8th House limit of computation"
+evidence = "Turing 1936: diagonalization — assume H exists, construct P' that halts iff H(P',P') says doesn't halt → contradiction"
+
+[[formula]]
+id = "primitive_recursion"
+tags = ["computation", "recursion", "basis", "fixed", "water", "mars", "iteration"]
+domain = "mangala"
+level = 9
+inputs = ["base_case", "first_arg", "second_arg"]
+output = "recursive_result"
+expression = "first_arg + second_arg"
+description = "Primitive recursion: f(0,y) = g(y), f(x+1,y) = h(f(x,y),x,y) — Fixed Water: deep iteration, Mars repetitive execution"
+evidence = "Gödel's recursion: primitive recursive functions are exactly those computable by bounded loops — total, terminating"
+
+[[formula]]
+id = "lambda_calculus_application"
+tags = ["computation", "lambda", "application", "fixed", "water", "substitution", "beta_reduction"]
+domain = "mangala"
+level = 12
+inputs = ["function_arg", "lambda_arg"]
+output = "reduced_term"
+expression = "function_arg(lambda_arg)"
+description = "β-reduction: (λx.M)N → M[x:=N] — Fixed Water: substitution, depth penetration, Mars execution, 8th House transformation"
+evidence = "Church 1941: Church-Rosser theorem — confluence: if M→* N₁ and M→* N₂, ∃P: N₁→* P and N₂→* P"
+
+# ─── 8th House: Cryptography, Secrets, Hidden Knowledge ───────────────────────
+# 8th House = hidden things, secrets, transformation, encryption, shared resources.
+
+[[formula]]
+id = "rsa_encryption"
+tags = ["cryptography", "rsa", "encryption", "eighth_house", "fixed", "water", "mars", "hidden"]
+domain = "mangala"
+level = 12
+inputs = ["message", "public_exponent", "modulus"]
+output = "ciphertext"
+expression = "message^public_exponent % modulus"
+description = "RSA encryption: c = m^e mod n — 8th House: hidden transformation, Fixed Water: secrecy retention, Mars: asymmetric division"
+evidence = "Rivest-Shamir-Adleman 1977: from Euler's theorem m^φ(n) ≡ 1 (mod n) — security depends on factoring hardness"
+
+[[formula]]
+id = "diffie_hellman_key_exchange"
+tags = ["cryptography", "diffie_hellman", "key_exchange", "eighth_house", "water", "shared_secret"]
+domain = "mangala"
+level = 12
+inputs = ["private_a", "generator", "prime_modulus", "other_public"]
+output = "shared_secret"
+expression = "other_public^private_a % prime_modulus"
+description = "Diffie-Hellman: g^ab mod p — 8th House: shared transformation, Fixed Water: persistent shared depth"
+evidence = "Diffie-Hellman 1976: (g^a)^b = (g^b)^a = g^ab mod p — security from Discrete Log Problem hardness"
+
+[[formula]]
+id = "hash_function"
+tags = ["cryptography", "hash", "compression", "eighth_house", "water", "fixed", "message_digest"]
+domain = "mangala"
+level = 12
+inputs = ["input"]
+output = "digest"
+expression = "input"
+description = "Hash function: H: {0,1}^* → {0,1}^n — 8th House: irreversible depth compression, Fixed Water: information transformation"
+evidence = "Merkle-Damgård construction: collision resistance from compression function — preimage resistance: given y, find H(x)=y"
+
+[[formula]]
+id = "shannon_confusion_diffusion"
+tags = ["cryptography", "shannon", "confusion", "diffusion", "eighth_house", "fixed", "water", "design"]
+domain = "mangala"
+level = 12
+inputs = ["substitution_strength", "permutation_strength"]
+output = "cipher_quality"
+expression = "substitution_strength * permutation_strength"
+description = "Confusion-Diffusion: product of substitution × permutation — 8th House: hidden complexity, Fixed Water: depth of mixing"
+evidence = "Shannon 1949: confusion obscures key-ciphertext relation, diffusion dissipates plaintext redundancy — product transforms"
+
+[[formula]]
+id = "mutual_exclusion_lock"
+tags = ["concurrency", "lock", "mutex", "eighth_house", "fixed", "water", "shared_resource", "mars"]
+domain = "mangala"
+level = 9
+inputs = ["thread_a_state", "thread_b_state"]
+output = "critical_section_access"
+expression = "thread_a_state * thread_b_state"
+description = "Mutual exclusion: lock(L) ensures only one process enters critical section — 8th House: shared resource, Mars separation"
+evidence = "Dijkstra 1965: P(s) and V(s) semaphore operations — mutual exclusion + progress + bounded waiting from invariants"
+
+# ─── Fixed: Machine Learning, Deep Networks, Persistent Learning ──────────────
+# Fixed = sustained optimization, gradient descent persistence. Water = deep learning, information flow.
+
+[[formula]]
+id = "gradient_descent"
+tags = ["machine_learning", "gradient", "descent", "fixed", "water", "optimization", "learning"]
+domain = "mangala"
+level = 9
+inputs = ["current_weight", "learning_rate", "gradient"]
+output = "updated_weight"
+expression = "current_weight - learning_rate * gradient"
+description = "Gradient descent: θ_t+1 = θ_t - η∇J(θ_t) — Fixed Water: persistent optimization, depth descent, Mars iterative correction"
+evidence = "Cauchy 1847: gradient flow ẋ = -∇f(x) — for convex f: f(x_t)-f(x^*) ≤ O(1/t); Lipschitz gradients guarantee convergence"
+
+[[formula]]
+id = "backpropagation"
+tags = ["machine_learning", "backpropagation", "gradient", "chain_rule", "fixed", "water", "deep", "credit_assignment"]
+domain = "mangala"
+level = 12
+inputs = ["output_gradient", "hidden_activation", "weight"]
+output = "weight_gradient"
+expression = "output_gradient * hidden_activation"
+description = "Backpropagation: ∂l/∂w_ij = (∂l/∂a_j)·a_i — Fixed Water: credit assignment, depth penetration, Mars chain rule"
+evidence = "Chain rule: ∂l/∂w = ∂l/∂a_out · ∂a_out/∂z · ∂z/∂w — exact from differential chain rule (Rumelhart-Hinton-Williams 1986)"
+
+[[formula]]
+id = "neural_network_perceptron"
+tags = ["machine_learning", "perceptron", "neuron", "fixed", "water", "activation", "mars"]
+domain = "mangala"
+level = 6
+inputs = ["input", "weight", "bias"]
+output = "activation"
+expression = "input * weight + bias"
+description = "Perceptron: y = σ(w·x + b) — Fixed Water: atomic neuron, Mars weighted connection, 8th House transformation"
+evidence = "Rosenblatt 1958: Perceptron convergence theorem — if linearly separable, converges in finite steps (Novikoff 1962)"
+
+[[formula]]
+id = "cross_entropy_loss"
+tags = ["machine_learning", "loss", "cross_entropy", "fixed", "water", "entropy", "classification"]
+domain = "mangala"
+level = 9
+inputs = ["true_prob", "predicted_prob"]
+output = "loss"
+expression = "-true_prob * log10(predicted_prob) / log10(2)"
+description = "Cross-entropy: H(p,q) = -Σp_i log q_i — Fixed Water: divergence measure, depth comparison, Mars distinction"
+evidence = "KL divergence: D_KL(p‖q) = H(p,q) - H(p) — non-negative, zero iff p=q — Gibbs inequality"
+
+[[formula]]
+id = "batch_normalization"
+tags = ["machine_learning", "batch_norm", "normalization", "fixed", "water", "stability", "depth"]
+domain = "mangala"
+level = 12
+inputs = ["input_mean", "batch_mean", "batch_variance"]
+output = "normalized"
+expression = "(input_mean - batch_mean) / sqrt(batch_variance + 1e-8)"
+description = "Batch normalization: ẑ = (z - μ_B)/√(σ²_B + ε) — Fixed Water: distribution stabilization, deep flow, training persistence"
+evidence = "Ioffe-Szegedy 2015: reduces internal covariate shift — gradient flow smoother, allows higher learning rates"
+
+# ─── Water: Data Compression, Entropy, Information Depth ──────────────────────
+# Water = compression, lossy/lossless transitions, depth of information, hidden structure.
+
+[[formula]]
+id = "huffman_coding"
+tags = ["compression", "huffman", "prefix_code", "fixed", "water", "entropy", "optimal"]
+domain = "mangala"
+level = 9
+inputs = ["frequency_a", "frequency_b"]
+output = "compression_ratio"
+expression = "min(frequency_a, frequency_b) / (frequency_a + frequency_b)"
+description = "Huffman coding: optimal prefix code from frequency — Fixed Water: depth compression, Mars symbol division"
+evidence = "Huffman 1952: greedy algorithm yields minimum redundancy code — optimal: Σp_i·l_i ≤ H(X) + 1 (Kraft inequality)"
+
+[[formula]]
+id = "lempel_ziv_complexity"
+tags = ["compression", "lempel_ziv", "complexity", "fixed", "water", "pattern", "dictionary"]
+domain = "mangala"
+level = 12
+inputs = ["unique_substrings", "total_length"]
+output = "lz_complexity"
+expression = "unique_substrings / total_length"
+description = "Lempel-Ziv complexity: C_LZ = number of distinct substrings / length — Fixed Water: compression depth, pattern discovery"
+evidence = "Ziv-Lempel 1977: asymptotic optimality for stationary ergodic sources — compression rate → H(X) as n→∞"
+
+# ─── 8th House: Search Algorithms, Depth-First, Deep Penetration ──────────────
+# 8th House = depth, hidden paths, penetration, exploration of the unknown.
+
+[[formula]]
+id = "binary_search"
+tags = ["algorithms", "search", "binary", "logarithmic", "fixed", "water", "divide", "eighth_house"]
+domain = "mangala"
+level = 6
+inputs = ["array_size"]
+output = "max_comparisons"
+expression = "log10(array_size) / log10(2)"
+description = "Binary search: log₂(n) comparisons — Fixed Water: deep division, 8th House hidden path, Mars log penetration"
+evidence = "Divide and conquer: T(n) = T(n/2) + 1 → T(n) = ⌊log₂n⌋+1 — exact worst-case for sorted array"
+
+[[formula]]
+id = "depth_first_search"
+tags = ["algorithms", "dfs", "graph", "depth", "fixed", "water", "penetration", "recursion"]
+domain = "mangala"
+level = 6
+inputs = ["graph_size", "edges"]
+output = "dfs_complexity"
+expression = "graph_size + edges"
+description = "DFS time: O(V + E) — Fixed Water: depth penetration, 8th House hidden path, recursive descent"
+evidence = "Tarjan 1972: DFS visits each vertex once, each edge once (undirected: twice) — O(V+E) exact, stack depth = |V| worst"
+
+[[formula]]
+id = "dijkstra_shortest_path"
+tags = ["algorithms", "dijkstra", "shortest_path", "fixed", "water", "search", "penetration"]
+domain = "mangala"
+level = 9
+inputs = ["vertices", "edges"]
+output = "dijkstra_complexity"
+expression = "vertices * log10(vertices) + edges"
+description = "Dijkstra: O(V log V + E) with heap — Fixed Water: persistent shortest path, Mars penetration to destination"
+evidence = "Dijkstra 1959: optimal for non-negative weights — priority queue ensures extracted minimum is final"
+
+[[formula]]
+id = "a_star_search"
+tags = ["algorithms", "a_star", "heuristic", "search", "fixed", "water", "eighth_house"]
+domain = "mangala"
+level = 12
+inputs = ["distance", "heuristic_distance"]
+output = "a_star_cost"
+expression = "distance + heuristic_distance"
+description = "A*: f(n) = g(n) + h(n) — Fixed Water: guided depth penetration, 8th House treasure finding"
+evidence = "Hart-Nilsson-Raphael 1968: admissible h(n) never overestimates → A* is optimal and complete"

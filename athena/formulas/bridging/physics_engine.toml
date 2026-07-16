@@ -1,0 +1,42 @@
+# Bridging formulas: Physics ↔ Engineering, Math ↔ Physics
+[[formula]]
+id = "momentum_to_ke"
+tags = ["mechanics", "energy"]
+from = "mangala"
+to = "shukra"
+inputs = ["mass", "velocity"]
+output = "ke"
+expression = "0.5 * mass * velocity * velocity"
+description = "Momentum → Kinetic energy"
+aspect = "trine"
+
+[[formula]]
+id = "math_physics_bridge"
+tags = ["mathematics", "physics"]
+from = "mangala"
+to = "shukra"
+inputs = ["a", "b"]
+output = "ratio"
+expression = "a / b"
+description = "Math-to-physics ratio bridge"
+aspect = "trine"
+
+[[formula]]
+id = "force_to_work"
+tags = ["mechanics", "energy", "work"]
+domain = "taurus"
+inputs = ["ke", "distance"]
+output = "work"
+expression = "ke / distance"
+description = "Work-energy theorem: W = F×d, given kinetic energy and distance"
+
+[[formula]]
+id = "bio_chem_bridge"
+tags = ["biology", "chemistry"]
+from = "surya"
+to = "shukra"
+inputs = ["concentration", "volume"]
+output = "amount"
+expression = "concentration * volume"
+description = "Biology-Chemistry: amount = concentration × volume"
+aspect = "sextile"

@@ -1,0 +1,33 @@
+# Bridging formulas: CS ↔ Math, CS ↔ Engineering
+[[formula]]
+id = "precision_recall_fusion"
+tags = ["machine_learning", "evaluation"]
+from = "mangala"
+to = "mangala"
+inputs = ["tp", "fp", "fn"]
+output = "f1"
+expression = "2 * tp / (2 * tp + fp + fn)"
+description = "CS-Math: F1 from true positives, false positives, false negatives"
+aspect = "trine"
+
+[[formula]]
+id = "computational_complexity"
+tags = ["algorithms", "scalability"]
+from = "mangala"
+to = "mangala"
+inputs = ["n"]
+output = "complexity_growth_rate"
+expression = "n * log10(n) / log10(2)"
+description = "CS-Math: O(n log n) operations as n grows"
+aspect = "sextile"
+
+[[formula]]
+id = "ai_ethic_bridge"
+tags = ["artificial_intelligence", "ethics"]
+from = "mangala"
+to = "shani"
+inputs = ["accuracy", "fairness"]
+output = "ethic_score"
+expression = "(accuracy + fairness) / 2"
+description = "CS-Philosophy: balance of accuracy and fairness"
+aspect = "opposition"

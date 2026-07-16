@@ -1,0 +1,260 @@
+# Non-math formulas: Grammar rules
+#
+# Grammar is the foundation — language is the medium through which all
+# knowledge is expressed. These rules span:
+#   - κ (Language): general English grammar, style, and structure
+#   - μ (Psychology): clinical language, diagnostic discourse, therapeutic speech
+#
+# Each rule is either:
+#   - prescriptive: what "should" be (style guides, standards)
+#   - descriptive: what is observed in actual usage
+#   - structural: constituency, dependency, or phrase structure
+
+# ─── κ Language: General English Grammar ─────────────────────────────────
+# K-12 levels: 0=K → 12=Grade 12
+
+[[grammar]]
+id = "subject_verb_agreement"
+pattern = "(\\w+) (is|are|was|were) (\\w+)"
+transform = "ensure number agreement"
+description = "Subject-verb number agreement — singular subjects take singular verbs"
+rule_type = "prescriptive"
+level = 0
+evidence = "Quirk & Greenbaum, A University Grammar of English"
+
+[[grammar]]
+id = "dangling_modifier"
+pattern = "\\w+ing\\b.*,.*\\b(he|she|it|they)\\b"
+transform = "rephrase for clarity — ensure the modifier has a clear subject"
+description = "Dangling modifier detection — participial phrase without clear subject"
+rule_type = "prescriptive"
+level = 6
+evidence = "Strunk & White, The Elements of Style"
+
+[[grammar]]
+id = "passive_voice"
+pattern = "\\b(is|are|was|were|been|being)\\s+\\w+ed\\b"
+transform = "consider active voice for directness"
+description = "Passive voice detection — use active voice for clarity unless agent is unknown"
+rule_type = "descriptive"
+level = 3
+evidence = "Pinker, The Sense of Style"
+
+[[grammar]]
+id = "splitting_infinitive"
+pattern = "\\bto\\s+\\w+ly\\s+\\w+\\b"
+transform = "move adverb before or after the infinitive for formal register"
+description = "Split infinitive detection — 'to boldly go' vs 'to go boldly'"
+rule_type = "descriptive"
+level = 3
+evidence = "Modern usage accepts split infinitives; Fowler's initially rejected them"
+
+[[grammar]]
+id = "singular_they"
+pattern = "\\b(everyone|someone|anyone|no one|each|nobody)\\b.*\\b(their|them|they)\\b"
+transform = "affirm singular they as grammatical and inclusive"
+description = "Singular they — standard for indefinite antecedents; avoids gendered pronouns"
+rule_type = "descriptive"
+level = 6
+evidence = "APA Style 7th ed.; Merriam-Webster Word of the Year 2019"
+
+[[grammar]]
+id = "serial_comma"
+pattern = "\\w+,\\s+\\w+,\\s+and\\s+\\w+"
+transform = "retain Oxford comma for clarity in lists"
+description = "Serial (Oxford) comma — comma before 'and' in lists of 3+ items"
+rule_type = "prescriptive"
+level = 3
+evidence = "Chicago Manual of Style, 17th ed."
+
+[[grammar]]
+id = "pronoun_case_error"
+pattern = "between\\s+(you\\s+and\\s+I|I\\s+and\\s+you)"
+transform = "use 'between you and me' (object case after preposition)"
+description = "Pronoun case after preposition — 'between you and me' is correct"
+rule_type = "prescriptive"
+level = 3
+evidence = "Garner's Modern American Usage"
+
+[[grammar]]
+id = "double_negative"
+pattern = "(don't|doesn't|didn't|haven't|hasn't|hadn't|won't|can't|couldn't).*(no|none|nothing|nobody|never)"
+transform = "use single negative — double negatives create affirmative in standard English"
+description = "Double negative detection — standard English uses one negation per clause"
+rule_type = "prescriptive"
+level = 3
+evidence = "Standard English grammar; contrast AAVE (negative concord is grammatical)"
+
+[[grammar]]
+id = "parallel_structure"
+pattern = "\\b(to\\s+\\w+\\b.*,?\\s*to\\s+\\w+\\b.*,\\s*\\w+ing\\b)"
+transform = "ensure all items in a series share the same grammatical form"
+description = "Parallel structure — items in a series should share grammatical form"
+rule_type = "prescriptive"
+level = 6
+evidence = "Strunk & White, Rule 12: Use parallel structure"
+
+[[grammar]]
+id = "conditional_clause"
+pattern = "\\b(if|unless|provided that|as long as)\\b.*\\b(then|will|would|could|should)\\b"
+transform = "affirm conditional structure — ensure antecedent-consequent clarity"
+description = "Conditional clause detection — if/when structures with consequence"
+rule_type = "structural"
+level = 6
+evidence = "Quirk & Greenbaum, 14.24-14.30"
+
+[[grammar]]
+id = "relative_clause"
+pattern = "\\b(which|that|who|whom|whose)\\b.*,?"
+transform = "use 'that' for restrictive clauses, 'which' for non-restrictive (with comma)"
+description = "Relative clause — that/which/who introduce dependent clauses"
+rule_type = "structural"
+level = 6
+evidence = "Chicago Manual of Style 5.220-5.230"
+
+[[grammar]]
+id = "comparative_cluster"
+pattern = "\\b(more|less)\\s+\\w+\\s+(than|as)\\b"
+transform = "ensure 'than' follows comparative; 'as...as' for equality"
+description = "Comparative structure — 'more X than Y', 'as X as Y'"
+rule_type = "structural"
+level = 6
+evidence = "Huddleston & Pullum, Cambridge Grammar of English"
+
+[[grammar]]
+id = "sentence_fragment"
+pattern = "^\\s*(Because|Although|Since|Unless|While|As|If)\\s+\\w+.*[.?!]\\s*$"
+transform = "subordinate clause as sentence — connect to main clause or rephrase"
+description = "Sentence fragment — subordinate clause standing alone as a sentence"
+rule_type = "prescriptive"
+level = 0
+evidence = "Strunk & White, Rule 11: Use definite, specific, concrete language"
+
+[[grammar]]
+id = "misplaced_modifier"
+pattern = "\\b(almost|nearly|only|just|almost|even|hardly|scarcely)\\b\\s+\\w+"
+transform = "place modifier immediately before the word it modifies to avoid ambiguity"
+description = "Misplaced modifier — limiting modifiers should precede their target"
+rule_type = "prescriptive"
+level = 9
+evidence = "Garner's Modern American Usage: 'only' placement"
+
+[[grammar]]
+id = "nominalization"
+pattern = "\\w+(tion|sion|ment|ance|ence|ity|ization)\\b"
+transform = "prefer verb forms for directness: 'investigate' vs 'conduct an investigation'"
+description = "Nominalization detection — prefer strong verbs over noun phrases"
+rule_type = "descriptive"
+level = 9
+evidence = "Williams & Bizup, Style: Lessons in Clarity and Grace"
+
+# ─── μ Psychology: Clinical Language ─────────────────────────────────────
+# K-12 levels: clinical language starts at Grade 3 scaffolding
+
+[[grammar]]
+id = "symptom_presentation"
+pattern = "presents?\\s+with\\s+\\w+(\\s+(and|with)\\s+\\w+)*"
+transform = "formal symptom presentation — '[patient] presents with [symptom(s)]'"
+description = "Clinical symptom presentation — standard psychiatric intake phrasing"
+rule_type = "structural"
+level = 3
+evidence = "DSM-5-TR, Clinical Formulation section"
+
+[[grammar]]
+id = "diagnostic_criteria"
+pattern = "meets?\\s+(criteria|threshold|diagnosis)\\s+for\\s+\\w+"
+transform = "affirm DSM-5 criteria language — criterion A/B/C structure"
+description = "DSM-5 diagnostic criteria — structured criterion-based diagnosis"
+rule_type = "structural"
+level = 6
+evidence = "DSM-5-TR, 'Diagnostic Criteria' sections"
+
+[[grammar]]
+id = "clinical_formulation"
+pattern = "formulation:\\s*.+\\bin\\s+(the\\s+)?context\\s+of\\s+"
+transform = "biopsychosocial formulation — presenting problem in context of predisposing/precipitating/perpetuating factors"
+description = "Clinical formulation — 4P model (predisposing, precipitating, perpetuating, protective)"
+rule_type = "structural"
+level = 9
+evidence = "Weerasekera, 1996; Johnstone & Dallos, 2014"
+
+[[grammar]]
+id = "differential_diagnosis"
+pattern = "rule\\s+out\\s+\\w+(\\s+(and|or)\\s+\\w+)*"
+transform = "differential diagnosis — list ruled-out conditions with rationale"
+description = "Differential diagnosis — conditions considered and excluded with justification"
+rule_type = "structural"
+level = 9
+evidence = "DSM-5-TR, Differential Diagnosis sections"
+
+[[grammar]]
+id = "medication_regimen"
+pattern = "\\d+\\s*m?g\\s+(of\\s+)?\\w+\\s+(daily|BID|TID|QHS|PRN|q[dh]|bid|tid)"
+transform = "standard medication order — [dose][unit] of [medication] [frequency]"
+description = "Medication regimen — structured prescription notation"
+rule_type = "prescriptive"
+level = 6
+evidence = "WHO Guide to Good Prescribing"
+
+[[grammar]]
+id = "side_effect_monitoring"
+pattern = "(associated\\s+with|side\\s+effect|adverse\\s+event|tolerability)"
+transform = "systematic side effect review by organ system"
+description = "Side effect and adverse event monitoring language"
+rule_type = "descriptive"
+level = 9
+evidence = "UKU Side Effect Rating Scale; SAS; AIMS"
+
+[[grammar]]
+id = "therapeutic_alliance_language"
+pattern = "(therapeutic\\s+alliance|working\\s+relationship|rapport|collaboration\\s+with)"
+transform = "explicitly name and assess the therapeutic alliance"
+description = "Therapeutic alliance language — the collaborative relationship between clinician and patient"
+rule_type = "descriptive"
+level = 12
+evidence = "Bordin, 1979; Horvath & Greenberg, 1989 (WAI)"
+
+[[grammar]]
+id = "cognitive_restructuring"
+pattern = "(reframe|challenge|restructure|replace)\\s+\\w+(thought|belief|cognition|idea)s?"
+transform = "CBT restructuring — identify cognitive distortion, challenge evidence, generate alternative"
+description = "Cognitive restructuring — core CBT technique for modifying maladaptive thoughts"
+rule_type = "structural"
+level = 9
+evidence = "Beck, 1979; CBT manual"
+
+[[grammar]]
+id = "exposure_therapy"
+pattern = "(graded\\s+exposure|hierarchy|systematic\\s+desensitization|habituation)"
+transform = "exposure hierarchy — rank order of feared stimuli with SUDS ratings"
+description = "Exposure therapy language — graded exposure with hierarchy and habituation tracking"
+rule_type = "structural"
+level = 9
+evidence = "Foa & Kozak, 1986; Craske, 2008"
+
+[[grammar]]
+id = "diagnostic_impression"
+pattern = "impression:\\s*.+\\s+(disorder|syndrome|condition|presentation)"
+transform = "diagnostic impression — summary formulation with primary diagnosis and specifiers"
+description = "Diagnostic impression — clinical summary with diagnosis, specifiers, and severity"
+rule_type = "structural"
+level = 12
+evidence = "DSM-5-TR, 'Recording Procedures'"
+
+[[grammar]]
+id = "risk_assessment"
+pattern = "risk\\s+(of|for)\\s+(suicide|self.harm|violence|harm|elopement|decline)"
+transform = "structured risk assessment — risk factors, protective factors, plan"
+description = "Clinical risk assessment — suicide, self-harm, violence risk with mitigation plan"
+rule_type = "prescriptive"
+level = 12
+evidence = "Chu et al., 2015; SAFE-T Protocol"
+
+[[grammar]]
+id = "progress_note"
+pattern = "^(SOAP|DAP|BIRP|GIRP)\\b"
+transform = "structured progress note format — ensure all sections are present"
+description = "Progress note format detection — SOAP/DAP/BIRP/GIRP structured note templates"
+rule_type = "structural"
+level = 12
+evidence = "Weed, 1968 (SOAP); general clinical documentation standards"

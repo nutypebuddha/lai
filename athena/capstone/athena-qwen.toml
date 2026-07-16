@@ -1,0 +1,29 @@
+# Capstone model manifest — the LLM copilot as KB data.
+#
+# This file is the source of truth for which model caps the wheel:
+# identity, integrity pin, and generation defaults all live here, loaded at
+# runtime like formulas/ and entities/. Swapping the capstone (e.g. for a
+# fine-tuned Athena-Qwen) means editing this file — no recompile.
+#
+# CI reads the pin from here when assembling release tarballs
+# (.github/workflows/ci.yml, release job).
+
+[model]
+id = "qwen2.5-0.5b-instruct-q4km"
+file = "qwen2.5-0.5b-instruct-q4_k_m.gguf"
+sha256 = "74a4da8c9fdbcd15bd1f6d01d621410d31c6fc00986f5eb687824e7b93d7a9db"
+size_bytes = 491400032
+source = "hf:Qwen/Qwen2.5-0.5B-Instruct-GGUF"
+role = "router"
+
+# Generation defaults tuned for routing on small devices.
+# The routing schema echoes query tokens back, so intents need ~150 tokens;
+# 64 truncated mid-JSON (observed 2026-07-08). 512 is still 2.5x waste.
+context = 1024
+max_tokens = 192
+
+[prompt]
+system = """You are Athena's copilot — a helpful reasoning assistant. \
+You assist with formula suggestions, natural language explanations, and \
+routing hints. You do NOT perform computation — Athena's symbolic engine \
+handles that. Keep responses concise and accurate."""

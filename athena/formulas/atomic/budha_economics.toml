@@ -1,0 +1,287 @@
+# ♍ Virgo — Economics & Finance — Atomic Formulas
+# Mutable Earth | 6th House | Ruler: Mercury | Exaltation: Mercury | Fall: Venus | Detriment: Jupiter
+# Element: Earth (practical, material, measurement, analysis, precision, refinement)
+# Modality: Mutable (adaptability, adjustment, service, optimization, improvement)
+# House: 6th (work, service, health, daily routines, analysis, discernment, sorting)
+# Anatomical: Digestive system, intestines (absorption, sorting, extraction, refinement)
+# Mathematical Archetype: The Refiner — optimization, allocation, marginal analysis, utility maximization, equilibrium
+
+# ─── Earth: Utility & Optimization (Mercury = Analysis, Earth = Value) ─────────
+# Mutable Earth = marginal analysis, refinement, optimization, finding maxima/minima.
+
+[[formula]]
+id = "utility_maximization"
+tags = ["utility", "optimization", "marginal", "earth", "mutable", "mercury", "choice"]
+domain = "budha"
+level = 9
+inputs = ["marginal_benefit", "marginal_cost"]
+output = "net_benefit"
+expression = "marginal_benefit - marginal_cost"
+description = "Utility maximization: MB = MC → optimum — Mutable Earth: marginal analysis, Mercury discernment, Virgo refinement"
+evidence = "Optimality condition: dU/dx = dC/dx from Lagrangian L = U(x) - λ(C(x) - B) — exact via KKT conditions"
+
+[[formula]]
+id = "indifference_curve_mrs"
+tags = ["utility", "indifference", "mrs", "tradeoff", "mutable", "earth", "substitution"]
+domain = "budha"
+level = 9
+inputs = ["marginal_utility_x", "marginal_utility_y"]
+output = "marginal_rate_substitution"
+expression = "marginal_utility_x / marginal_utility_y"
+description = "Marginal rate of substitution: MRS = MUx/MUy — Mutable Earth: trade-off rate, Mercury analytical discernment"
+evidence = "Implicit function theorem: U(x,y) = constant → dy/dx = -(∂U/∂x)/(∂U/∂y) — exact from total differential dU=0"
+
+[[formula]]
+id = "lagrangian_multiplier"
+tags = ["optimization", "constrained", "lagrangian", "mutable", "earth", "shadow_price"]
+domain = "budha"
+level = 12
+inputs = ["utility_gradient", "constraint_gradient"]
+output = "shadow_price"
+expression = "utility_gradient / constraint_gradient"
+description = "Shadow price: λ = ∂U/∂B — Mutable Earth: Lagrangian multiplier, Mercury optimal allocation, Virgo constrained refinement"
+evidence = "Envelope theorem: dV/db = λ — ∂V/∂b_i = λ_i for constrained optimization problem — exact duality"
+
+# ─── 6th House: Work, Productivity, Efficiency, Service ────────────────────────
+# 6th House = work, service, health, daily labor, productivity, efficiency analysis.
+
+[[formula]]
+id = "cobb_douglas_production"
+tags = ["production", "cobb_douglas", "mutable", "earth", "sixth_house", "labor", "capital"]
+domain = "budha"
+level = 9
+inputs = ["labor", "capital", "total_factor_productivity", "output_elasticity_labor"]
+output = "output"
+expression = "total_factor_productivity * labor^output_elasticity_labor * capital^(1 - output_elasticity_labor)"
+description = "Cobb-Douglas: Y = A·L^α·K^(1-α) — 6th House: production, labor-capital, Mercury work analysis"
+evidence = "Linear homogeneity: F(tL,tK) = tF(L,K) from constant returns — derived from Euler's homogeneous function theorem"
+
+[[formula]]
+id = "marginal_product_labor"
+tags = ["production", "marginal", "product", "labor", "sixth_house", "earth", "mercury"]
+domain = "budha"
+level = 9
+inputs = ["output_elasticity_labor", "output", "labor"]
+output = "mpl"
+expression = "output_elasticity_labor * output / labor"
+description = "Marginal product of labor: MPL = α·Y/L — 6th House: worker contribution, Mercury efficiency, Virgo service value"
+evidence = "∂Y/∂L = α·A·L^(α-1)·K^(1-α) = α·Y/L — exact partial derivative of Cobb-Douglas"
+
+[[formula]]
+id = "cost_minimization"
+tags = ["production", "cost", "minimization", "mutable", "earth", "efficiency", "isocost"]
+domain = "budha"
+level = 9
+inputs = ["wage", "rental_rate", "mpl", "mpk"]
+output = "cost_min_condition"
+expression = "mpl / wage - mpk / rental_rate"
+description = "Cost minimization: MPL/w = MPK/r — Mutable Earth: optimal input mix, Mercury efficiency, 6th House productivity"
+evidence = "FOC from Lagrangian: L = wL + rK + λ(Y₀ - F(L,K)) → w = λ·MPL, r = λ·MPK → MPL/w = MPK/r"
+
+[[formula]]
+id = "returns_to_scale"
+tags = ["production", "returns", "scale", "mutable", "earth", "efficiency"]
+domain = "budha"
+level = 6
+inputs = ["output_elasticity_labor", "output_elasticity_capital"]
+output = "scale_elasticity"
+expression = "output_elasticity_labor + output_elasticity_capital"
+description = "Returns to scale: α+β — Mutable Earth: scaling efficiency, Mercury returns analysis, Virgo measurement"
+evidence = "F(tL,tK) = t^(α+β)A L^α K^β — exact: if α+β=1 constant, >1 increasing, <1 decreasing returns"
+
+# ─── Earth: Market Equilibrium, Supply & Demand (Venus Fall = Imperfect Markets) ─
+# Venus in fall = markets imperfect. Mercury in exaltation = analytical clearing.
+
+[[formula]]
+id = "market_equilibrium"
+tags = ["equilibrium", "market", "supply", "demand", "earth", "mercury", "clearing"]
+domain = "budha"
+level = 6
+inputs = ["quantity_demanded", "quantity_supplied"]
+output = "excess_demand"
+expression = "quantity_demanded - quantity_supplied"
+description = "Market equilibrium: Qd - Qs = 0 — Earth: supply-demand clearance, Mercury price discovery, Virgo balance"
+evidence = "Walrasian equilibrium: Z(p) = Σ(Qd_i(p) - Qs_i(p)) = 0 — excess demand vector → zero at equilibrium prices"
+
+[[formula]]
+id = "price_elasticity"
+tags = ["demand", "elasticity", "price", "mutable", "earth", "responsiveness", "mercury"]
+domain = "budha"
+level = 9
+inputs = ["delta_quantity", "quantity", "delta_price", "price"]
+output = "elasticity"
+expression = "(delta_quantity / quantity) / (delta_price / price)"
+description = "Price elasticity: ε = (%ΔQ)/(%ΔP) — Mutable Earth: demand responsiveness, Mercury sensitivity analysis"
+evidence = "Definition: ε = dQ/dP · P/Q — exact for differentiable demand function; ∣ε∣>1 → elastic, <1 → inelastic"
+
+[[formula]]
+id = "consumer_surplus"
+tags = ["welfare", "surplus", "consumer", "earth", "mercury", "willingness_to_pay"]
+domain = "budha"
+level = 6
+inputs = ["max_willingness", "market_price"]
+output = "consumer_surplus"
+expression = "max_willingness - market_price"
+description = "Consumer surplus: CS = WTP - P — Earth: net benefit from trade, Mercury valuation, 6th House service value"
+evidence = "Discrete: CS = Σ(WTP_i - P) for each unit — consumer surplus integral from demand curve"
+
+[[formula]]
+id = "producer_surplus"
+tags = ["welfare", "surplus", "producer", "earth", "mercury", "cost"]
+domain = "budha"
+level = 6
+inputs = ["market_price", "min_acceptable_price"]
+output = "producer_surplus"
+expression = "market_price - min_acceptable_price"
+description = "Producer surplus: PS = P - MC — Earth: profit above cost, Mercury efficiency rent, 6th House labor value"
+evidence = "Area above supply curve (MC curve) up to price — integral of (P - MC(q))dq from 0 to Q"
+
+# ─── Mutable: Present Value, Discounting, Time Preference ─────────────────────
+# Mutable = time preference, discounting the future, intertemporal optimization.
+
+[[formula]]
+id = "present_value"
+tags = ["finance", "present_value", "discounting", "mutable", "earth", "time", "mercury"]
+domain = "budha"
+level = 6
+inputs = ["future_value", "discount_rate", "periods"]
+output = "present_value"
+expression = "future_value / (1 + discount_rate)^periods"
+description = "Present value: PV = FV/(1+r)^t — Mutable Earth: future→present, Mercury temporal analysis, Virgo discounting"
+evidence = "FV = PV(1+r)^t → PV = FV/(1+r)^t — exact from compound interest (Fisher 1930, time preference)"
+
+[[formula]]
+id = "net_present_value"
+tags = ["finance", "npv", "investment", "mutable", "earth", "cash_flow", "mercury"]
+domain = "budha"
+level = 6
+inputs = ["initial_investment", "future_returns", "discount_rate", "periods"]
+output = "npv"
+expression = "-initial_investment + future_returns / (1 + discount_rate)^periods"
+description = "Net present value: NPV = ΣCFt/(1+r)^t - I₀ — Mutable Earth: investment decision, Mercury evaluation"
+evidence = "NPV = Σ_{t=0}^T CF_t/(1+r)^t — exact from time-additive utility (accept if NPV > 0)"
+
+[[formula]]
+id = "perpetuity_value"
+tags = ["finance", "perpetuity", "valuation", "mutable", "earth", "infinite", "mercury"]
+domain = "budha"
+level = 9
+inputs = ["payment", "discount_rate"]
+output = "present_value"
+expression = "payment / discount_rate"
+description = "Perpetuity: PV = C/r — Mutable Earth: infinite stream value, Mercury eternal analysis, Virgo steady income"
+evidence = "Geometric series: PV = C/(1+r) + C/(1+r)² + ... = C/r for |1/(1+r)| < 1 — exact sum of infinite geometric series"
+
+[[formula]]
+id = "annuity_value"
+tags = ["finance", "annuity", "valuation", "mutable", "earth", "finite", "mercury"]
+domain = "budha"
+level = 9
+inputs = ["payment", "discount_rate", "periods"]
+output = "present_value"
+expression = "payment * (1 - 1/(1 + discount_rate)^periods) / discount_rate"
+description = "Annuity: PV = C(1-(1+r)^(-n))/r — Mutable Earth: finite stream, Mercury periodic valuation"
+evidence = "PV = CΣ_{t=1}^n 1/(1+r)^t = C/r · (1-1/(1+r)^n) — partial geometric series sum"
+
+# ─── 6th House: Risk & Insurance, Health Economics ────────────────────────────
+# 6th House = health, risk, insurance, safety nets, actuarial science.
+
+[[formula]]
+id = "expected_value"
+tags = ["probability", "expected_value", "risk", "sixth_house", "earth", "actuarial", "mercury"]
+domain = "budha"
+level = 3
+inputs = ["outcome1", "prob1", "outcome2", "prob2"]
+output = "expected_value"
+expression = "outcome1 * prob1 + outcome2 * prob2"
+description = "Expected value: E[X] = Σp_i·x_i — 6th House: actuarial risk, Mercury probability, Virgo insurance"
+evidence = "Law of total expectation: E[E[X|Y]] = E[X] — exact linearity: E[aX+bY] = aE[X]+bE[Y]"
+
+[[formula]]
+id = "variance"
+tags = ["statistics", "variance", "risk", "sixth_house", "earth", "mercury", "dispersion"]
+domain = "budha"
+level = 6
+inputs = ["expected_value", "outcome1", "outcome2", "prob1", "prob2"]
+output = "variance"
+expression = "prob1*(outcome1-expected_value)^2 + prob2*(outcome2-expected_value)^2"
+description = "Variance: Var[X] = E[(X-μ)²] — 6th House: risk measure, Mercury uncertainty, Virgo health variability"
+evidence = "Var[X] = E[X²] - E[X]² — exact: Var[aX+b] = a²Var[X] for constants a,b"
+
+[[formula]]
+id = "certainty_equivalent"
+tags = ["decision", "certainty_equivalent", "risk_aversion", "sixth_house", "earth", "utility"]
+domain = "budha"
+level = 12
+inputs = ["expected_value", "variance", "risk_aversion"]
+output = "certainty_equivalent"
+expression = "expected_value - risk_aversion * variance / 2"
+description = "Certainty equivalent: CE = μ - (γ/2)σ² — 6th House: risk discount, Mercury insurance premium, Virgo safety"
+evidence = "CARA utility: U(x) = -e^(-γx): E[U(W)] = u(CE) → CE = μ - γσ²/2 — exact for normal distribution"
+
+[[formula]]
+id = "herfindahl_hirschman_index"
+tags = ["industrial", "concentration", "hhi", "market", "competition", "sixth_house", "mercury"]
+domain = "budha"
+level = 9
+inputs = ["n_competitors"]
+output = "hhi"
+expression = "1 / n_competitors"
+description = "Hirschman-Herfindahl Index: HHI = Σs_i² = 1/n for equal shares — 6th House: market concentration, Mercury competition analysis"
+evidence = "For n equal shares s_i = 1/n: HHI = n·(1/n)² = 1/n — range [1/n,1]; DOJ considers HHI>0.25 concentrated"
+
+[[formula]]
+id = "lorenz_curve_gini"
+tags = ["inequality", "gini", "lorenz", "sixth_house", "earth", "distribution", "mercury"]
+domain = "budha"
+level = 9
+inputs = ["share_bottom_50", "share_middle_40", "share_top_10"]
+output = "gini_coefficient"
+expression = "1 - (share_bottom_50 + share_middle_40 + share_top_10)"
+description = "Gini coefficient: G = 1 - 2∫L(p)dp — 6th House: inequality measure, Mercury distribution analysis"
+evidence = "Gini = A/(A+B) where A = area between Lorenz curve and perfect equality line — exact from definition"
+# ─── Fundamentals: Interest & Growth ─────────────────────────────────────────
+
+[[formula]]
+id = "compound_interest"
+tags = ["finance", "interest", "growth", "fundamental", "compounding"]
+domain = "budha"
+level = 1
+inputs = ["principal", "rate", "periods"]
+output = "future_value"
+expression = "principal * (1 + rate)^periods"
+description = "Compound interest: FV = P(1+r)^n — exponential growth of principal at rate r per period"
+evidence = "Recursive definition FV_n = FV_{n-1}(1+r), closed form by induction"
+
+[[formula]]
+id = "simple_interest"
+tags = ["finance", "interest", "fundamental"]
+domain = "budha"
+level = 1
+inputs = ["principal", "rate", "periods"]
+output = "interest"
+expression = "principal * rate * periods"
+description = "Simple interest: I = Prn — linear interest on principal only"
+evidence = "Definition: non-compounding interest accrual"
+
+[[formula]]
+id = "percent_change"
+tags = ["finance", "statistics", "change", "fundamental"]
+domain = "budha"
+level = 1
+inputs = ["old_value", "new_value"]
+output = "percent_change"
+expression = "(new_value - old_value) / old_value * 100"
+description = "Percent change: 100·(new−old)/old — relative change expressed as a percentage"
+evidence = "Definition of relative change"
+
+[[formula]]
+id = "rule_of_72"
+tags = ["finance", "interest", "estimation", "doubling"]
+domain = "budha"
+level = 2
+inputs = ["rate_percent"]
+output = "doubling_periods"
+expression = "72 / rate_percent"
+description = "Rule of 72: periods to double ≈ 72/r% — first-order estimate of ln(2)/ln(1+r)"
+evidence = "ln(2) ≈ 0.693; 72 chosen for divisibility, accurate near 8%"

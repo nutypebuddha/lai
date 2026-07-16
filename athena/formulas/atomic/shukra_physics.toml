@@ -1,0 +1,437 @@
+# ♉ Taurus — Physics & Chemistry — Atomic Formulas
+# Fixed Earth | 2nd House | Ruler: Venus | Exaltation: Moon | Fall: None | Detriment: Mars
+# Element: Earth (matter, substance, density, persistence)
+# Modality: Fixed (stability, resistance, conservation, endurance)
+# House: 2nd (resources, value, possession, mass, substance)
+# Anatomical: Neck, throat (conduit, passage, support)
+# Mathematical Archetype: The Substance — continuous fields, conservation laws, potential energy, material reality
+
+# ─── Earth: Conservation Laws (Fixed = Invariant) ────────────────────────────
+# Fixed Earth = what persists through transformation. Conservation = Venus harmony + Fixed endurance.
+
+[[formula]]
+id = "conservation_energy"
+tags = ["mechanics", "conservation", "energy", "fixed", "earth", "first_law"]
+domain = "shukra"
+level = 9
+inputs = ["ke_initial", "pe_initial", "ke_final", "pe_final"]
+output = "energy_conserved"
+expression = "(ke_initial + pe_initial) - (ke_final + pe_final)"
+description = "Energy conservation: E_initial = E_final — Fixed Earth: total energy invariant, Venus harmony of forms"
+evidence = "Noether's theorem: time-translation symmetry → energy conservation (Emmy Noether 1918)"
+
+[[formula]]
+id = "conservation_momentum"
+tags = ["mechanics", "conservation", "momentum", "fixed", "earth", "vector"]
+domain = "shukra"
+level = 9
+inputs = ["p1x", "p1y", "p1z", "p2x", "p2y", "p2z"]
+output = "momentum_conserved"
+expression = "(p1x + p2x)^2 + (p1y + p2y)^2 + (p1z + p2z)^2"
+description = "Momentum conservation: p_total_initial = p_total_final — Fixed Earth: vector invariant in closed system"
+evidence = "Noether's theorem: space-translation symmetry → momentum conservation"
+
+[[formula]]
+id = "conservation_angular_momentum"
+tags = ["mechanics", "conservation", "angular_momentum", "fixed", "earth", "rotation"]
+domain = "shukra"
+level = 12
+inputs = ["Lx", "Ly", "Lz"]
+output = "angular_momentum_magnitude"
+expression = "sqrt(Lx^2 + Ly^2 + Lz^2)"
+description = "Angular momentum conservation: L = r × p — Fixed Earth: rotational invariant, Venus harmony of orbits"
+evidence = "Noether's theorem: rotational symmetry → angular momentum conservation"
+
+[[formula]]
+id = "conservation_charge"
+tags = ["electromagnetism", "conservation", "charge", "fixed", "earth", "continuity"]
+domain = "shukra"
+level = 12
+inputs = ["current_density_x", "current_density_y", "current_density_z", "charge_density_rate"]
+output = "continuity_satisfied"
+expression = "current_density_x + current_density_y + current_density_z + charge_density_rate"
+description = "Charge conservation: ∇·J + ∂ρ/∂t = 0 — Fixed Earth: local continuity, substance cannot vanish"
+evidence = "Noether's theorem: U(1) gauge symmetry → charge conservation (Weyl 1918)"
+
+# ─── Earth: Fields & Potentials (Venus = Harmony of Fields) ─────────────────
+# Venus rulership = fields, potentials, harmonious action-at-a-distance.
+
+[[formula]]
+id = "gravitational_potential"
+tags = ["gravity", "field", "potential", "venus", "earth", "scalar"]
+domain = "shukra"
+level = 9
+inputs = ["G", "mass", "r"]
+output = "potential"
+expression = "-G * mass / r"
+description = "Gravitational potential: φ = -GM/r — Venus: scalar field, harmonious attraction, Earth substance"
+evidence = "Poisson's equation: ∇²φ = 4πGρ — potential from mass density (derivable from Gauss's law)"
+
+[[formula]]
+id = "gravitational_field"
+tags = ["gravity", "field", "vector", "gradient", "venus", "earth"]
+domain = "shukra"
+level = 9
+inputs = ["G", "mass", "r"]
+output = "field_strength"
+expression = "G * mass / r^2"
+description = "Gravitational field: g = -∇φ = -GM/r² — Venus: field as gradient of potential, harmonious force"
+evidence = "Gauss's law for gravity: ∮g·dA = -4πGM_enc — field from enclosed mass"
+
+[[formula]]
+id = "electric_potential"
+tags = ["electromagnetism", "field", "potential", "venus", "coulomb", "scalar"]
+domain = "shukra"
+level = 9
+inputs = ["k", "charge", "r"]
+output = "potential"
+expression = "k * charge / r"
+description = "Electric potential: V = kQ/r — Venus: scalar potential, harmonious action, Coulomb's law"
+evidence = "Poisson's equation: ∇²V = -ρ/ε₀ — potential from charge density"
+
+[[formula]]
+id = "electric_field"
+tags = ["electromagnetism", "field", "vector", "gradient", "venus", "coulomb"]
+domain = "shukra"
+level = 9
+inputs = ["k", "charge", "r"]
+output = "field_strength"
+expression = "k * charge / r^2"
+description = "Electric field: E = -∇V = kQ/r² — Venus: field from potential gradient, inverse square harmony"
+evidence = "Gauss's law: ∮E·dA = Q_enc/ε₀ — field from enclosed charge"
+
+[[formula]]
+id = "magnetic_vector_potential"
+tags = ["electromagnetism", "field", "potential", "vector", "venus", "gauge"]
+domain = "shukra"
+level = 12
+inputs = ["mu0", "current", "r"]
+output = "vector_potential"
+expression = "mu0 * current / (4 * pi * r)"
+description = "Magnetic vector potential: A = μ₀I/(4πr) — Venus: vector potential, gauge field, harmonious circulation"
+evidence = "B = ∇ × A — magnetic field as curl of vector potential (solenoidal field)"
+
+# ─── Earth: Lagrangian/Hamiltonian Mechanics (Fixed = Variational Principles) ─
+# Fixed modality = extremal principles, stationary action. Venus = harmony of paths.
+
+[[formula]]
+id = "lagrangian"
+tags = ["mechanics", "lagrangian", "variational", "fixed", "earth", "action"]
+domain = "shukra"
+level = 12
+inputs = ["kinetic", "potential"]
+output = "lagrangian"
+expression = "kinetic - potential"
+description = "Lagrangian: L = T - V — Fixed Earth: difference of energies, Venus harmony of kinetic vs potential"
+evidence = "Euler-Lagrange: d/dt(∂L/∂q̇) - ∂L/∂q = 0 — equations of motion from stationary action"
+
+[[formula]]
+id = "hamiltonian"
+tags = ["mechanics", "hamiltonian", "phase_space", "fixed", "earth", "energy"]
+domain = "shukra"
+level = 12
+inputs = ["generalized_momentum", "velocity", "lagrangian"]
+output = "hamiltonian"
+expression = "generalized_momentum * velocity - lagrangian"
+description = "Hamiltonian: H = p·q̇ - L — Fixed Earth: Legendre transform, total energy in phase space"
+evidence = "Hamilton's equations: q̇ = ∂H/∂p, ṗ = -∂H/∂q — symplectic flow conserving phase space volume"
+
+[[formula]]
+id = "action_integral"
+tags = ["mechanics", "action", "variational", "fixed", "earth", "principle"]
+domain = "shukra"
+level = 12
+inputs = ["lagrangian", "t1", "t2"]
+output = "action"
+expression = "lagrangian * (t2 - t1)"
+description = "Action: S = ∫L dt — Fixed Earth: time integral of Lagrangian, Venus harmony of entire path"
+evidence = "Principle of least action: δS = 0 → Euler-Lagrange equations (Maupertuis, Euler, Lagrange)"
+
+[[formula]]
+id = "noether_charge"
+tags = ["mechanics", "noether", "symmetry", "conservation", "fixed", "earth"]
+domain = "shukra"
+level = 12
+inputs = ["symmetry_generator", "lagrangian"]
+output = "conserved_quantity"
+expression = "symmetry_generator * lagrangian"
+description = "Noether charge: Q = ∂L/∂q̇ · δq — Fixed Earth: symmetry → conserved quantity, Venus harmony of invariance"
+evidence = "Noether's theorem: continuous symmetry of action → conserved current ∂_μJ^μ = 0"
+
+# ─── 2nd House: Mass, Value, Substance ───────────────────────────────────────
+# 2nd House = resources, possession, mass, material worth. Density, inertia, substance.
+
+[[formula]]
+id = "mass_energy_equivalence"
+tags = ["relativity", "mass", "energy", "second_house", "earth", "equivalence"]
+domain = "shukra"
+level = 12
+inputs = ["mass", "c"]
+output = "energy"
+expression = "mass * c^2"
+description = "Mass-energy equivalence: E = mc² — 2nd House: mass as concentrated energy, substance as value"
+evidence = "Special relativity: E² = (pc)² + (mc²)² → rest energy E₀ = mc² (Einstein 1905)"
+
+[[formula]]
+id = "density"
+tags = ["matter", "density", "second_house", "earth", "substance", "concentration"]
+domain = "shukra"
+level = 3
+inputs = ["mass", "volume"]
+output = "density"
+expression = "mass / volume"
+description = "Density: ρ = m/V — 2nd House: mass per volume, substance concentration, material worth"
+evidence = "Definition: ρ = lim(V→0) m/V — intensive property of Earth substance"
+
+[[formula]]
+id = "specific_heat"
+tags = ["thermodynamics", "heat", "second_house", "earth", "capacity", "substance"]
+domain = "shukra"
+level = 9
+inputs = ["heat", "mass", "temp_change"]
+output = "specific_heat"
+expression = "heat / (mass * temp_change)"
+description = "Specific heat: c = Q/(mΔT) — 2nd House: heat capacity per mass, substance thermal worth"
+evidence = "Calorimetry: Q = mcΔT — definitional, measurable via calorimeter"
+
+[[formula]]
+id = "ideal_gas_law"
+tags = ["thermodynamics", "gas", "earth", "pressure", "volume", "temperature", "moles"]
+domain = "shukra"
+level = 9
+inputs = ["pressure", "volume", "moles", "R", "temperature"]
+output = "pv_nrt"
+expression = "pressure * volume - moles * R * temperature"
+description = "Ideal gas law: PV = nRT — Earth: substance (n) relates P,V,T — kinetic theory derivation"
+evidence = "Kinetic theory: P = (2/3)(N/V)(½mv²_avg) → PV = NkT = nRT — from molecular motion"
+
+# ─── Earth: Thermodynamics (Fixed = State Functions, Venus = Equilibrium) ────
+# Fixed = state functions (path independent). Venus = equilibrium, harmony.
+
+[[formula]]
+id = "first_law_thermo"
+tags = ["thermodynamics", "first_law", "energy", "fixed", "earth", "internal"]
+domain = "shukra"
+level = 9
+inputs = ["heat", "work"]
+output = "delta_internal_energy"
+expression = "heat + work"
+description = "First law: ΔU = Q + W — Fixed Earth: internal energy change, state function, Venus balance"
+evidence = "Conservation of energy applied to thermodynamic systems (Joule, Helmholtz, Clausius)"
+
+[[formula]]
+id = "entropy_change"
+tags = ["thermodynamics", "entropy", "second_law", "earth", "disorder", "heat"]
+domain = "shukra"
+level = 12
+inputs = ["heat_reversible", "temperature"]
+output = "delta_entropy"
+expression = "heat_reversible / temperature"
+description = "Entropy change: dS = δQ_rev/T — Earth: state function, Venus harmony of reversible heat"
+evidence = "Clausius theorem: ∮δQ_rev/T = 0 for reversible cycles → S is state function"
+
+[[formula]]
+id = "carnot_efficiency"
+tags = ["thermodynamics", "carnot", "efficiency", "earth", "heat_engine", "limit"]
+domain = "shukra"
+level = 12
+inputs = ["T_hot", "T_cold"]
+output = "efficiency"
+expression = "1 - T_cold / T_hot"
+description = "Carnot efficiency: η = 1 - T_c/T_h — Earth: maximum possible, Venus harmony of temperature ratio"
+evidence = "Carnot theorem: no engine more efficient than reversible engine between same reservoirs"
+
+[[formula]]
+id = "helmholtz_free_energy"
+tags = ["thermodynamics", "free_energy", "helmholtz", "earth", "work", "constant_volume"]
+domain = "shukra"
+level = 12
+inputs = ["internal_energy", "temperature", "entropy"]
+output = "free_energy"
+expression = "internal_energy - temperature * entropy"
+description = "Helmholtz free energy: F = U - TS — Earth: maximum work at constant T,V, Venus usable energy"
+evidence = "Legendre transform of U(S,V) → F(T,V): dF = -SdT - PdV — work potential at constant temperature"
+
+[[formula]]
+id = "gibbs_free_energy"
+tags = ["thermodynamics", "free_energy", "gibbs", "earth", "work", "constant_pressure"]
+domain = "shukra"
+level = 12
+inputs = ["enthalpy", "temperature", "entropy"]
+output = "free_energy"
+expression = "enthalpy - temperature * entropy"
+description = "Gibbs free energy: G = H - TS — Earth: maximum non-PV work at constant T,P, Venus chemical potential"
+evidence = "Legendre transform: G(T,P) = U - TS + PV — chemical equilibrium: ΔG = 0"
+
+# ─── Earth: Wave Mechanics (Fixed = Standing Waves, Venus = Resonance) ───────
+# Fixed = standing waves, normal modes. Venus = harmonic resonance.
+
+[[formula]]
+id = "wave_equation_1d"
+tags = ["waves", "pde", "earth", "fixed", "string", "d_alembert"]
+domain = "shukra"
+level = 12
+inputs = ["wave_speed", "d2u_dx2"]
+output = "d2u_dt2"
+expression = "wave_speed^2 * d2u_dx2"
+description = "1D wave equation: ∂²u/∂t² = c²∂²u/∂x² — Fixed Earth: wave propagation, Venus harmonic motion"
+evidence = "d'Alembert solution: u(x,t) = f(x-ct) + g(x+ct) — superposition of traveling waves"
+
+[[formula]]
+id = "standing_wave_frequency"
+tags = ["waves", "standing", "resonance", "earth", "fixed", "harmonic", "venus"]
+domain = "shukra"
+level = 9
+inputs = ["n", "wave_speed", "length"]
+output = "frequency"
+expression = "n * wave_speed / (2 * length)"
+description = "Standing wave frequencies: fₙ = n·c/2L — Fixed Earth: quantized modes, Venus harmonic series"
+evidence = "Boundary conditions: u(0)=u(L)=0 → kₙ = nπ/L, ωₙ = ckₙ — Sturm-Liouville eigenproblem"
+
+[[formula]]
+id = "doppler_shift"
+tags = ["waves", "doppler", "frequency", "earth", "relative_motion"]
+domain = "shukra"
+level = 9
+inputs = ["f_source", "v_source", "v_observer", "wave_speed"]
+output = "f_observed"
+expression = "f_source * (wave_speed + v_observer) / (wave_speed - v_source)"
+description = "Doppler shift: f' = f(v±v_o)/(v∓v_s) — Earth: frequency shift from relative motion"
+evidence = "Wavefront counting: observed period changes with relative velocity — kinematic derivation"
+
+# ─── Venus Exaltation: Moon in Taurus — Tidal Forces, Periodic Earth ────────
+# Moon exalted in Taurus = tides, periodic forces on Earth substance.
+
+[[formula]]
+id = "tidal_force"
+tags = ["gravity", "tidal", "moon", "earth", "venus", "exaltation", "differential"]
+domain = "shukra"
+level = 12
+inputs = ["G", "mass_moon", "earth_radius", "distance"]
+output = "tidal_acceleration"
+expression = "2 * G * mass_moon * earth_radius / distance^3"
+description = "Tidal acceleration: a_tidal ≈ 2GMr/d³ — Moon exalted: differential gravity on Earth substance"
+evidence = "Taylor expansion of GM/(d±R)² - GM/d² ≈ ±2GMR/d³ — differential force across diameter"
+
+[[formula]]
+id = "orbital_period_kepler"
+tags = ["orbital", "kepler", "period", "earth", "venus", "harmony"]
+domain = "shukra"
+level = 9
+inputs = ["semi_major_axis", "GM"]
+output = "period"
+expression = "2 * pi * sqrt(semi_major_axis^3 / GM)"
+description = "Kepler's third law: T² = 4π²a³/GM — Venus harmony: period² ∝ axis³, Earth orbital substance"
+evidence = "From Newton's law + centripetal: GMm/r² = mω²r → ω² = GM/r³ → T = 2π√(r³/GM)"
+# ─── Fundamentals: Classical Mechanics Basics ────────────────────────────────
+# The atomic vocabulary every reasoning chain builds on. Variable names are
+# deliberately full words (force, momentum, kinetic_energy) so `reason` chains
+# link on them.
+
+[[formula]]
+id = "newtons_second"
+tags = ["mechanics", "force", "newton", "fundamental", "earth", "dynamics"]
+domain = "shukra"
+level = 1
+inputs = ["mass", "acceleration"]
+output = "force"
+expression = "mass * acceleration"
+description = "Newton's second law: F = ma — force as substance times change, the fundamental dynamic law"
+evidence = "Newton, Principia (1687), Lex II — empirically validated in classical regime"
+
+[[formula]]
+id = "kinetic_energy"
+tags = ["mechanics", "energy", "kinetic", "fundamental", "earth", "motion"]
+domain = "shukra"
+level = 1
+inputs = ["mass", "velocity"]
+output = "kinetic_energy"
+expression = "0.5 * mass * velocity^2"
+description = "Kinetic energy: KE = ½mv² — energy of motion, quadratic in velocity"
+evidence = "Work-energy theorem: ∫F·dx = ∫m(dv/dt)v dt = ½mv²"
+
+[[formula]]
+id = "momentum"
+tags = ["mechanics", "momentum", "fundamental", "earth", "motion"]
+domain = "shukra"
+level = 1
+inputs = ["mass", "velocity"]
+output = "momentum"
+expression = "mass * velocity"
+description = "Linear momentum: p = mv — quantity of motion, conserved in closed systems"
+evidence = "Newton, Principia, Definition II — conserved by Noether space-translation symmetry"
+
+[[formula]]
+id = "momentum_to_kinetic_energy"
+tags = ["mechanics", "energy", "momentum", "kinetic", "earth"]
+domain = "shukra"
+level = 3
+inputs = ["momentum", "mass"]
+output = "kinetic_energy"
+expression = "momentum^2 / (2 * mass)"
+description = "Kinetic energy from momentum: KE = p²/2m — links the two motion quantities"
+evidence = "Substitute p = mv into KE = ½mv²: (mv)²/2m = ½mv²"
+
+[[formula]]
+id = "potential_energy_gravity"
+tags = ["mechanics", "energy", "potential", "gravity", "fundamental", "earth"]
+domain = "shukra"
+level = 1
+inputs = ["mass", "gravity", "height"]
+output = "potential_energy"
+expression = "mass * gravity * height"
+description = "Gravitational potential energy: PE = mgh — stored energy of position near Earth's surface"
+evidence = "Work against constant gravity: ∫₀ʰ mg dz = mgh"
+
+[[formula]]
+id = "velocity_from_distance"
+tags = ["mechanics", "kinematics", "velocity", "fundamental", "earth"]
+domain = "shukra"
+level = 1
+inputs = ["distance", "time"]
+output = "velocity"
+expression = "distance / time"
+description = "Average velocity: v = d/t — displacement per unit time"
+evidence = "Definition of average velocity over interval"
+
+[[formula]]
+id = "acceleration_from_velocity"
+tags = ["mechanics", "kinematics", "acceleration", "fundamental", "earth"]
+domain = "shukra"
+level = 1
+inputs = ["velocity_final", "velocity_initial", "time"]
+output = "acceleration"
+expression = "(velocity_final - velocity_initial) / time"
+description = "Average acceleration: a = Δv/t — rate of change of velocity"
+evidence = "Definition of average acceleration over interval"
+
+[[formula]]
+id = "weight"
+tags = ["mechanics", "force", "gravity", "fundamental", "earth"]
+domain = "shukra"
+level = 1
+inputs = ["mass", "gravity"]
+output = "weight"
+expression = "mass * gravity"
+description = "Weight: W = mg — gravitational force on a mass"
+evidence = "Newton's second law with a = g"
+
+[[formula]]
+id = "force_to_power"
+tags = ["mechanics", "power", "work", "time"]
+domain = "shukra"
+level = 3
+inputs = ["force", "distance", "time"]
+output = "power"
+expression = "force * distance / time"
+description = "Power from force: P = F × d / t — work per unit time"
+
+[[formula]]
+id = "work_energy"
+tags = ["mechanics", "energy", "work", "force"]
+domain = "shukra"
+level = 1
+inputs = ["force", "distance"]
+output = "work"
+expression = "force * distance"
+description = "Work from force: W = F × d — mechanical work"

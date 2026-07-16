@@ -1,0 +1,231 @@
+# ♑ Capricorn — Language & Linguistics — Atomic Formulas
+# Cardinal Earth | 10th House | Ruler: Saturn | Exaltation: Mars | Fall: Jupiter | Detriment: Moon
+# Element: Earth (structure, boundary, definition, categorization, material, form, stability)
+# Modality: Cardinal (initiation of structure, authoritative, goal-oriented, executive, achievement)
+# House: 10th (career, reputation, authority, mastery, public image, achievement, peak, summit)
+# Anatomical: Knees, bones, skeleton (structural support, articulation, rigidity, load-bearing framework)
+# Mathematical Archetype: The Architect — formal grammars, syntax, parsing, discrete categorization, information theory of language, authority hierarchies, structural linguistics
+
+# ─── Earth: Formal Grammars & Syntax (Saturn = Structure, Mars = Execution) ────
+# Cardinal Earth = structure initiated. Saturn = rules/boundaries. Mars exalted = active parsing.
+
+[[formula]]
+id = "context_free_grammar"
+tags = ["linguistics", "grammar", "chomsky", "formal", "cardinal", "earth", "saturn", "syntax"]
+domain = "shani"
+level = 12
+inputs = ["productions", "nonterminals", "terminals"]
+output = "grammar_complexity"
+expression = "productions * nonterminals / terminals"
+description = "CFG: G = (V,Σ,R,S) with productions A → α — Cardinal Earth: syntactic structure, Saturn rules, Mars parsing"
+evidence = "Chomsky 1959: context-free grammars correspond to pushdown automata — derivable parse trees from pumping lemma"
+
+[[formula]]
+id = "categorial_grammar"
+tags = ["linguistics", "categorial", "directional", "cardinal", "earth", "saturn", "type", "lambda"]
+domain = "shani"
+level = 12
+inputs = ["argument_type", "result_type"]
+output = "functor_type"
+expression = "result_type / argument_type"
+description = "Categorial grammar: A/B + B → A by function application — Cardinal Earth: syntactic category, Saturn type structure"
+evidence = "Lambek 1958: Sequent calculus for syntactic types — associative Lambek calculus: (A/B, B) ⊢ A via forward application"
+
+[[formula]]
+id = "dependency_distance"
+tags = ["linguistics", "dependency", "grammar", "distance", "cardinal", "earth", "saturn", "syntax"]
+domain = "shani"
+level = 9
+inputs = ["head_position", "dependent_position"]
+output = "dependency_length"
+expression = "abs(head_position - dependent_position)"
+description = "Dependency length: |h - d| — Cardinal Earth: syntactic distance, Saturn span, structural boundary"
+evidence = "Universal Dependencies: average dependency length minimized cross-linguistically (Ferrer-i-Cancho 2006) — O(n log n) bound"
+
+[[formula]]
+id = "word_order_hierarchy"
+tags = ["linguistics", "word_order", "typology", "cardinal", "earth", "greenberg", "universal"]
+domain = "shani"
+level = 6
+inputs = ["object_position", "verb_position", "subject_position"]
+output = "word_order_type"
+expression = "subject_position + verb_position + object_position"
+description = "Word order typology: SVO = 1+2+3 — Cardinal Earth: ordered structure, Saturn hierarchical classification"
+evidence = "Greenberg 1963: Universal 1 — subject precedes object in dominant order; 41-dialect sample → 6 possible orders"
+
+# ─── 10th House: Authority, Hierarchy, Parse Trees, Constituency ──────────────
+# 10th House = summit, authority, peak, hierarchical structure, mastery, top-down parsing.
+
+[[formula]]
+id = "phrase_structure_rule"
+tags = ["linguistics", "phrase_structure", "constituency", "tenth_house", "cardinal", "earth", "saturn"]
+domain = "shani"
+level = 6
+inputs = ["category", "child1", "child2"]
+output = "phrase"
+expression = "category * (child1 + child2)"
+description = "Phrase structure: XP → spec X' and X' → X comp — 10th House: hierarchical supremacy, Saturn authority, constituent tree"
+evidence = "X-bar theory (Chomsky 1970): all phrases project XP(→X'→X₀) — universal structural template across languages"
+
+[[formula]]
+id = "parse_tree_depth"
+tags = ["linguistics", "parse", "tree", "depth", "tenth_house", "saturn", "structure"]
+domain = "shani"
+level = 6
+inputs = ["embeddings", "sentence_length"]
+output = "embedding_depth"
+expression = "embeddings / sentence_length"
+description = "Parse tree depth: embedded clause ratio — 10th House: structural depth, Saturn hierarchical authority, nested mastery"
+evidence = "Center-embedding: depth > 2 causes processing difficulty (Miller-Chomsky 1963) — nested structures → O(n²) complexity"
+
+[[formula]]
+id = "constituency_test"
+tags = ["linguistics", "constituency", "displacement", "tenth_house", "earth", "boundary"]
+domain = "shani"
+level = 6
+inputs = ["candidate_phrase", "sentence"]
+output = "constituent_score"
+expression = "candidate_phrase + sentence"
+description = "Constituency: displacement, substitution, coordination, clefting — 10th House: boundary testing, Saturn structural decision"
+evidence = "Distinctive: constituents survive movement, pronominalization, and pseudo-clefting — coordination test: 'and' conjoins only constituents"
+
+[[formula]]
+id = "levenshtein_distance"
+tags = ["linguistics", "edit_distance", "string", "earth", "cardinal", "alignment", "comparison"]
+domain = "shani"
+level = 9
+inputs = ["deletions", "insertions", "substitutions"]
+output = "edit_distance"
+expression = "deletions + insertions + substitutions"
+description = "Levenshtein distance: min edits (insert/delete/substitute) — Cardinal Earth: difference measurement, Saturn boundary, structural comparison"
+evidence = "Dynamic programming: D[i,j] = min(D[i-1,j]+1, D[i,j-1]+1, D[i-1,j-1]+cost) — exact optimal via Wagner-Fischer algorithm"
+
+# ─── Cardinal: Information Theory of Language (Saturn = Entropy, Mars = Channel) ──
+# Cardinal = initiating communication. Earth = channel. Saturn = constraints.
+
+[[formula]]
+id = "zipfs_law"
+tags = ["linguistics", "zipf", "frequency", "rank", "cardinal", "earth", "saturn", "law"]
+domain = "shani"
+level = 6
+inputs = ["rank", "n"]
+output = "word_frequency"
+expression = "0.1 / rank"
+description = "Zipf's law: f ∝ 1/r — Cardinal Earth: rank-frequency, Saturn power law, structural universality"
+evidence = "Zipf 1949: P(r) ∝ r^(-α), α≈1 — Mandelbrot rationalization: optimal coding under letter cost; exhibits across ~5000 languages"
+
+[[formula]]
+id = "flesch_reading_ease"
+tags = ["linguistics", "readability", "flesch", "cardinal", "earth", "complexity", "text"]
+domain = "shani"
+level = 9
+inputs = ["syllables", "words", "sentences"]
+output = "score"
+expression = "206.835 - 1.015 * (words / sentences) - 84.6 * (syllables / words)"
+description = "Flesch Reading Ease: RE = 206.835 - 1.015(w/s) - 84.6(syl/w) — Cardinal Earth: text accessibility, Saturn readability measure"
+evidence = "Flesch 1948: regression from reading comprehension scores — validated against McCall-Crabbs reading tests, R²≈0.7"
+
+[[formula]]
+id = "type_token_ratio"
+tags = ["linguistics", "lexical_diversity", "ttr", "cardinal", "earth", "variation"]
+domain = "shani"
+level = 6
+inputs = ["unique_words", "total_words"]
+output = "ttr"
+expression = "unique_words / total_words"
+description = "Type-token ratio: TTR = V/N — Cardinal Earth: lexical variation, Saturn structural diversity"
+evidence = "Templin 1957: TTR decreases with text length (√N) — corrected TTR = V/√(2N) for cross-text comparison (Guiraud 1954)"
+
+[[formula]]
+id = "entropy_text"
+tags = ["linguistics", "entropy", "information", "cardinal", "earth", "shannon", "predictability"]
+domain = "shani"
+level = 12
+inputs = ["character_probabilities"]
+output = "char_entropy"
+expression = "-sum(character_probabilities * log10(character_probabilities) / log10(2))"
+description = "Shannon character entropy: H = -Σp_i log₂ p_i — Cardinal Earth: information rate, Saturn bound, language capacity"
+evidence = "Shannon 1951: English character entropy ≈ 1.3 bits/char (letter) ≈ 0.6-1.3 bits (word context) — redundancy ~50%"
+
+[[formula]]
+id = "harmonic_dependency_distance"
+tags = ["linguistics", "dependency", "dirven", "cross_linguistic", "cardinal", "earth"]
+domain = "shani"
+level = 12
+inputs = ["head_final_deps", "head_initial_deps"]
+output = "harmonic_score"
+expression = "(head_initial_deps - head_final_deps) / (head_initial_deps + head_final_deps)"
+description = "Dependency direction harmony: (initial - final)/(initial + final) — Cardinal Earth: branching direction, Saturn structural consistency"
+evidence = "Greenberg 1963: VO languages have initial-dependent structure, OV languages have final-dependent — Dryer 1992: 625 language sample"
+
+# ─── Mars Exaltation: Active Parsing & Processing (Saturn = Rules, Mars = Speed) ─
+# Mars exalted = fast parsing, active processing, computational efficiency in language.
+
+[[formula]]
+id = "garden_path_model"
+tags = ["psycholinguistics", "parsing", "garden_path", "mars", "saturn", "cardinal", "incremental"]
+domain = "shani"
+level = 12
+inputs = ["structural_ambiguity", "processing_cost"]
+output = "reanalysis_cost"
+expression = "structural_ambiguity * processing_cost"
+description = "Garden path: reanalysis cost = ambiguity × processing depth — Mars exalted: active parsing, Saturn initial misinterpretation"
+evidence = "Frazier 1978: Minimal Attachment principle — parser prefers simplest tree; Garden path: 'The horse raced past the barn fell'"
+
+[[formula]]
+id = "n_gram_perplexity"
+tags = ["linguistics", "n_gram", "perplexity", "language_model", "saturn", "mars", "prediction"]
+domain = "shani"
+level = 12
+inputs = ["entropy"]
+output = "perplexity"
+expression = "2^entropy"
+description = "Perplexity: PP = 2^H — Cardinal Earth: model certainty, Saturn predictive power, Mars active processing"
+evidence = "Perplexity = exp(-(1/N)Σ log₂ p(w_i|w_{i-n+1}...w_{i-1})) — equals branching factor of language model"
+
+[[formula]]
+id = "word_frequency_effect"
+tags = ["psycholinguistics", "lexical_access", "frequency", "mars", "cardinal", "earth", "activation"]
+domain = "shani"
+level = 6
+inputs = ["log_frequency"]
+output = "reaction_time_ms"
+expression = "700 - 50 * log_frequency"
+description = "Word frequency effect: RT ∝ log(1/freq) — Mars exalted: high-freq = fast access, Saturn low-freq delay"
+evidence = "Forster-Chambers 1973: lexical decision RT decreases ~50-100 ms per log unit of frequency — robust across languages"
+
+# ─── Earth: Phonology & Patterns (Formal Language Theory) ─────────────────────
+# Earth material = phonemes, minimal pairs, distinctive features, discrete combinatorics.
+
+[[formula]]
+id = "sonority_sequencing"
+tags = ["phonology", "sonority", "syllable", "cardinal", "earth", "saturn", "hierarchy"]
+domain = "shani"
+level = 6
+inputs = ["onset_sonority", "nucleus_sonority", "coda_sonority"]
+output = "syllable_wellformedness"
+expression = "onset_sonority + nucleus_sonority + coda_sonority"
+description = "Sonority sequencing: vowel > glide > liquid > nasal > obstruent — Cardinal Earth: phonological hierarchy, Saturn structural constraint"
+evidence = "Sievers 1881: sonority rises toward nucleus peak — universal: syllables prefer sonority rise in onset, fall in coda"
+
+[[formula]]
+id = "optimality_constraint"
+tags = ["phonology", "optimality", "constraint", "saturn", "earth", "violation", "ranking"]
+domain = "shani"
+level = 12
+inputs = ["candidate_forms"]
+output = "optimal_form"
+expression = "candidate_forms"
+description = "Optimality Theory: Input + ranked constraints → optimal output — Cardinal Earth: constraint-satisfaction, Saturn boundary enforcement"
+evidence = "Prince-Smolensky 1993: CON(universal) + RANK(language-specific) → EVAL selects optimally harmonic candidate"
+
+[[formula]]
+id = "minimal_pair_distance"
+tags = ["phonology", "minimal_pair", "contrast", "cardinal", "earth", "distinctive_feature"]
+domain = "shani"
+level = 3
+inputs = ["feature1", "feature2"]
+output = "contrast"
+expression = "abs(feature1 - feature2)"
+description = "Minimal pair difference: one distinctive feature changes meaning — Cardinal Earth: phoneme boundary, Saturn discrete contrast"
+evidence = "Jakobson-Halle 1956: 12 universal distinctive features (binary) — minimal pairs prove phonemic status via commutation test"

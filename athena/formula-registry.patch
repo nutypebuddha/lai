@@ -1,0 +1,61 @@
+--- athena-src-orig/src/formula/registry.rs	2026-07-07 08:08:59.000000000 +0000
++++ athena-src/src/formula/registry.rs	2026-07-07 16:28:24.317585987 +0000
+@@ -269,20 +269,38 @@
+     }
+ 
+     /// Register a single formula.
+-    pub fn register(&mut self, formula: Formula) -> Result<(), FormulaError> {
++    pub fn register(&mut self, mut formula: Formula) -> Result<(), FormulaError> {
+         let id = formula.id.clone();
+         let domain = formula.domain;
+ 
+-        // Warn on duplicate ID
+-        if self.formulas.contains_key(&id) {
++        // On duplicate ID: merge domains instead of silently dropping the
++        // earlier entry's domain. This is what previously happened to every
++        // sign/graha pair (e.g. "add" in aries_math.toml vs. mangala_math.toml)
++        // — same formula content, different `domain`, and the second load
++        // wiped out the first domain tag entirely.
++        if let Some(existing) = self.formulas.get(&id) {
+             eprintln!(
+-                "Warning: duplicate formula id '{}' — overwriting previous entry",
+-                id
++                "Warning: duplicate formula id '{}' — merging domains ({:?} + {:?})",
++                id, existing.domain, domain
+             );
++
++            let mut merged = existing.also_domains.clone();
++            merged.push(existing.domain);
++            merged.extend(formula.also_domains.iter().copied());
++            merged.retain(|d| *d != domain);
++            merged.sort_by_key(|d| *d as usize);
++            merged.dedup();
++            formula.also_domains = merged;
++
+             self.word_index.values_mut().for_each(|ids| {
+                 ids.remove(&id);
+             });
+             self.search_text_cache.remove(&id);
++            // Remove stale by_domain entries for this id from every domain
++            // it was previously indexed under, so re-indexing below is clean.
++            for ids in self.by_domain.values_mut() {
++                ids.retain(|existing_id| existing_id != &id);
++            }
+         }
+ 
+         // Build word index from id, description, expression, inputs, output, zodiac
+@@ -293,8 +311,13 @@
+         self.search_text_cache
+             .insert(id.clone(), searchable_text.to_lowercase());
+ 
++        // Index the id under its primary domain *and* every merged domain,
++        // so lookups like `by_domain[Domain::Aries]` still find "add" even
++        // though its canonical `domain` field now reads Mangala.
++        for d in std::iter::once(domain).chain(formula.also_domains.iter().copied()) {
++            self.by_domain.entry(d).or_default().push(id.clone());
++        }
+         self.formulas.insert(id.clone(), formula);
+-        self.by_domain.entry(domain).or_default().push(id.clone());
+ 
+         // Rebuild TF-IDF index from all formulas
+         self.tfidf.build(&self.formulas);

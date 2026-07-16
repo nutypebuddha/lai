@@ -1,0 +1,231 @@
+# ♒ Aquarius — Philosophy & Ethics — Atomic Formulas
+# Fixed Air | 11th House | Ruler: Saturn/Uranus | Exaltation: None | Fall: None | Detriment: Sun
+# Element: Air (abstraction, ideas, systems, universals, concepts, ideals, interconnectivity)
+# Modality: Fixed (stable principles, unwavering ethics, persistent ideals, commitment to truth)
+# House: 11th (friendship, groups, community, ideals, hopes, collective vision, universal brotherhood, social networks)
+# Anatomical: Ankles, circulatory system (connection to collective, flow between systems, distribution)
+# Mathematical Archetype: The Visionary — universal principles, logical systems, ethical frameworks, social choice theory, game theory, collective rationality, fixed points of ethical systems
+
+# ─── Air: Logical Systems & Formal Ethics (Uranus = Breakthrough, Saturn = Structure) ──
+# Fixed Air = stable logical frameworks, universalizable principles, unwavering ethical axioms.
+
+[[formula]]
+id = "categorical_imperative"
+tags = ["ethics", "kant", "universalizable", "fixed", "air", "deontology", "duty"]
+domain = "shani"
+level = 6
+inputs = ["universalizability_score"]
+output = "moral_worth"
+expression = "universalizability_score"
+description = "Categorical imperative: act only by maxim universalizable without contradiction — Fixed Air: universal principle, Saturn stable ethical law"
+evidence = "Kant 1785: Formula of Universal Law — 'Act only according to that maxim whereby you can at the same time will that it should become a universal law.'"
+
+[[formula]]
+id = "utilitarian_optimization"
+tags = ["ethics", "utilitarian", "bentham", "mill", "fixed", "air", "greatest_happiness"]
+domain = "shani"
+level = 6
+inputs = ["total_happiness", "total_suffering"]
+output = "net_utility"
+expression = "total_happiness - total_suffering"
+description = "Utilitarian principle: max Σ(happiness - suffering) — Fixed Air: greatest good for greatest number, Uranian collective optimization"
+evidence = "Bentham 1789: Principle of Utility — maximize pleasure, minimize pain; Mill 1863: higher/lower pleasures distinction"
+
+[[formula]]
+id = "veil_of_ignorance"
+tags = ["ethics", "rawls", "justice", "fairness", "fixed", "air", "original_position"]
+domain = "shani"
+level = 9
+inputs = ["risk_aversion", "outcome_range"]
+output = "minimax_choice"
+expression = "outcome_range - risk_aversion * outcome_range / 2"
+description = "Rawlsian maximin: choose arrangement maximizing minimum position under veil of ignorance — Fixed Air: impartial justice, Saturn fair structure"
+evidence = "Rawls 1971: Original Position with Veil of Ignorance → Difference Principle: inequalities only if benefit least advantaged"
+
+# ─── Fixed: Game Theory & Collective Decision (11th House = Group Choice) ──────
+# 11th House = groups, collective decisions, social networks, collaboration, community rationality.
+
+[[formula]]
+id = "nash_equilibrium"
+tags = ["game_theory", "nash", "equilibrium", "air", "fixed", "strategy", "collective"]
+domain = "shani"
+level = 12
+inputs = ["payoff_a", "payoff_b", "best_response_a", "best_response_b"]
+output = "incentive_to_deviate"
+expression = "best_response_a * best_response_b - payoff_a * payoff_b"
+description = "Nash equilibrium: no player can improve unilaterally — Fixed Air: stable social arrangement, Saturn rational choice"
+evidence = "Nash 1950: every finite game has at least one mixed-strategy NE (Kakutani fixed point theorem) — existence proof by continuity"
+
+[[formula]]
+id = "prisoners_dilemma"
+tags = ["game_theory", "prisoner", "dilemma", "fixed", "air", "cooperation", "collective"]
+domain = "shani"
+level = 9
+inputs = ["defect_payoff", "cooperate_payoff_self", "cooperate_payoff_other", "temptation"]
+output = "dominant_strategy"
+expression = "defect_payoff - cooperate_payoff_self"
+description = "Prisoner's dilemma: defect is dominant, mutual cooperation is Pareto-optimal — Fixed Air: tension of individual vs collective rationality"
+evidence = "Tucker 1950: unique NE = (defect, defect) but mutual cooperation Pareto-dominates — iterated PD: tit-for-tat (Axelrod 1984) wins"
+
+[[formula]]
+id = "tragedy_of_commons"
+tags = ["game_theory", "commons", "resources", "fixed", "air", "eleventh_house", "shared"]
+domain = "shani"
+level = 9
+inputs = ["individual_benefit", "social_cost"]
+output = "overuse_incentive"
+expression = "individual_benefit - social_cost"
+description = "Tragedy of the commons: individual rational benefit vs collective resource depletion — 11th House: group resource, Saturn shared governance"
+evidence = "Hardin 1968: 'Freedom in a commons brings ruin to all' — Ostrom 1990: 8 design principles for common-pool resource governance"
+
+[[formula]]
+id = "cooperative_game_shapley"
+tags = ["game_theory", "shapley", "value", "fairness", "eleventh_house", "air", "contribution"]
+domain = "shani"
+level = 12
+inputs = ["marginal_contributions", "n_players"]
+output = "shapley_value"
+expression = "marginal_contributions / n_players"
+description = "Shapley value: φ_i(v) = Σ |S|!(n-|S|-1)!/n! · (v(S∪{i})-v(S)) — 11th House: fair contribution, Saturn just reward"
+evidence = "Shapley 1953: unique value satisfying efficiency, symmetry, additivity, null-player — axiomatic fair division of marginal worth"
+
+[[formula]]
+id = "social_choice_arrow"
+tags = ["social_choice", "arrow", "voting", "fixed", "air", "eleventh_house", "impossibility"]
+domain = "shani"
+level = 12
+inputs = ["alternatives", "voters"]
+output = "voting_rule_validity"
+expression = "alternatives * voters"
+description = "Arrow's impossibility: no ranked voting system satisfies all conditions for 3+ alternatives — Fixed Air: universal impossibility, Saturn limit of collective choice"
+evidence = "Arrow 1951: no voting rule satisfies unrestricted domain, non-dictatorship, Pareto efficiency, independence of irrelevant alternatives — domain restriction: single-peaked preferences solve it (Black 1948)"
+
+[[formula]]
+id = "condorcet_jury"
+tags = ["social_choice", "condorcet", "jury", "wisdom_crowds", "fixed", "air", "eleventh_house"]
+domain = "shani"
+level = 9
+inputs = ["voter_competence", "n_voters"]
+output = "correct_decision_probability"
+expression = "voter_competence^n_voters / (voter_competence^n_voters + (1-voter_competence)^n_voters)"
+description = "Condorcet jury: majority correct converges to 1 as voters increase if p > 1/2 — 11th House: crowd wisdom, Saturn collective truth"
+evidence = "Condorcet 1785: binomial aggregation — P(n) = Σ_{k=m+1}^n (n choose k) p^k(1-p)^(n-k) → 1 as n→∞ if p>0.5"
+
+# ─── 11th House: Network Theory & Social Systems (Uranus = Networks, Saturn = Ties) ─
+# 11th House = social networks, friendships, group connections, collective intelligence.
+
+[[formula]]
+id = "small_world_coefficient"
+tags = ["networks", "small_world", "watts_strogatz", "fixed", "air", "eleventh_house", "clustering"]
+domain = "shani"
+level = 12
+inputs = ["clustering_coefficient", "path_length_random"]
+output = "small_world_index"
+expression = "clustering_coefficient / path_length_random"
+description = "Small-world index: σ = C/C_random / (L/L_random) — 11th House: social proximity, Uranian network connection, Saturn ties"
+evidence = "Watts-Strogatz 1998: small-world networks have high C, low L — 'six degrees of separation' (Milgram 1967): avg path ~6"
+
+[[formula]]
+id = "preferential_attachment"
+tags = ["networks", "preferential", "attachment", "power_law", "fixed", "air", "scale_free"]
+domain = "shani"
+level = 12
+inputs = ["node_count", "initial_edges"]
+output = "degree_exponent"
+expression = "node_count * initial_edges"
+description = "Preferential attachment: P(k_i) = k_i/Σk_j — Fixed Air: rich-get-richer, Uranian network growth, Saturn degree distribution"
+evidence = "Barabási-Albert 1999: scale-free network P(k) ~ k^(-3) from growth + preferential attachment — exponent 3 exact analytically"
+
+[[formula]]
+id = "granovetter_threshold"
+tags = ["sociology", "threshold", "diffusion", "eleventh_house", "air", "collective_behavior"]
+domain = "shani"
+level = 9
+inputs = ["threshold", "peers_adopting"]
+output = "adoption"
+expression = "peers_adopting - threshold"
+description = "Granovetter threshold: adopt when peers adopting exceeds threshold — 11th House: social diffusion, Saturn collective action"
+evidence = "Granovetter 1978: threshold model of collective behavior — heterogeneous thresholds produce cascades, critical mass"
+
+[[formula]]
+id = "network_betweenness"
+tags = ["networks", "betweenness", "centrality", "eleventh_house", "air", "bridging"]
+domain = "shani"
+level = 12
+inputs = ["shortest_paths", "shortest_paths_through_node"]
+output = "betweenness"
+expression = "shortest_paths_through_node / shortest_paths"
+description = "Betweenness centrality: g(v) = Σ_{s≠t} σ_{st}(v)/σ_{st} — 11th House: bridging capital, Uranian network flow"
+evidence = "Freeman 1977: betweenness measures control of information flow — nodes with high betweenness bridge structural holes (Burt 1992)"
+
+# ─── Fixed: Formal Systems & Meta-Logic (Gödel's Incompleteness, Tarski's Truth) ─
+# Fixed = ultimate structural boundaries. Air = logical systems. Saturn/Uranus = limits of rationality.
+
+[[formula]]
+id = "godel_incompleteness"
+tags = ["logic", "godel", "incompleteness", "fixed", "air", "formal_system", "metamathematics"]
+domain = "shani"
+level = 12
+inputs = ["system_consistency"]
+output = "undecidable_sentence"
+expression = "system_consistency"
+description = "Gödel's first incompleteness: consistent formal system containing arithmetic cannot prove its own consistency — Fixed Air: logical boundary, Uranian limit breakthrough"
+evidence = "Gödel 1931: diagonalization → G: 'G has no proof' — if system proves G, contradiction; if system disproves G, false → ω-inconsistency"
+
+[[formula]]
+id = "tarski_undefinability"
+tags = ["logic", "tarski", "truth", "undefinability", "fixed", "air", "formal_semantics"]
+domain = "shani"
+level = 12
+inputs = ["language_truth_predicate"]
+output = "paradox"
+expression = "language_truth_predicate"
+description = "Tarski's undefinability: truth in formal language cannot be defined within that language — Fixed Air: semantic boundary, Saturn truth limits"
+evidence = "Tarski 1933: L cannot contain Tr(x)=x is true — diagonalization: 'This sentence is not true' — requires metalanguage hierarchy"
+
+[[formula]]
+id = "church_turing_thesis"
+tags = ["logic", "computability", "church_turing", "fixed", "air", "algorithmic"]
+domain = "shani"
+level = 12
+inputs = ["computable_function_markings"]
+output = "computable"
+expression = "computable_function_markings"
+description = "Church-Turing thesis: effectively calculable = Turing-computable — Fixed Air: boundary of computation, Uranian universality"
+evidence = "Church 1936: λ-definable; Turing 1936: Turing machine; Gödel-Herbrand: general recursive — all equivalent (Kleene 1952)"
+
+# ─── Saturn/Uranus: Ethics of AI & Collective Rationality ────────────────────
+# Saturn = regulation, rules, boundaries. Uranus = breakthrough ethics, novel moral frameworks.
+
+[[formula]]
+id = "rawls_difference_principle"
+tags = ["ethics", "rawls", "difference", "justice", "saturn", "air", "distribution", "fairness"]
+domain = "shani"
+level = 9
+inputs = ["least_advantaged_gain", "change_magnitude"]
+output = "justifiable_inequality"
+expression = "least_advantaged_gain - change_magnitude"
+description = "Difference principle: inequality justified only if benefits least advantaged — Saturn: distributive justice, Uranian social breakthrough"
+evidence = "Rawls 1971: Principle 2 — social and economic inequalities arranged to benefit least advantaged, attached to positions open to all"
+
+[[formula]]
+id = "information_asymmetry_ethics"
+tags = ["ethics", "information", "asymmetry", "air", "saturn", "eleventh_house", "transparency"]
+domain = "shani"
+level = 9
+inputs = ["principal_knowledge", "agent_knowledge"]
+output = "information_gap"
+expression = "abs(principal_knowledge - agent_knowledge)"
+description = "Information asymmetry: ΔI = |I_principal - I_agent| — 11th House: transparency deficit, Uranus collective disclosure, Saturn accountability"
+evidence = "Akerlof 1970: 'Market for Lemons' — adverse selection from asymmetry; ethical response: transparency, fiduciary duty"
+
+[[formula]]
+id = "trolley_problem_bystander"
+tags = ["ethics", "trolley", "utilitarian", "deontological", "fixed", "air", "action_omission"]
+domain = "shani"
+level = 6
+inputs = ["switch_lives_saved", "throw_lives_saved"]
+output = "utilitarian_choice"
+expression = "switch_lives_saved - throw_lives_saved"
+description = "Trolley problem: switch (kill 1 save 5) vs throw (kill 1 save 5 by physical force) — Fixed Air: act vs omit, Saturn moral distinction"
+evidence = "Foot 1967, Thomson 1976: switch is permissible (double effect: harm as foreseen side-effect vs intended means) — fMRI: personal vs impersonal"

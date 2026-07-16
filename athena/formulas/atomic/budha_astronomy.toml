@@ -1,0 +1,346 @@
+# ♊ Gemini — Astronomy & Cosmology — Atomic Formulas
+# Mutable Air | 3rd House | Ruler: Mercury | Exaltation: North Node | Fall: South Node | Detriment: Jupiter
+# Element: Air (information, communication, connection, intellect, transmission)
+# Modality: Mutable (adaptability, transmission, exchange, translation, bridging)
+# House: 3rd (communication, siblings, local environment, information transfer, learning)
+# Anatomical: Lungs, arms, hands (breathing, reaching, grasping, exchange, dexterity)
+# Mathematical Archetype: The Messenger — information transfer, orbital mechanics, signals, duality, coordinates
+
+# ─── Air: Information Theory (Mercury = Messenger, Communication) ─────────────
+# Mutable Air = information in transit, encoding/decoding, transmission, compression.
+
+[[formula]]
+id = "shannon_entropy"
+tags = ["information", "entropy", "communication", "mutable", "air", "shannon", "mercury"]
+domain = "budha"
+level = 12
+inputs = ["probability"]
+output = "entropy_bits"
+expression = "-probability * log10(probability) / log10(2)"
+description = "Shannon entropy: H = -Σ p log₂ p — Mutable Air: information content, Mercury measure of uncertainty"
+evidence = "Shannon 1948: H(X) = -Σ p(x) log p(x) — unique measure satisfying continuity, symmetry, additivity"
+
+[[formula]]
+id = "mutual_information"
+tags = ["information", "mutual", "communication", "mutable", "air", "correlation", "mercury"]
+domain = "budha"
+level = 12
+inputs = ["joint_entropy", "entropy_x", "entropy_y"]
+output = "mutual_info"
+expression = "entropy_x + entropy_y - joint_entropy"
+description = "Mutual information: I(X;Y) = H(X) + H(Y) - H(X,Y) — Mutable Air: shared information, Mercury exchange"
+evidence = "I(X;Y) = ΣΣ p(x,y) log(p(x,y)/(p(x)p(y))) — non-negative, symmetric, zero iff independent"
+
+[[formula]]
+id = "channel_capacity"
+tags = ["information", "channel", "capacity", "mutable", "air", "shannon", "limit"]
+domain = "budha"
+level = 12
+inputs = ["bandwidth", "snr"]
+output = "capacity_bits_per_sec"
+expression = "bandwidth * log10(1 + snr) / log10(2)"
+description = "Shannon-Hartley: C = B log₂(1+SNR) — Mutable Air: maximum rate, Mercury channel limit"
+evidence = "Shannon 1948: C = max I(X;Y) over input distributions — Gaussian noise channel capacity"
+
+[[formula]]
+id = "data_compression_limit"
+tags = ["information", "compression", "entropy", "mutable", "air", "source_coding"]
+domain = "budha"
+level = 12
+inputs = ["entropy", "block_length"]
+output = "min_bits"
+expression = "entropy * block_length"
+description = "Source coding theorem: minimum bits = H(X)·n — Mutable Air: compress to entropy, Mercury efficiency"
+evidence = "Shannon source coding: asymptotic compression rate = H(X) — Kraft inequality + typical sequences"
+
+# ─── 3rd House: Coordinates, Parallax, Local Environment ──────────────────────
+# 3rd House = immediate environment, coordinates, measurement, siblings (binary systems).
+
+[[formula]]
+id = "parallax_distance"
+tags = ["astronomy", "parallax", "distance", "third_house", "mutable", "measurement", "mercury"]
+domain = "budha"
+level = 9
+inputs = ["parallax_arcsec"]
+output = "distance_parsecs"
+expression = "1 / parallax_arcsec"
+description = "Parallax distance: d(pc) = 1/p(arcsec) — 3rd House: local measurement, Mercury triangulation"
+evidence = "Geometric: tan(p) ≈ p = 1 AU / d → d = 1/p (parsecs) — baseline = 1 AU, angle in arcseconds"
+
+[[formula]]
+id = "angular_size"
+tags = ["astronomy", "angular", "size", "third_house", "measurement", "mercury"]
+domain = "budha"
+level = 6
+inputs = ["physical_size", "distance"]
+output = "angular_size_radians"
+expression = "physical_size / distance"
+description = "Angular size: θ = s/d — 3rd House: apparent size, Mercury perspective measurement"
+evidence = "Small angle approximation: θ ≈ s/d for θ in radians — exact for great circle distance"
+
+[[formula]]
+id = "proper_motion"
+tags = ["astronomy", "proper_motion", "third_house", "mutable", "air", "velocity", "mercury"]
+domain = "budha"
+level = 9
+inputs = ["angular_rate_arcsec_yr", "distance_parsecs"]
+output = "transverse_velocity_km_s"
+expression = "4.74 * angular_rate_arcsec_yr * distance_parsecs"
+description = "Proper motion: v_t = 4.74·μ·d — 3rd House: apparent motion, Mercury messenger velocity"
+evidence = "v_t = μ·d·(1 AU/yr) ≈ 4.74·μ(arcsec/yr)·d(pc) km/s — transverse velocity from angular rate"
+
+[[formula]]
+id = "radial_velocity_doppler"
+tags = ["astronomy", "doppler", "radial_velocity", "third_house", "mutable", "air", "mercury"]
+domain = "budha"
+level = 9
+inputs = ["wavelength_observed", "wavelength_rest"]
+output = "radial_velocity"
+expression = "299792.458 * (wavelength_observed - wavelength_rest) / wavelength_rest"
+description = "Radial velocity: v_r = c·(λ_obs - λ_rest)/λ_rest — Mutable Air: spectral shift, Mercury spectral messenger"
+evidence = "Relativistic Doppler: λ_obs/λ_rest = √((1+β)/(1-β)) ≈ 1+β for β≪1 — β = v/c"
+
+# ─── Mutable: Orbital Mechanics (Adaptability, Exchange, Transfer) ────────────
+# Mutable = orbital transfers, changing orbits, gravitational assists, exchange orbits.
+
+[[formula]]
+id = "orbital_velocity"
+tags = ["orbital", "velocity", "mutable", "air", "circular", "mercury", "mechanics"]
+domain = "budha"
+level = 6
+inputs = ["GM", "radius"]
+output = "velocity"
+expression = "sqrt(GM / radius)"
+description = "Circular orbital velocity: v = √(GM/r) — Mutable Air: orbital exchange, Mercury messenger speed"
+evidence = "Centripetal = gravitational: v²/r = GM/r² → v = √(GM/r) — exact for circular orbits"
+
+[[formula]]
+id = "escape_velocity"
+tags = ["orbital", "escape", "mutable", "air", "mercury", "energy"]
+domain = "budha"
+level = 9
+inputs = ["GM", "radius"]
+output = "escape_velocity"
+expression = "sqrt(2 * GM / radius)"
+description = "Escape velocity: v_esc = √(2GM/r) — Mutable Air: boundary exchange, Mercury unbound journey"
+evidence = "Energy conservation: ½mv² - GMm/r = 0 → v = √(2GM/r) — zero total energy"
+
+[[formula]]
+id = "hohmann_transfer_delta_v"
+tags = ["orbital", "hohmann", "transfer", "mutable", "air", "mercury", "exchange"]
+domain = "budha"
+level = 12
+inputs = ["GM", "r1", "r2"]
+output = "total_delta_v"
+expression = "sqrt(GM/r1) * (sqrt(2*r2/(r1+r2)) - 1) + sqrt(GM/r2) * (1 - sqrt(2*r1/(r1+r2)))"
+description = "Hohmann transfer Δv: optimal two-impulse transfer — Mutable Air: orbital exchange, Mercury efficient path"
+evidence = "Vis-viva equation: v² = GM(2/r - 1/a) — two elliptical arcs tangent to circles at r1, r2"
+
+[[formula]]
+id = "vis_viva"
+tags = ["orbital", "vis_viva", "energy", "mutable", "air", "mechanics"]
+domain = "budha"
+level = 9
+inputs = ["GM", "radius", "semi_major_axis"]
+output = "velocity"
+expression = "sqrt(GM * (2/radius - 1/semi_major_axis))"
+description = "Vis-viva equation: v² = GM(2/r - 1/a) — Mutable Air: energy-speed relation, Mercury orbital energy"
+evidence = "Total energy: E = -GMm/2a = ½mv² - GMm/r → v² = GM(2/r - 1/a) — orbital energy constant"
+
+[[formula]]
+id = "orbital_period"
+tags = ["orbital", "period", "kepler", "mutable", "air", "harmony"]
+domain = "budha"
+level = 6
+inputs = ["GM", "semi_major_axis"]
+output = "period"
+expression = "2 * pi * sqrt(semi_major_axis^3 / GM)"
+description = "Orbital period: T = 2π√(a³/GM) — Mutable Air: temporal cycle, Mercury periodic messenger"
+evidence = "Kepler's third law: T² = 4π²a³/GM — from Newton's law + centripetal for ellipse"
+
+[[formula]]
+id = "sphere_of_influence"
+tags = ["orbital", "sphere_of_influence", "mutable", "air", "transfer", "mercury"]
+domain = "budha"
+level = 12
+inputs = ["m_planet", "m_sun", "a_planet"]
+output = "sphere_radius"
+expression = "a_planet * (m_planet / m_sun)^(2/5)"
+description = "Sphere of influence: r_SOI = a(m/M)^(2/5) — Mutable Air: boundary exchange, Mercury transition zone"
+evidence = "Laplace sphere: where planet's gravity dominates Sun's perturbation — restricted three-body problem"
+
+# ─── Air: Wave Propagation (Communication, Light, Signals) ────────────────────
+# Air = medium of transmission. Light, radio, gravitational waves — all information carriers.
+
+[[formula]]
+id = "light_travel_time"
+tags = ["light", "travel", "time", "air", "communication", "distance", "mercury"]
+domain = "budha"
+level = 6
+inputs = ["distance_ly"]
+output = "time_years"
+expression = "distance_ly"
+description = "Light travel time: 1 ly = 1 year — Air: signal propagation, Mercury light messenger"
+evidence = "Definition: light-year = distance light travels in 1 year — c = 299,792,458 m/s exact"
+
+[[formula]]
+id = "redshift"
+tags = ["cosmology", "redshift", "air", "expansion", "wavelength", "mercury"]
+domain = "budha"
+level = 12
+inputs = ["wavelength_observed", "wavelength_emitted"]
+output = "redshift"
+expression = "(wavelength_observed - wavelength_emitted) / wavelength_emitted"
+description = "Redshift: z = (λ_obs - λ_emit)/λ_emit — Air: cosmic expansion signal, Mercury stretched message"
+evidence = "FLRW metric: 1+z = a(t_obs)/a(t_emit) — wavelength stretches with scale factor"
+
+[[formula]]
+id = "hubble_law"
+tags = ["cosmology", "hubble", "distance", "velocity", "air", "expansion"]
+domain = "budha"
+level = 12
+inputs = ["redshift", "hubble_constant"]
+output = "distance_mpc"
+expression = "redshift * 299792.458 / hubble_constant"
+description = "Hubble law: v = H₀·d, v ≈ cz for small z — Air: cosmic expansion, Mercury recession signal"
+evidence = "v = H₀d from FLRW: v_rec = H(t)·d_proper — linear for d ≪ c/H₀"
+
+[[formula]]
+id = "radio_link_budget"
+tags = ["radio", "communication", "link_budget", "air", "mercury", "signal"]
+domain = "budha"
+level = 12
+inputs = ["tx_power_dbw", "tx_gain_dbi", "rx_gain_dbi", "distance_m", "frequency_hz"]
+output = "received_power_dbw"
+expression = "tx_power_dbw + tx_gain_dbi + rx_gain_dbi - 20*log10(4*pi*distance_m*frequency_hz/299792458)"
+description = "Friis transmission equation: P_r = P_t + G_t + G_r - 20log₁₀(4πdf/c) — Air: radio link, Mercury signal budget"
+evidence = "Free-space path loss: L_fs = (4πdf/c)² — power spreads over sphere surface 4πd²"
+
+# ─── Mercury: Relativistic Effects (Messenger at Speed) ──────────────────────
+# Mercury = fast, relativistic corrections, time dilation, frame dragging.
+
+[[formula]]
+id = "relativistic_doppler"
+tags = ["relativity", "doppler", "mercury", "velocity", "air", "light"]
+domain = "budha"
+level = 12
+inputs = ["beta", "angle_rad"]
+output = "frequency_ratio"
+expression = "sqrt(1 - beta^2) / (1 - beta * cos(angle_rad))"
+description = "Relativistic Doppler: f'/f = √(1-β²)/(1-βcosθ) — Mercury: messenger at speed, Air frequency shift"
+evidence = "Lorentz transformation of wave 4-vector: k'ᵘ = Λᵘᵥ kᵛ — exact for any β<1"
+
+[[formula]]
+id = "gravitational_redshift"
+tags = ["relativity", "gravitational", "redshift", "mercury", "potential", "air"]
+domain = "budha"
+level = 12
+inputs = ["delta_potential", "c"]
+output = "redshift"
+expression = "delta_potential / c^2"
+description = "Gravitational redshift: z = Δφ/c² — Mercury: photon climbing potential, Air frequency loss"
+evidence = "Equivalence principle: Δf/f = Δφ/c² — Pound-Rebka experiment confirmed (1959)"
+
+[[formula]]
+id = "shapiro_delay"
+tags = ["relativity", "shapiro", "delay", "mercury", "light", "gravity", "air"]
+domain = "budha"
+level = 12
+inputs = ["GM", "c", "r1", "r2", "r12"]
+output = "delay_seconds"
+expression = "2 * GM / c^3 * log((r1 + r2 + r12) / (r1 + r2 - r12))"
+description = "Shapiro delay: Δt = 2GM/c³ ln((r₁+r₂+r₁₂)/(r₁+r₂-r₁₂)) — Mercury: signal delay in gravity, Air time stretch"
+evidence = "GR: light travels null geodesic in curved spacetime — radar ranging to Venus/Mercury confirmed"
+
+# ─── Mutable: Binary Systems, Siblings (3rd House) ────────────────────────────
+# 3rd House = siblings, binaries, paired objects. Mercury = duality, twins.
+
+[[formula]]
+id = "binary_mass_function"
+tags = ["binary", "mass_function", "third_house", "mutable", "mercury", "siblings"]
+domain = "budha"
+level = 12
+inputs = ["period_days", "k1_kms", "eccentricity"]
+output = "mass_function_solar"
+expression = "1.036e-7 * period_days * k1_kms^3 * (1 - eccentricity^2)^(3/2)"
+description = "Mass function: f(m) = P·K₁³(1-e²)^(3/2)/(2πG) — 3rd House: binary sibling masses, Mercury paired messengers"
+evidence = "From Kepler's third law + radial velocity: (m₂ sin i)³/(m₁+m₂)² = P K₁³(1-e²)^(3/2)/(2πG)"
+
+[[formula]]
+id = "roche_lobe_radius"
+tags = ["binary", "roche", "lobe", "third_house", "mutable", "mercury", "mass_transfer"]
+domain = "budha"
+level = 12
+inputs = ["mass_ratio", "separation"]
+output = "roche_radius"
+expression = "0.49 * separation * mass_ratio^(2/3) / (0.6 * mass_ratio^(2/3) + log(1 + mass_ratio^(1/3)))"
+description = "Eggleton's Roche lobe: r_L/a ≈ 0.49 q^(2/3) / (0.6 q^(2/3) + ln(1+q^(1/3))) — Mutable Air: mass exchange boundary, Mercury transfer"
+evidence = "Eggleton 1983: accurate to 1% for all q — equipotential surface at L1 Lagrange point"
+
+[[formula]]
+id = "tidal_locking_timescale"
+tags = ["binary", "tidal", "locking", "mutable", "air", "timescale", "mercury"]
+domain = "budha"
+level = 12
+inputs = ["a", "R", "M", "m", "k2", "Q"]
+output = "timescale_years"
+expression = "2/3 * Q/k2 * M/m * (a/R)^6 * 1/n"
+description = "Tidal locking: τ ≈ (2/3)(Q/k₂)(M/m)(a/R)⁶/P — Mutable Air: synchronization timescale, Mercury paired rhythm"
+evidence = "Goldreich & Soter 1966: tidal torque → spin-orbit synchronization — Moon locked to Earth in ~Gyr"
+
+# ─── Coordinates & Transformations (Mercury = Translator, Converter) ──────────
+# Mutable Air = coordinate transformations, conversions, translations between systems.
+
+[[formula]]
+id = "equatorial_to_ecliptic"
+tags = ["coordinates", "equatorial", "ecliptic", "mutable", "air", "mercury", "transform"]
+domain = "budha"
+level = 9
+inputs = ["ra_rad", "dec_rad", "obliquity_rad"]
+output = "ecliptic_longitude"
+expression = "atan2(sin(ra_rad)*cos(obliquity_rad) + tan(dec_rad)*sin(obliquity_rad), cos(ra_rad))"
+description = "Equatorial → Ecliptic: λ = atan2(sin α cos ε + tan δ sin ε, cos α) — Mutable Air: coordinate translation, Mercury converter"
+evidence = "Spherical trigonometry: rotation by obliquity ε around x-axis — exact transformation"
+
+[[formula]]
+id = "galactic_coordinates"
+tags = ["coordinates", "galactic", "mutable", "air", "mercury", "transform"]
+domain = "budha"
+level = 12
+inputs = ["ra_rad", "dec_rad"]
+output = "galactic_longitude"
+expression = "atan2(sin(dec_rad)*cos(27.4) - cos(dec_rad)*sin(27.4)*cos(ra_rad - 192.85), cos(dec_rad)*sin(ra_rad - 192.85))"
+description = "Equatorial → Galactic: l = atan2(...) — Mutable Air: galactic frame translation, Mercury cosmic converter"
+evidence = "Rotation matrix: galactic north pole at α=192.85°, δ=27.4° (J2000) — exact spherical rotation"
+
+[[formula]]
+id = "julian_date"
+tags = ["time", "julian", "date", "mutable", "air", "mercury", "continuous"]
+domain = "budha"
+level = 6
+inputs = ["year", "month", "day", "hour", "minute", "second"]
+output = "jd"
+expression = "367*year - floor(7*(year + floor((month+9)/12))/4) + floor(275*month/9) + day + 1721013.5 + hour/24 + minute/1440 + second/86400"
+description = "Julian Date: continuous day count — Mutable Air: universal time, Mercury continuous messenger"
+evidence = "Fliegel & Van Flandern 1968 algorithm — exact integer arithmetic for Gregorian calendar"
+[[formula]]
+id = "mean_solar_longitude"
+tags = ["sun", "surya", "ephemeris", "mean_longitude", "mutable", "air", "deterministic"]
+domain = "budha"
+level = 6
+inputs = ["t"]
+output = "solar_longitude"
+expression = "280.46646 + 36000.76983*t + 0.0003032*t^2"
+description = "Geometric mean longitude of the Sun in degrees (t = Julian centuries since J2000 TT); reduce mod 360 — Mutable Air: the calendar's heartbeat, Mercury pacing the Sun"
+evidence = "Meeus, Astronomical Algorithms 2nd ed., eq. 25.2 — full VSOP87 positions in src/ephemeris"
+
+[[formula]]
+id = "mean_lunar_longitude"
+tags = ["moon", "chandra", "ephemeris", "mean_longitude", "mutable", "air", "deterministic"]
+domain = "budha"
+level = 6
+inputs = ["t"]
+output = "lunar_longitude"
+expression = "218.3164477 + 481267.88123421*t - 0.0015786*t^2 + t^3/538841 - t^4/65194000"
+description = "Mean longitude of the Moon in degrees (t = Julian centuries since J2000 TT); reduce mod 360 — Mutable Air: the fastest hand on the sky's clock"
+evidence = "Meeus, Astronomical Algorithms 2nd ed., eq. 47.1 — full ELP-2000/82 positions in src/ephemeris"

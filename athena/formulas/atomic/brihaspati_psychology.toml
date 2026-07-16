@@ -1,0 +1,278 @@
+# ♓ Pisces — Psychology & Neuroscience — Atomic Formulas
+# Mutable Water | 12th House | Ruler: Jupiter/Neptune | Exaltation: Venus | Fall: Mercury | Detriment: Mercury
+# Element: Water (consciousness, flow, unity, integration, dream, symbol, image, emotion, empathy)
+# Modality: Mutable (adaptable, boundary-dissolving, synthetic, transcendent, porous, merging)
+# House: 12th (the unconscious, hidden patterns, dreams, transcendence, unity, collective unconscious, healing, seclusion)
+# Anatomical: Feet, lymphatic system (grounding, connection to whole, immune surveillance, fluid integration, touch)
+# Mathematical Archetype: The Unifier — neural networks, psychometrics, consciousness integration, signal processing, connectivity, feedback loops, emergent dynamics, whole-brain networks
+
+# ─── Water: Neural Dynamics (Neptune = Diffuse Awareness, Jupiter = Expansion) ────
+# Mutable Water = fluid neural dynamics, connectivity, synaptic integration, adaptive plasticity.
+
+[[formula]]
+id = "hodgkin_huxley_sodium"
+tags = ["neuroscience", "hodgkin_huxley", "sodium", "action_potential", "water", "mutable", "excitation"]
+domain = "brihaspati"
+level = 12
+inputs = ["V", "m", "h", "g_Na_max", "E_Na"]
+output = "I_Na"
+expression = "g_Na_max * m^3 * h * (V - E_Na)"
+description = "HH sodium current: I_Na = ḡ_Na m³h(V-E_Na) — Mutable Water: action potential upstroke, Neptunian/sodium influx wave"
+evidence = "Hodgkin-Huxley 1952: voltage clamp of squid giant axon — m gates activate (fast), h gate inactivates (slow) at depolarization"
+
+[[formula]]
+id = "hodgkin_huxley_potassium"
+tags = ["neuroscience", "hodgkin_huxley", "potassium", "action_potential", "water", "mutable", "repolarization"]
+domain = "brihaspati"
+level = 12
+inputs = ["V", "n", "g_K_max", "E_K"]
+output = "I_K"
+expression = "g_K_max * n^4 * (V - E_K)"
+description = "HH potassium current: I_K = ḡ_K n⁴(V-E_K) — Mutable Water: repolarization, Venus equilibrium restoration"
+evidence = "Hodgkin-Huxley 1952: n gate activates with sigmoidal delay — 4 gates independent: g_K ∝ n⁴, τ_n ≈ 1/(α_n+β_n)"
+
+[[formula]]
+id = "leaky_integrate_fire"
+tags = ["neuroscience", "lif", "integrate", "fire", "water", "mutable", "neuron", "model"]
+domain = "brihaspati"
+level = 9
+inputs = ["V_rest", "I_inject", "membrane_resistance", "membrane_time_constant"]
+output = "V_next"
+expression = "V_rest + I_inject * membrane_resistance * (1 - exp(-0.001/membrane_time_constant))"
+description = "Leaky integrate-and-fire: τ_m dV/dt = -(V-V_rest) + R_mI — Mutable Water: neural integration, fluid charge accumulation"
+evidence = "Lapicque 1907: RC circuit model of neural membrane — exact solution for constant I: V(t) = V_rest + IR(1-e^(-t/τ))"
+
+[[formula]]
+id = "synaptic_transmission"
+tags = ["neuroscience", "synapse", "transmission", "water", "mutable", "neurotransmitter", "release"]
+domain = "brihaspati"
+level = 9
+inputs = ["vesicle_concentration", "Ca_influx"]
+output = "release_probability"
+expression = "vesicle_concentration * Ca_influx^4 / (1 + Ca_influx^4)"
+description = "Synaptic release: P_release ∝ [Ca²⁺]^4/(1+[Ca²⁺]^4) — Mutable Water: vesicle fusion, Neptunian release, Venus vesicle harmony"
+evidence = "Katz 1969: quantal release — Ca²⁺ cooperativity n≈4 from Hill coefficient; binomial release statistics (Katz-Miledi 1967)"
+
+# ─── 12th House: Unconscious Processing, Dreams, Hidden Patterns ──────────────
+# 12th House = hidden patterns, unconscious dynamics, dream states, default mode network.
+
+[[formula]]
+id = "default_mode_network"
+tags = ["neuroscience", "default_mode", "network", "resting_state", "twelfth_house", "consciousness"]
+domain = "brihaspati"
+level = 12
+inputs = ["medial_pfc", "posterior_cingulate", "angular_gyrus"]
+output = "dmn_activity"
+expression = "(medial_pfc + posterior_cingulate + angular_gyrus) / 3"
+description = "Default mode network activity: DMN = avg(mPFC, PCC, AG) — 12th House: resting consciousness, Neptunian daydreaming"
+evidence = "Raichle 2001: PET identifies DMN — task-negative regions deactivate during attention, activate during self-referential thought"
+
+[[formula]]
+id = "sleep_stage_cycle"
+tags = ["sleep", "circadian", "sleep_stage", "rem", "nrem", "twelfth_house", "mutable", "water"]
+domain = "brihaspati"
+level = 6
+inputs = ["time_in_bed_hours"]
+output = "rem_cycles"
+expression = "floor(time_in_bed_hours / 1.5)"
+description = "REM cycle count: ~90 min per cycle, 4-6 cycles per night — 12th House: dream cycles, Neptunian REM, Water nightly renewal"
+evidence = "Aserinsky-Kleitman 1953: REM discovered; ~90 min ultradian rhythm (Dement-Kleitman 1957) — 4-6 cycles per night"
+
+[[formula]]
+id = "signal_detection_theory"
+tags = ["psychophysics", "signal_detection", "sdt", "twelfth_house", "water", "perception"]
+domain = "brihaspati"
+level = 9
+inputs = ["hit_rate", "false_alarm_rate"]
+output = "d_prime"
+expression = "hit_rate - false_alarm_rate"
+description = "Signal detection: d' = z(H) - z(FA) — 12th House: discerning signal from noise, Neptune sensory boundary"
+evidence = "Green-Swets 1966: d' measures sensitivity independent of response bias (criterion β) — from likelihood ratio of signal vs noise"
+
+[[formula]]
+id = "weber_fechner_law"
+tags = ["psychophysics", "weber", "fechner", "perception", "water", "mutable", "threshold"]
+domain = "brihaspati"
+level = 6
+inputs = ["stimulus_intensity", "just_noticeable_difference"]
+output = "weber_fraction"
+expression = "just_noticeable_difference / stimulus_intensity"
+description = "Weber-Fechner: ΔS/S = k — Mutable Water: perceptual threshold, Venus proportional response, just-noticeable difference"
+evidence = "Weber 1834: ΔI/I = k (constant); Fechner 1860: S = k log I — Stevens 1957: S = kI^n power law more general"
+
+# ─── Mutable: Psychometrics & Measurement (Venus = Harmony of Measures) ──────
+# Mutable = measurement across contexts. Venus exalted = harmonized psychometrics.
+
+[[formula]]
+id = "cronbach_alpha"
+tags = ["psychometrics", "reliability", "cronbach", "water", "mutable", "venus", "consistency"]
+domain = "brihaspati"
+level = 12
+inputs = ["sum_variances", "total_variance", "n_items"]
+output = "cronbach_alpha_coefficient"
+expression = "n_items / (n_items - 1) * (1 - sum_variances / total_variance)"
+description = "Cronbach's α: α = k/(k-1)(1 - ΣVar_i/Var_total) — Mutable Water: internal consistency, Venus harmonious measurement"
+evidence = "Cronbach 1951: α = ρ_parallel = split-half reliability for all k/2 splits — α ∈ [0,1]; α > 0.7 acceptable for research"
+
+[[formula]]
+id = "z_score"
+tags = ["statistics", "z_score", "standardization", "water", "mutable", "normalization"]
+domain = "brihaspati"
+level = 6
+inputs = ["raw_score", "mean", "sd"]
+output = "z_statistic"
+expression = "(raw_score - mean) / sd"
+description = "Z-score: z = (x-μ)/σ — Mutable Water: standardizing across measures, Venus comparable assessment"
+evidence = "Gauss 1809: standard normal distribution N(0,1) — z-scores dimensionless, allow cross-test comparison (T-score = 10z+50)"
+
+[[formula]]
+id = "pearson_correlation"
+tags = ["statistics", "correlation", "pearson", "water", "mutable", "association"]
+domain = "brihaspati"
+level = 9
+inputs = ["n", "sum_x", "sum_y", "sum_xy", "sum_x2", "sum_y2"]
+output = "r_coefficient"
+expression = "(n * sum_xy - sum_x * sum_y) / sqrt((n*sum_x2 - sum_x^2)*(n*sum_y2 - sum_y^2))"
+description = "Pearson correlation: r = cov(X,Y)/(σ_xσ_y) — Mutable Water: linear association, Venus relational measure"
+evidence = "Pearson 1895: r = Σ(x_i-μ_x)(y_i-μ_y) / sqrt(Σ(x_i-μ_x)²Σ(y_i-μ_y)²) — |r| ≤ 1 by Cauchy-Schwarz"
+
+[[formula]]
+id = "cohens_d"
+tags = ["statistics", "effect_size", "cohens_d", "water", "mutable", "comparison", "venus"]
+domain = "brihaspati"
+level = 9
+inputs = ["mean1", "mean2", "sd1", "sd2"]
+output = "d"
+expression = "abs(mean1 - mean2) / sqrt((sd1^2 + sd2^2) / 2)"
+description = "Cohen's d: effect size in standard deviation units — Mutable Water: practical significance, Venus meaningful comparison"
+evidence = "Cohen 1969: d = (μ₁-μ₂)/σ_pooled — conventions: d=0.2 small, 0.5 medium, 0.8 large — meta-analysis standard"
+
+# ─── Jupiter/Neptune: Consciousness & Integration (Neptune = Unity, Jupiter = Expansion) ─
+# Neptune = dissolving boundaries, unity consciousness. Jupiter = expanded awareness.
+
+[[formula]]
+id = "global_workspace_model"
+tags = ["consciousness", "global_workspace", "baars", "twelfth_house", "water", "integration", "neptune"]
+domain = "brihaspati"
+level = 12
+inputs = ["local_processors", "global_broadcast"]
+output = "consciousness_index"
+expression = "local_processors * global_broadcast"
+description = "Global workspace: consciousness = local specialists × global broadcast — 12th House: unified consciousness, Neptunian integrated awareness"
+evidence = "Baars 1988: Global Workspace Theory — conscious content = global access to specialized unconscious processors (Dehaene-Changuex 1998)"
+
+[[formula]]
+id = "integrated_information_phi"
+tags = ["consciousness", "phi", "integrated_information", "tononi", "twelfth_house", "neptune"]
+domain = "brihaspati"
+level = 12
+inputs = ["dual_interaction", "system_interaction"]
+output = "phi"
+expression = "dual_interaction / system_interaction"
+description = "Integrated information: φ = I(X;past|partition) — 12th House: consciousness boundary, Neptunian integration measure"
+evidence = "Tononi 2008: IIT 3.0 — φ = minimum information partition (MIP) — measures irreducible cause-effect structure of system"
+
+[[formula]]
+id = "predictive_coding_error"
+tags = ["neuroscience", "predictive_coding", "prediction_error", "mutable", "water", "bayes", "perception"]
+domain = "brihaspati"
+level = 12
+inputs = ["sensory_input", "top_down_prediction"]
+output = "prediction_error"
+expression = "sensory_input - top_down_prediction"
+description = "Prediction error: PE = sensory - prediction — Mutable Water: surprise signal, Neptunian expectation dissolution"
+evidence = "Rao-Ballard 1999: hierarchical predictive coding in visual cortex — Friston 2010: free energy principle — μ̇ ∝ -∂F/∂μ = PE"
+
+[[formula]]
+id = "hebbian_learning"
+tags = ["neuroscience", "hebb", "plasticity", "learning", "water", "mutable", "synaptic"]
+domain = "brihaspati"
+level = 9
+inputs = ["pre_synaptic", "post_synaptic", "learning_rate"]
+output = "weight_change"
+expression = "learning_rate * pre_synaptic * post_synaptic"
+description = "Hebbian plasticity: Δw = η·x·y — Mutable Water: correlation-based learning, Venus synaptic harmony, Neptune connection formation"
+evidence = "Hebb 1949: 'Neurons that fire together wire together' — Bliss-Lomo 1973: LTP in rabbit hippocampus; BCM provides stability"
+
+[[formula]]
+id = "stdp_timing"
+tags = ["neuroscience", "stdp", "plasticity", "spike_timing", "water", "mutable", "timing"]
+domain = "brihaspati"
+level = 12
+inputs = ["pre_time", "post_time", "A_plus", "tau_plus", "A_minus", "tau_minus"]
+output = "delta_w"
+expression = "A_plus * exp((pre_time - post_time) / tau_plus) - A_minus * exp((post_time - pre_time) / tau_minus)"
+description = "Spike-timing plasticity: Δw = A₊e^(Δt/τ₊) - A₋e^(-Δt/τ₋) — Mutable Water: precise temporal binding, Venus timing"
+evidence = "Bi-Poo 1998: STDP in cultured hippocampal neurons — causal (pre→post, Δt>0) → LTP, anti-causal (post→pre, Δt<0) → LTD"
+
+# ─── Venus Exaltation: Emotion, Valence, Arousal (Affective Science) ──────────
+# Venus exalted in Pisces = emotional harmony, empathic attunement, affective balance.
+
+[[formula]]
+id = "arousal_valence"
+tags = ["emotion", "affect", "arousal", "valence", "venus", "water", "circumplex", "core_affect"]
+domain = "brihaspati"
+level = 0
+inputs = ["arousal", "valence"]
+output = "affect_score"
+expression = "arousal * valence"
+description = "Circumplex affect: arousal × valence — Venus exalted: emotional space, pleasure-pain axis, arousal-energy dimension"
+evidence = "Russell 1980: circumplex model of affect — valence (pleasure-displeasure) × arousal (activation-deactivation) → 2D emotional space"
+
+[[formula]]
+id = "emotional_valence_attractor"
+tags = ["emotion", "valence", "attractor", "water", "venus", "dynamics", "mutable"]
+domain = "brihaspati"
+level = 12
+inputs = ["current_valence", "baseline_valence", "valence_recovery_rate"]
+output = "valence_next"
+expression = "baseline_valence + (current_valence - baseline_valence) * exp(-valence_recovery_rate)"
+description = "Emotional inertia: V_t+1 = V₀ + (V_t - V₀)e^(-τ) — Venus: affective equilibrium, Water emotional return to baseline"
+evidence = "Kuppens 2010: affective inertia — return rate to set-point; depression: slower return (longer time constant) from mood regulation"
+
+[[formula]]
+id = "empathic_accuracy"
+tags = ["social", "empathy", "accuracy", "venus", "water", "twelfth_house", "understanding"]
+domain = "brihaspati"
+level = 9
+inputs = ["self_report_affect", "observer_rating"]
+output = "empathic_accuracy"
+expression = "1 - abs(self_report_affect - observer_rating) / 2"
+description = "Empathic accuracy: 1 - |self - other| / scale_max — 12th House: understanding other minds, Venus emotional resonance"
+evidence = "Ickes 1997: empathic accuracy paradigm — judges rate target's thoughts/feelings, correlation with target's own ratings"
+
+# ─── Water: Learning & Memory (Hippocampal Integration, Neptunian Encoding) ───
+# Water = memory formation, encoding, consolidation, pattern separation/completion.
+
+[[formula]]
+id = "ebbinghaus_forgetting"
+tags = ["memory", "forgetting", "ebbinghaus", "water", "decay", "consolidation", "retention"]
+domain = "brihaspati"
+level = 6
+inputs = ["hours", "initial_retention"]
+output = "retention"
+expression = "initial_retention * exp(-0.1 * hours)"
+description = "Ebbinghaus forgetting: R(t) = R₀e^(-λt) — Mutable Water: memory decay, Neptunian dissolution, Venus retention curve"
+evidence = "Ebbinghaus 1885: R = e^(-t/S) — S=strength; retention ~58% after 20 min, ~33% after 1 day — power law: R ∝ t^(-β) also fits"
+
+[[formula]]
+id = "spacing_effect"
+tags = ["memory", "spacing", "learning", "water", "mutable", "practice", "retention"]
+domain = "brihaspati"
+level = 9
+inputs = ["spacing_gap", "study_sessions"]
+output = "retention_benefit"
+expression = "spacing_gap * log10(study_sessions + 1)"
+description = "Spacing effect: spaced repetition retention ∝ gap × log(sessions+1) — Mutable Water: distributed practice, Neptune spaced encoding"
+evidence = "Ebbinghaus 1885: spaced > massed; Cepeda 2006: optimal gap = 10-20% of retention interval — lag effect robust"
+
+[[formula]]
+id = "pattern_separation"
+tags = ["memory", "hippocampus", "pattern_separation", "water", "discrimination", "dentate_gyrus"]
+domain = "brihaspati"
+level = 12
+inputs = ["input_similarity", "output_similarity"]
+output = "separation_index"
+expression = "input_similarity - output_similarity"
+description = "Pattern separation: 1 - d' output / d' input — Water: orthogonalizing memories, Dentate gyrus pattern separation"
+evidence = "Marr 1971: granule cell sparsification; Rolls-Treves 1998: competitive learning in dentate produces decorrelated outputs"

@@ -1,0 +1,278 @@
+# ♌ Leo — Biology & Medicine — Atomic Formulas
+# Fixed Fire | 5th House | Ruler: Sun | Exaltation: None | Fall: None | Detriment: Saturn
+# Element: Fire (vitality, metabolism, energy transformation, creativity, warmth, radiation)
+# Modality: Fixed (persistence, homeostasis, sustained rhythm, stability, loyalty, endurance)
+# House: 5th (creativity, children, heart, vitality, self-expression, play, speculation, generation)
+# Anatomical: Heart, spine (central pump, axial support, vitality source, rhythmic oscillator)
+# Mathematical Archetype: The Heart — metabolic networks, sustained energy transformation, creative generation, rhythmic oscillation, central distribution
+
+# ─── Fire: Metabolic Energy Transformation (Sun = Vitality, Fire = Metabolism) ─────
+# Fixed Fire = sustained metabolic rate, homeostatic energy transformation, creative ATP synthesis.
+
+[[formula]]
+id = "kleiber_law"
+tags = ["metabolism", "scaling", "allometry", "fire", "fixed", "sun", "vitality", "heart"]
+domain = "surya"
+level = 12
+inputs = ["mass_kg"]
+output = "basal_metabolic_rate_watts"
+expression = "3.4 * mass_kg^0.75"
+description = "Kleiber's law: BMR ∝ M^¾ — Fixed Fire: metabolic scaling, Sun vitality, 5th House heart pump"
+evidence = "West, Brown, Enquist 1997: fractal nutrient networks → ¾ exponent from space-filling, area-preserving branching"
+
+[[formula]]
+id = "metabolic_rate_mass"
+tags = ["metabolism", "mass", "fire", "energy", "scaling"]
+domain = "surya"
+level = 9
+inputs = ["mass_kg", "exponent"]
+output = "metabolic_rate"
+expression = "mass_kg^exponent"
+description = "Allometric scaling: Y = aM^b — Fire: energy transformation scales with mass, Sun power law"
+evidence = "Dimensional analysis + fractal networks: b = 3/4 for basal, 2/3 for surface-limited processes"
+
+[[formula]]
+id = "atp_yield_glucose"
+tags = ["biochemistry", "atp", "glucose", "fire", "energy", "cellular_respiration", "oxidation"]
+domain = "surya"
+level = 9
+inputs = ["glucose_moles"]
+output = "atp_moles"
+expression = "30 * glucose_moles"
+description = "ATP yield: ~30-32 ATP per glucose — Fire: oxidation energy capture, Sun photosynthetic origin"
+evidence = "Glycolysis (2) + Pyruvate dehydrogenase (2) + TCA cycle (20) + OxPhos (26-28) — stoichiometric accounting"
+
+[[formula]]
+id = "mitochondrial_membrane_potential"
+tags = ["biophysics", "mitochondria", "membrane_potential", "fire", "proton_gradient", "chemiosmosis"]
+domain = "surya"
+level = 12
+inputs = ["delta_pH", "delta_psi_mV"]
+output = "proton_motive_force_mV"
+expression = "delta_psi_mV - 59 * delta_pH"
+description = "Proton motive force: Δp = Δψ - 59ΔpH (mV) — Fire: electrochemical gradient, Sun chemiosmotic coupling"
+evidence = "Mitchell 1961: ΔG = FΔψ + 2.3RTΔpH — exact thermodynamic coupling of electron transport to ATP synthesis"
+
+# ─── 5th House: Heart as Pump, Circulation, Rhythmic Oscillation ────────────────
+# 5th House = heart, creativity, children (generation), vitality, central pump, rhythmic center.
+
+[[formula]]
+id = "cardiac_output"
+tags = ["cardiology", "heart", "circulation", "fifth_house", "pump", "flow", "sun"]
+domain = "surya"
+level = 6
+inputs = ["heart_rate_bpm", "stroke_volume_ml"]
+output = "cardiac_output_l_min"
+expression = "heart_rate_bpm * stroke_volume_ml / 1000"
+description = "Cardiac output: CO = HR × SV — 5th House: heart pump, Sun vitality circulation, Fixed rhythm"
+evidence = "Conservation of mass: volume per beat × beats per minute = flow rate — definitional, measurable"
+
+[[formula]]
+id = "fick_principle"
+tags = ["cardiology", "fick", "oxygen", "consumption", "fifth_house", "heart", "metabolism"]
+domain = "surya"
+level = 9
+inputs = ["oxygen_consumption_ml_min", "arterial_O2_content", "venous_O2_content"]
+output = "cardiac_output"
+expression = "oxygen_consumption_ml_min / (arterial_O2_content - venous_O2_content)"
+description = "Fick principle: CO = VO₂/(CaO₂ - CvO₂) — 5th House: heart: heart metabolic supply, Sun oxygen delivery"
+evidence = "Conservation of oxygen: arterial delivery - venous return = consumption — exact mass balance"
+
+[[formula]]
+id = "stroke_volume_frank_starling"
+tags = ["cardiology", "frank_starling", "heart", "preload", "contractility", "fifth_house"]
+domain = "surya"
+level = 12
+inputs = ["end_diastolic_volume", "end_systolic_volume"]
+output = "stroke_volume"
+expression = "end_diastolic_volume - end_systolic_volume"
+description = "Frank-Starling: SV = EDV - ESV — 5th: heart stretch-response, Sun length-tension, Fixed contractility"
+evidence = "Length-tension relationship: force ∝ sarcomere length — ventricular function curve from pressure-volume loops"
+
+[[formula]]
+id = "womersley_number"
+tags = ["hemodynamics", "pulsatile", "flow", "womersley", "heart", "artery", "oscillation"]
+domain = "surya"
+level = 12
+inputs = ["radius", "frequency", "density", "viscosity"]
+output = "womersley"
+expression = "radius * sqrt(2 * pi * frequency * density / viscosity)"
+description = "Womersley number: α = R√(ωρ/μ) — 5th: pulsatile flow, Sun heartbeat wave, Fixed oscillatory regime"
+evidence = "Non-dimensional Navier-Stokes: α² = ratio of transient inertial to viscous forces — exact from linearized NS"
+
+# ─── Fixed: Homeostasis, Feedback Control, Set Points ─────────────────────────
+# Fixed modality = homeostasis, negative feedback, set point regulation, persistent stability.
+
+[[formula]]
+id = "negative_feedback_gain"
+tags = ["control", "feedback", "homeostasis", "fixed", "set_point", "regulation", "gain"]
+domain = "surya"
+level = 9
+inputs = ["open_loop_gain", "feedback_factor"]
+output = "closed_loop_gain"
+expression = "open_loop_gain / (1 + open_loop_gain * feedback_factor)"
+description = "Negative feedback: G_cl = G_ol/(1+G_ol·H) — Fixed: homeostatic stability, error correction, set point"
+evidence = "Control theory: closed-loop transfer function — exact for linear time-invariant systems"
+
+[[formula]]
+id = "hill_equation"
+tags = ["biochemistry", "cooperativity", "hill", "binding", "fixed", "allostery", "sigmoid"]
+domain = "surya"
+level = 9
+inputs = ["ligand_concentration", "Kd", "hill_coefficient"]
+output = "fraction_bound"
+expression = "ligand_concentration^hill_coefficient / (Kd^hill_coefficient + ligand_concentration^hill_coefficient)"
+description = "Hill equation: θ = [L]^n/(Kd^n + [L]^n) — Fixed: cooperative binding, sigmoid response, allosteric regulation"
+evidence = "Statistical mechanics: n binding sites, concerted transition (Monod-Wyman-Changeux) — exact for MWC model"
+
+[[formula]]
+id = "michaelis_menten"
+tags = ["enzymology", "kinetics", "michaelis_menten", "fixed", "steady_state", "catalysis"]
+domain = "surya"
+level = 9
+inputs = ["Vmax", "substrate", "Km"]
+output = "reaction_velocity"
+expression = "Vmax * substrate / (Km + substrate)"
+description = "Michaelis-Menten: v = Vmax[S]/(Km+[S]) — Fixed: enzyme steady state, catalytic turnover, saturation"
+evidence = "Briggs-Haldane steady state: d[ES]/dt = 0 → exact for kcat ≪ k₋₁ or [S] ≫ [E] — quasi-steady-state assumption"
+
+[[formula]]
+id = "lineweaver_burk"
+tags = ["enzymology", "kinetics", "lineweaver_burk", "fixed", "linearization", "inhibition"]
+domain = "surya"
+level = 9
+inputs = ["Vmax", "Km", "substrate"]
+output = "inverse_velocity"
+expression = "Km/Vmax * 1/substrate + 1/Vmax"
+description = "Lineweaver-Burk: 1/v = (Km/Vmax)(1/[S]) + 1/Vmax — Fixed: linear diagnostic, inhibition typing"
+evidence = "Algebraic rearrangement of M-M — exact reciprocal transform, but weights low [S] points heavily"
+
+# ─── Fire: Population Dynamics, Generation, Creative Expansion ─────────────────
+# Fire = growth, generation, creative expansion. 5th House = children, speculation, creative output.
+
+[[formula]]
+id = "exponential_growth"
+tags = ["population", "growth", "exponential", "fire", "generation", "fifth_house", "malthus"]
+domain = "surya"
+level = 6
+inputs = ["initial_population", "growth_rate", "time"]
+output = "population"
+expression = "initial_population * exp(growth_rate * time)"
+description = "Exponential growth: N(t) = N₀e^(rt) — Fire: unrestricted generation, 5th House creative expansion"
+evidence = "dN/dt = rN → N = N₀e^(rt) — exact solution, Malthus 1798, basis for all population models"
+
+[[formula]]
+id = "logistic_growth"
+tags = ["population", "logistic", "carrying_capacity", "fire", "fixed", "saturation", "verhulst"]
+domain = "surya"
+level = 9
+inputs = ["initial_population", "growth_rate", "carrying_capacity", "time"]
+output = "population"
+expression = "carrying_capacity / (1 + (carrying_capacity/initial_population - 1) * exp(-growth_rate * time))"
+description = "Logistic growth: N = K/(1+(K/N₀-1)e^(-rt)) — Fixed Fire: saturation at carrying capacity, homeostasis"
+evidence = "dN/dt = rN(1-N/K) → exact solution via separation of variables — Verhulst 1838"
+
+[[formula]]
+id = "lotka_volterra"
+tags = ["ecology", "predator_prey", "lotka_volterra", "fixed", "oscillation", "cycles", "coupled"]
+domain = "surya"
+level = 12
+inputs = ["prey", "predator", "alpha", "beta", "gamma", "delta"]
+output = "prey_rate"
+expression = "alpha * prey - beta * prey * predator"
+description = "Lotka-Volterra: dN/dt = αN - βNP, dP/dt = δNP - γP — Fixed: coupled oscillation, cyclic creativity"
+evidence = "Hamiltonian system: H = δN - γlnN + βP - αlnP — conserved quantity, periodic orbits (neutral stability)"
+
+[[formula]]
+id = "fisher_fundamental_theorem"
+tags = ["evolution", "fitness", "fisher", "variance", "selection", "fixed", "genetic"]
+domain = "surya"
+level = 12
+inputs = ["additive_genetic_variance_fitness"]
+output = "rate_of_fitness_increase"
+expression = "additive_genetic_variance_fitness"
+description = "Fisher's theorem: dW/dt = σ²_A(w) — Fixed: rate of adaptation = additive genetic variance in fitness"
+evidence = "Fisher 1930: exact under constant selection, random mating — Price equation generalization: Δz = Cov(w,z)/w̄"
+
+# ─── Sun: Radiative Biology, Photobiology, Vitamin D ───────────────────────────
+# Sun rules Leo = photobiology, radiative energy capture, vitamin D synthesis, circadian entrainment.
+
+[[formula]]
+id = "photosynthetic_efficiency"
+tags = ["photosynthesis", "efficiency", "sun", "light", "quantum_yield", "energy_capture"]
+domain = "surya"
+level = 9
+inputs = ["photons_absorbed", "o2_evolved"]
+output = "photosynthetic_quantum_yield"
+expression = "o2_evolved / (photons_absorbed / 4)"
+description = "Photosynthetic quantum yield: O₂ per 4 photons — Sun: radiative capture, Fire: light → chemical energy, max ~0.1"
+evidence = "Z-scheme: 2 H₂O → O₂ + 4 H⁺ + 4 e⁻ requires 8 photons (2 per photosystem) — theoretical max 1/8 = 0.125"
+
+[[formula]]
+id = "vitamin_d_synthesis"
+tags = ["photobiology", "vitamin_d", "uvb", "sun", "skin", "synthesis", "previtamin"]
+domain = "surya"
+level = 9
+inputs = ["uvb_irradiance", "skin_area", "exposure_time", "quantum_yield"]
+output = "previtamin_d3"
+expression = "uvb_irradiance * skin_area * exposure_time * quantum_yield"
+description = "Vitamin D synthesis: rate ∝ UVB × area × time × yield — Sun ruler: photobiological conversion, Fire warmth"
+evidence = "Holick 1980: 7-dehydrocholesterol + UVB (290-315nm) → previtamin D₃ → vitamin D₃ — action spectrum measured"
+
+[[formula]]
+id = "circadian_phase_response"
+tags = ["circadian", "phase_response", "light", "sun", "entrainment", "prc", "zeitgeber"]
+domain = "surya"
+level = 12
+inputs = ["light_intensity", "circadian_time", "pulse_duration"]
+output = "phase_shift_hours"
+expression = "light_intensity * pulse_duration * sin(2 * pi * circadian_time / 24)"
+description = "Phase response curve: Δφ ∝ I·τ·sin(2πCT/24) — Sun: light entrainment, Fire: phase resetting, rhythm"
+evidence = "Kronauer model: dφ/dt = 2π/τ + I·f(φ) — weak forcing limit: PRC = I·τ·sin(2πφ) for Type 1 resetting"
+
+# ─── Fixed Fire: Neural Oscillators, Cardiac Rhythm, Central Pattern Generators ─
+# Fixed = sustained oscillation. Fire = rhythmic excitation. Heart/spine = central oscillators.
+
+[[formula]]
+id = "sodium_hodgkin_huxley_leo"
+tags = ["neurophysiology", "hodgkin_huxley", "sodium", "action_potential", "fixed", "oscillation", "channel"]
+domain = "surya"
+level = 12
+inputs = ["V", "m", "h", "g_Na_max", "E_Na"]
+output = "I_Na"
+expression = "g_Na_max * m^3 * h * (V - E_Na)"
+description = "HH sodium current: I_Na = ḡ_Na m³h(V-E_Na) — Fixed Fire: action potential upstroke, Hodgkin-Huxley 1952"
+evidence = "Voltage clamp: m∞ = αₘ/(αₘ+βₘ), τₘ = 1/(αₘ+βₘ) — exact kinetic parameters from squid giant axon"
+
+[[formula]]
+id = "cardiac_action_potential"
+tags = ["cardiology", "action_potential", "heart", "fixed", "oscillation", "phase_2", "plateau"]
+domain = "surya"
+level = 12
+inputs = ["I_CaL", "I_Kr", "I_Ks", "I_to", "I_NaCa"]
+output = "dV_dt"
+expression = "-(I_CaL + I_Kr + I_Ks + I_to + I_NaCa) / Cm"
+description = "Cardiac AP: dV/dt = -ΣI_ion/Cm — 5th House: heart rhythm, Fixed oscillation, Sun pacemaker, plateau phase"
+evidence = "Noble 1962 / Luo-Rudy models: sum of ion currents — exact conservation of charge across membrane"
+
+[[formula]]
+id = "kuramoto_oscillators"
+tags = ["dynamics", "kuramoto", "synchronization", "fixed", "coupled", "oscillators", "phase"]
+domain = "surya"
+level = 12
+inputs = ["coupling_strength", "natural_frequency_spread"]
+output = "order_parameter"
+expression = "sqrt(1 - (natural_frequency_spread / (2 * coupling_strength))^2)"
+description = "Kuramoto synchronization: r = √(1-(Δω/2K)²) for K > Δω/2 — Fixed: collective rhythm, Fire: creative sync"
+evidence = "Kuramoto 1975: exact solution in N→∞ limit — phase transition at K_c = 2Δω/π for Lorentzian distribution"
+
+[[formula]]
+id = "heart_rate_variability"
+tags = ["cardiology", "hrv", "autonomic", "fixed", "oscillation", "vagal", "sympathetic"]
+domain = "surya"
+level = 9
+inputs = ["RR_intervals"]
+output = "rmssd"
+expression = "sqrt(mean(diff(RR_intervals)^2))"
+description = "RMSSD: √mean(ΔRR²) — Fixed: parasympathetic tone, Fire: beat-to-beat variability, 5th House rhythm"
+evidence = "Time-domain HRV: RMSSD reflects high-frequency (vagal) component — exact from RR interval series"

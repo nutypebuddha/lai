@@ -1,0 +1,175 @@
+# Non-math formulas: Code patterns
+#
+# Code is executable math expressed in programming languages. These patterns
+# span language-specific idioms and language-agnostic anti-patterns.
+#
+# K-12 Spiral: Level 0 (basic patterns) → Level 12 (architecture)
+# Domain: ζ (CS & AI), η (Engineering)
+
+# ─── General Patterns ────────────────────────────────────────────────────
+
+[[code]]
+id = "early_return"
+language = "general"
+level = 3
+template = "if (condition) { return value; }"
+alternative = "Nested if-else with single return"
+complexity = 2
+is_anti_pattern = false
+
+[[code]]
+id = "magic_number"
+language = "general"
+level = 0
+template = "if (x > 42)"
+alternative = "Use named constant: const MAX_THRESHOLD = 42;"
+complexity = 1
+is_anti_pattern = true
+
+[[code]]
+id = "god_object"
+language = "general"
+level = 9
+template = "class GodClass"
+alternative = "Split into single-responsibility classes"
+complexity = 8
+is_anti_pattern = true
+
+[[code]]
+id = "callback_hell"
+language = "javascript"
+level = 6
+template = "asyncCall(() => { asyncCall2(() => { asyncCall3(() => { }); }); });"
+alternative = "Use promises/async-await"
+complexity = 6
+is_anti_pattern = true
+
+[[code]]
+id = "feature_envy"
+language = "general"
+level = 6
+template = "class A { void doSomething(B b) { b.getX(); b.getY(); b.getZ(); } }"
+alternative = "Move the method to class B that has the data"
+complexity = 5
+is_anti_pattern = true
+
+[[code]]
+id = "string_concat"
+language = "general"
+level = 3
+template = "result = a + b + c"
+alternative = "Use string builder/interpolation"
+complexity = 2
+is_anti_pattern = true
+
+[[code]]
+id = "hardcoded_config"
+language = "general"
+level = 6
+template = "DB_URL = 'localhost:5432'"
+alternative = "Use environment variables or config files"
+complexity = 4
+is_anti_pattern = true
+
+[[code]]
+id = "copy_pasta"
+language = "general"
+level = 0
+template = "Repeated blocks with minor variations"
+alternative = "Extract to function/loop"
+complexity = 3
+is_anti_pattern = true
+
+# ─── Rust-specific Patterns ──────────────────────────────────────────────
+
+[[code]]
+id = "unwrap_heavy"
+language = "rust"
+level = 3
+template = "x.unwrap()"
+alternative = "Use pattern matching or ? operator"
+complexity = 2
+is_anti_pattern = true
+
+[[code]]
+id = "clone_everywhere"
+language = "rust"
+level = 3
+template = "x.clone()"
+alternative = "Use references &x or Rc/Arc"
+complexity = 3
+is_anti_pattern = true
+
+[[code]]
+id = "mutex_guard_leak"
+language = "rust"
+level = 6
+template = "let data = lock.lock().unwrap();"
+alternative = "Scope the guard; use block { } or explicit drop"
+complexity = 5
+is_anti_pattern = true
+
+[[code]]
+id = "box_dyn_trait"
+language = "rust"
+level = 6
+template = "Box<dyn Trait>"
+alternative = "Use generics (impl Trait) or enums where possible"
+complexity = 5
+is_anti_pattern = true
+
+[[code]]
+id = "needless_borrow"
+language = "rust"
+level = 6
+template = "fn foo(x: &String)"
+alternative = "Use &str instead of &String"
+complexity = 3
+is_anti_pattern = true
+
+[[code]]
+id = "result_ignore"
+language = "rust"
+level = 6
+template = "result.ok();"
+alternative = "Handle the error explicitly with match or ?"
+complexity = 4
+is_anti_pattern = true
+
+[[code]]
+id = "lifetime_elision"
+language = "rust"
+level = 9
+template = "fn foo<'a>(x: &'a str, y: &'a str) -> &'a str"
+alternative = "Let Rust elide lifetimes when unambiguous"
+complexity = 7
+is_anti_pattern = true
+
+[[code]]
+id = "type_complexity"
+language = "rust"
+level = 12
+template = "HashMap<String, Vec<Option<Box<dyn Fn()>>>>"
+alternative = "Use type aliases or newtypes"
+complexity = 8
+is_anti_pattern = true
+
+# ─── Python-specific Patterns ────────────────────────────────────────────
+
+[[code]]
+id = "mutable_default_arg"
+language = "python"
+level = 6
+template = "def foo(x=[]):"
+alternative = "Use None as default and initialize inside: if x is None: x = []"
+complexity = 4
+is_anti_pattern = true
+
+[[code]]
+id = "bare_except"
+language = "python"
+level = 3
+template = "try: ... except: ..."
+alternative = "Catch specific exceptions (except ValueError:)"
+complexity = 2
+is_anti_pattern = true

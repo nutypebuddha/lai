@@ -1,0 +1,228 @@
+# ♐ Sagittarius — History & Anthropology — Atomic Formulas
+# Mutable Fire | 9th House | Ruler: Jupiter | Exaltation: None | Fall: None | Detriment: Mercury
+# Element: Fire (truth-seeking, expansion, vision, wisdom, meaning, inspiration, breadth)
+# Modality: Mutable (synthesis, integration, bridging perspectives, adaptation across cultures/times)
+# House: 9th (higher learning, philosophy, travel, exploration, wisdom, law, religion, publishing, distant horizons)
+# Anatomical: Hips, thighs (locomotion, forward thrust, support, long-distance travel, propulsion)
+# Mathematical Archetype: The Seeker — Bayesian inference, statistical learning, temporal trends, wisdom extraction, cross-cultural patterns, phylogenetic trees, truth convergence
+
+# ─── Fire: Statistical Inference & Bayesian Truth-Seeking (Jupiter = Expansion, Truth) ─
+# Mutable Fire = expanding knowledge through evidence, updating beliefs, wisdom extraction from data.
+
+[[formula]]
+id = "bayes_theorem"
+tags = ["statistics", "bayes", "inference", "fire", "mutable", "jupiter", "truth", "update"]
+domain = "brihaspati"
+level = 9
+inputs = ["likelihood", "prior", "evidence"]
+output = "posterior"
+expression = "likelihood * prior / evidence"
+description = "Bayes' theorem: P(H|E) = P(E|H)P(H)/P(E) — Mutable Fire: belief update, Jupiter wisdom expansion, truth seeking"
+evidence = "Conditional probability: P(H∩E) = P(H|E)P(E) = P(E|H)P(H) → Bayes' rule — exact from Kolmogorov axioms"
+
+[[formula]]
+id = "marginal_likelihood"
+tags = ["statistics", "bayes", "marginal", "evidence", "fire", "mutable", "jupiter", "composition"]
+domain = "brihaspati"
+level = 9
+inputs = ["likelihood", "prior", "false_positive_rate"]
+output = "evidence"
+expression = "likelihood * prior + false_positive_rate * (1 - prior)"
+description = "Marginal likelihood P(E) = P(E|H)P(H) + P(E|¬H)P(¬H) — Mutable Fire: compositional evidence, Jupiter total probability"
+evidence = "Law of total probability: P(E) = P(E|H)P(H) + P(E|¬H)P(¬H) — exact from Kolmogorov axioms, closes the bayes_theorem loophole"
+
+[[formula]]
+id = "law_of_large_numbers"
+tags = ["statistics", "convergence", "large_numbers", "fire", "jupiter", "truth", "sample"]
+domain = "brihaspati"
+level = 9
+inputs = ["sample_mean", "population_mean", "n"]
+output = "sampling_error"
+expression = "abs(sample_mean - population_mean)"
+description = "Law of large numbers: X̄_n → μ as n→∞ — Mutable Fire: truth convergence, Jupiter cumulative wisdom"
+evidence = "Chebyshev: P(|X̄_n-μ|>ε) ≤ σ²/(nε²) → 0 as n→∞ — weak LLN from Chebyshev, strong LLN from Kolmogorov"
+
+[[formula]]
+id = "central_limit_theorem"
+tags = ["statistics", "clt", "convergence", "gaussian", "fire", "jupiter", "distribution"]
+domain = "brihaspati"
+level = 9
+inputs = ["sample_size", "population_sd"]
+output = "standard_error"
+expression = "population_sd / sqrt(sample_size)"
+description = "Central limit theorem: √n(X̄_n-μ)/σ → N(0,1) — Mutable Fire: distribution convergence, Jupiter universal law"
+evidence = "Lindeberg-Lévy CLT: characteristic function of standardized sum converges to e^(-t²/2) — exact in limit"
+
+[[formula]]
+id = "maximum_likelihood"
+tags = ["statistics", "mle", "estimation", "fire", "jupiter", "truth", "optimal"]
+domain = "brihaspati"
+level = 12
+inputs = ["log_likelihood"]
+output = "mle"
+expression = "log_likelihood"
+description = "Maximum likelihood estimation: θ̂ = argmax log L(θ|X) — Mutable Fire: truth seeking through evidence, Jupiter wisdom"
+evidence = "Consistency: θ̂_MLE → θ* under regularity; asymptotic normality: √n(θ̂-θ) → N(0,I(θ)⁻¹); efficiency: Cramér-Rao bound"
+
+[[formula]]
+id = "shannon_sampling_theorem"
+tags = ["statistics", "sampling", "nyquist", "shannon", "fire", "jupiter", "reconstruction"]
+domain = "brihaspati"
+level = 12
+inputs = ["bandwidth"]
+output = "nyquist_rate"
+expression = "2 * bandwidth"
+description = "Nyquist-Shannon: f_s ≥ 2f_max — Mutable Fire: adequate sampling for reconstruction, Jupiter complete capture"
+evidence = "Shannon 1949: sinc interpolation: f(t) = Σf(n/2B)sinc(2Bt-n) — exact reconstruction if sampled above Nyquist rate"
+
+# ─── 9th House: Temporal Analysis, Trend Detection, Learning Curves ───────────
+# 9th House = higher learning, distant time/space, trends over long horizons, wisdom from experience.
+
+[[formula]]
+id = "exponential_smoothing"
+tags = ["time_series", "forecasting", "smoothing", "ninth_house", "jupiter", "trend", "learning"]
+domain = "brihaspati"
+level = 6
+inputs = ["previous_forecast", "actual_value", "alpha"]
+output = "new_forecast"
+expression = "alpha * actual_value + (1 - alpha) * previous_forecast"
+description = "Exponential smoothing: ŷ_t+1 = αy_t + (1-α)ŷ_t — 9th House: learning from history, Jupiter wisdom accumulation"
+evidence = "Exponentially weighted moving average: ŷ_t+1 = Σ_{k=0}∞ α(1-α)ᵏ y_t-k — exact recursive form of adaptive learning"
+
+[[formula]]
+id = "diminishing_returns"
+tags = ["economics", "learning", "returns", "ninth_house", "fire", "saturation", "jupiter"]
+domain = "brihaspati"
+level = 6
+inputs = ["current_knowledge", "max_knowledge", "increment"]
+output = "knowledge_gain"
+expression = "increment * (max_knowledge - current_knowledge) / max_knowledge"
+description = "Diminishing returns: ΔK ∝ (K_max - K_cur) — Mutable Fire: saturating knowledge, Jupiter wisdom limit"
+evidence = "Learning curve: y = ax^b, b∈(-1,0) — proportional improvement per doubling of experience follows power law"
+
+[[formula]]
+id = "exponential_moving_average"
+tags = ["statistics", "moving_average", "smoothing", "ninth_house", "fire", "jupiter", "trend"]
+domain = "brihaspati"
+level = 6
+inputs = ["values", "n"]
+output = "moving_avg"
+expression = "values / n"
+description = "Moving average: MA_n = Σᵢ₌₁ⁿ y_t-i / n — 9th House: trend from temporal data, Jupiter cumulative measurement"
+evidence = "Linear filter: ŷ_t = (1/n)Σ_{i=1}ⁿ y_t-i — minimizes E[(ŷ_t - y_t)²] under i.i.d. assumptions"
+
+[[formula]]
+id = "power_law_learning"
+tags = ["statistics", "power_law", "learning", "curve", "ninth_house", "fire"]
+domain = "brihaspati"
+level = 9
+inputs = ["time", "exponent", "scale"]
+output = "performance"
+expression = "scale * time^(-exponent)"
+description = "Power law learning: performance ∝ t^(-α) — Mutable Fire: improvement through experience, Jupiter expanding wisdom"
+evidence = "Log-log linear: log P = log a - α log t — cross-validated across tasks, α ≈ 0.5 ± 0.2 (Wright 1936, Newell-Rosenbloom 1981)"
+
+# ─── Mutable: Phylogenetic & Historical Inference (Synthesis Across Times) ────
+# Mutable = adaptation across contexts. Fire = evolutionary truth, descent with modification.
+
+[[formula]]
+id = "phylogenetic_distance"
+tags = ["phylogenetics", "distance", "evolution", "mutable", "fire", "jupiter", "ancestry"]
+domain = "brihaspati"
+level = 12
+inputs = ["mutations", "sites"]
+output = "p_distance"
+expression = "mutations / sites"
+description = "p-distance: proportion of differing sites — Mutable Fire: evolutionary divergence, Jupiter ancestral truth"
+evidence = "Jukes-Cantor 1969: d = -(3/4)ln(1 - 4p/3) — exact correction for multiple substitutions under JC69 model"
+
+[[formula]]
+id = "molecular_clock"
+tags = ["phylogenetics", "molecular_clock", "time", "mutable", "fire", "jupiter", "rate"]
+domain = "brihaspati"
+level = 9
+inputs = ["genetic_distance", "mutation_rate"]
+output = "divergence_time"
+expression = "genetic_distance / (2 * mutation_rate)"
+description = "Molecular clock: T = d/(2μ) — Mutable Fire: divergence time, Jupiter evolutionary timeline"
+evidence = "Zuckerkandl-Pauling 1962: neutral mutations accumulate at constant rate — d = 2μT under strict clock"
+
+[[formula]]
+id = "radiocarbon_dating"
+tags = ["archaeology", "radiocarbon", "dating", "ninth_house", "fire", "decay", "half_life"]
+domain = "brihaspati"
+level = 9
+inputs = ["remaining_fraction", "half_life"]
+output = "age"
+expression = "-half_life * log10(remaining_fraction) / log10(2)"
+description = "Radiocarbon dating: t = -t_½·log₂(f_remaining) — 9th House: deep time measurement, Jupiter ancient wisdom"
+evidence = "Exponential decay: N = N₀e^(-λt), λ = ln 2/t_½ — exact first-order decay kinetics, Libby 1949"
+
+[[formula]]
+id = "population_genetics_hwe"
+tags = ["genetics", "hardy_weinberg", "equilibrium", "mutable", "fire", "jupiter", "allele"]
+domain = "brihaspati"
+level = 9
+inputs = ["p", "q"]
+output = "genotype_frequencies"
+expression = "p^2 + 2 * p * q + q^2"
+description = "Hardy-Weinberg: p² + 2pq + q² = 1 — Mutable Fire: equilibrium frequencies, Jupiter evolutionary conservation"
+evidence = "Hardy 1908, Weinberg 1908: under null (random mating, no selection/mutation/ drift) — deviation indicates evolutionary force"
+
+# ─── Jupiter: Wisdom Metrics, Information Quality, Truth Convergence ──────────
+# Jupiter = expansion, wisdom, truth, ethics, big picture, higher meaning.
+
+[[formula]]
+id = "bias_variance_tradeoff"
+tags = ["statistics", "bias", "variance", "tradeoff", "jupiter", "fire", "generalization", "wisdom"]
+domain = "brihaspati"
+level = 12
+inputs = ["bias_squared", "variance", "noise"]
+output = "expected_error"
+expression = "bias_squared + variance + noise"
+description = "Bias-variance decomposition: E[(ŷ-y)²] = Bias² + Var + σ² — Mutable Fire: truth vs precision, Jupiter wisdom balance"
+evidence = "Geman-Bienenstock 1992: E[(θ̂-θ)²] = Bias(θ̂)² + Var(θ̂) — exact decomposition for quadratic loss"
+
+[[formula]]
+id = "mutual_information_learning"
+tags = ["statistics", "mutual_information", "learning", "rate", "jupiter", "fire", "information_gain"]
+domain = "brihaspati"
+level = 12
+inputs = ["prior_entropy", "posterior_entropy"]
+output = "information_gain"
+expression = "prior_entropy - posterior_entropy"
+description = "Information gain: ΔH = H(prior) - H(posterior) — Mutable Fire: knowledge acquisition rate, Jupiter wisdom accumulation"
+evidence = "Kullback 1959: I(X;Y) = H(X) - H(X|Y) — mutual information as expected reduction in uncertainty"
+
+[[formula]]
+id = "kolmogorov_complexity"
+tags = ["complexity", "kolmogorov", "information", "jupiter", "fire", "truth", "minimal_description"]
+domain = "brihaspati"
+level = 12
+inputs = ["string"]
+output = "complexity"
+expression = "string"
+description = "Kolmogorov complexity: K_U(x) = min{|p|: U(p)=x} — Mutable Fire: minimal description length, Jupiter essential truth"
+evidence = "Kolmogorov 1963: K(x) ≤ |x|+c — but K(x) is uncomputable (diagonalization) — Solomonoff-Levin theorem"
+
+[[formula]]
+id = "semantic_truth_convergence"
+tags = ["philosophy", "truth", "convergence", "peirce", "jupiter", "fire", "inquiry"]
+domain = "brihaspati"
+level = 12
+inputs = ["evidence_count", "consistency_measure"]
+output = "truth_confidence"
+expression = "evidence_count * consistency_measure"
+description = "Truth convergence: confidence ∝ E×C — Mutable Fire: Peircean truth at limit of inquiry, Jupiter wisdom"
+evidence = "Peirce 1878: 'The opinion which is fated to be ultimately agreed to by all who investigate is what we mean by the truth'"
+
+[[formula]]
+id = "cross_validation_error"
+tags = ["statistics", "cross_validation", "generalization", "ninth_house", "fire", "jupiter", "model_selection"]
+domain = "brihaspati"
+level = 9
+inputs = ["training_error", "test_error"]
+output = "generalization_gap"
+expression = "test_error - training_error"
+description = "Generalization gap: E_test - E_train — 9th House: out-of-sample truth, Jupiter universal knowledge, beyond seen data"
+evidence = "Empirical risk minimization: R(f) = R̂(f) + O(√(VC_dim/n)) — Vapnik-Chervonenkis 1971, exact bound"

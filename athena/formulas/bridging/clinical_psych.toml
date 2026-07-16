@@ -1,0 +1,180 @@
+# Bridging formulas: Clinical/Psychology cross-domain
+# Connects entity properties across Surya (biology/neuroscience),
+# Brihaspati (psychology/history), and Shani (philosophy/structure).
+# These formulas enable multi-step entity reasoning chains:
+#   entity properties → intermediate variables → derived clinical outcomes
+
+# ─── Multi-step chain: Psychosis severity assessment ──────────────────────────
+# Chain: entity properties → insight_deficit + cognitive_load → severity_index
+# Example: schizophrenia → 0.825 insight_deficit + 0.12 cognitive_load → 0.567 severity
+
+[[formula]]
+id = "clinical_severity"
+tags = ["psychiatry", "severity", "clinical", "chain"]
+from = "brihaspati"
+to = "brihaspati"
+inputs = ["insight_deficit", "cognitive_load"]
+output = "severity_index"
+expression = "(insight_deficit + cognitive_load) / 2"
+description = "Clinical: overall severity from insight deficit and cognitive load"
+aspect = "conjunction"
+
+[[formula]]
+id = "treatment_priority"
+tags = ["psychiatry", "treatment", "priority", "clinical", "chain"]
+from = "brihaspati"
+to = "shukra"
+inputs = ["severity_index", "treatment_burden"]
+output = "treatment_priority_score"
+expression = "severity_index / max(treatment_burden, 0.1)"
+description = "Psychology-Engineering: treatment priority from severity vs burden ratio"
+aspect = "square"
+
+# ─── Multi-step chain: Functional outcome assessment ──────────────────────────
+# Chain: entity properties → social_functioning + cognitive_vulnerability → functional_decline
+
+[[formula]]
+id = "functional_impact"
+tags = ["psychiatry", "function", "disability", "clinical", "chain"]
+from = "brihaspati"
+to = "brihaspati"
+inputs = ["social_functioning", "cognitive_vulnerability"]
+output = "functional_decline"
+expression = "1 - (social_functioning * (1 - cognitive_vulnerability))"
+description = "Clinical: functional decline from social deficits and cognitive vulnerability"
+aspect = "conjunction"
+
+# ─── Multi-step chain: Environmental → Neuro → Outcome ────────────────────────
+# Chain: environment properties → environmental_support + healing_capacity → recovery_index
+
+[[formula]]
+id = "recovery_potential_index"
+tags = ["recovery", "environment", "neuroplasticity", "clinical", "chain"]
+from = "surya"
+to = "surya"
+inputs = ["environmental_support", "healing_capacity"]
+output = "recovery_index"
+expression = "(environmental_support + healing_capacity) / 2"
+description = "Biology: recovery potential from environmental support and neuroplastic healing"
+aspect = "conjunction"
+
+[[formula]]
+id = "psychosis_insight"
+tags = ["psychiatry", "psychosis", "insight", "clinical"]
+from = "brihaspati"
+to = "brihaspati"
+inputs = ["reality_distortion", "cognitive_disorganization"]
+output = "insight_deficit"
+expression = "(reality_distortion + cognitive_disorganization) / 2"
+description = "Clinical: insight deficit from reality distortion and cognitive disorganization"
+aspect = "conjunction"
+
+[[formula]]
+id = "mood_cognition_bridge"
+tags = ["psychiatry", "mood", "cognition", "clinical"]
+from = "brihaspati"
+to = "shani"
+inputs = ["mood_instability", "affective_intensity"]
+output = "cognitive_load"
+expression = "mood_instability * affective_intensity * 2"
+description = "Psychology-Philosophy: cognitive load from mood instability and affective intensity"
+aspect = "square"
+
+[[formula]]
+id = "neuroplasticity_recovery"
+tags = ["neuroscience", "recovery", "plasticity", "clinical"]
+from = "surya"
+to = "brihaspati"
+inputs = ["structural_plasticity", "synaptic_remodeling", "recovery_potential"]
+output = "healing_capacity"
+expression = "(structural_plasticity + synaptic_remodeling + recovery_potential) / 3"
+description = "Biology-Psychology: healing capacity from neuroplasticity factors"
+aspect = "trine"
+
+[[formula]]
+id = "stress_resilience"
+tags = ["stress", "resilience", "hpa", "clinical"]
+from = "surya"
+to = "brihaspati"
+inputs = ["cortisol_release", "stress_response", "circadian_regulation"]
+output = "resilience_score"
+expression = "1 - (cortisol_release * stress_response * (1 - circadian_regulation))"
+description = "Biology-Psychology: resilience from HPA axis regulation"
+aspect = "trine"
+
+[[formula]]
+id = "environmental_buffering"
+tags = ["environment", "stress", "resilience", "clinical"]
+from = "chandra"
+to = "surya"
+inputs = ["neuroplasticity_enhancement", "stress_buffering", "cognitive_reserve"]
+output = "environmental_support"
+expression = "(neuroplasticity_enhancement + stress_buffering + cognitive_reserve) / 3"
+description = "Environment-Biology: environmental support for brain health"
+aspect = "trine"
+
+[[formula]]
+id = "pharmacology_target"
+tags = ["pharmacology", "treatment", "clinical"]
+from = "shukra"
+to = "brihaspati"
+inputs = ["target_dopamine", "target_serotonin"]
+output = "mechanism_breadth"
+expression = "(target_dopamine + target_serotonin) / 2"
+description = "Engineering-Psychology: treatment mechanism breadth from receptor targets"
+aspect = "square"
+
+[[formula]]
+id = "treatment_response"
+tags = ["treatment", "efficacy", "clinical"]
+from = "shukra"
+to = "brihaspati"
+inputs = ["efficacy_severe_depression", "efficacy_mania"]
+output = "mood_efficacy"
+expression = "(efficacy_severe_depression + efficacy_mania) / 2"
+description = "Engineering-Psychology: mood treatment efficacy from clinical data"
+aspect = "trine"
+
+[[formula]]
+id = "social_cognition_deficit"
+tags = ["social", "cognition", "psychosis", "clinical"]
+from = "surya"
+to = "brihaspati"
+inputs = ["executive_function", "social_cognition", "working_memory"]
+output = "social_functioning"
+expression = "(executive_function + social_cognition + working_memory) / 3"
+description = "Biology-Psychology: social functioning from prefrontal cortex capacity"
+aspect = "trine"
+
+[[formula]]
+id = "emotional_dysregulation"
+tags = ["emotion", "regulation", "clinical"]
+from = "surya"
+to = "brihaspati"
+inputs = ["fear_processing", "emotional_memory", "salience_detection"]
+output = "threat_sensitivity"
+expression = "(fear_processing + emotional_memory + salience_detection) / 3"
+description = "Biology-Psychology: threat sensitivity from amygdala function"
+aspect = "trine"
+
+[[formula]]
+id = "memory_stress_vulnerability"
+tags = ["memory", "stress", "clinical"]
+from = "surya"
+to = "brihaspati"
+inputs = ["memory_consolidation", "stress_vulnerability"]
+output = "cognitive_vulnerability"
+expression = "memory_consolidation * stress_vulnerability"
+description = "Biology-Psychology: cognitive vulnerability from hippocampal stress sensitivity"
+aspect = "trine"
+
+[[formula]]
+id = "treatment_side_effects"
+tags = ["pharmacology", "side_effects", "clinical"]
+from = "shukra"
+to = "surya"
+inputs = ["half_life_hours", "therapeutic_index"]
+output = "treatment_burden"
+expression = "max(1.0 - therapeutic_index, 0.1) * (24.0 / min(half_life_hours, 48.0))"
+description = "Engineering-Biology: treatment burden from half-life and narrow therapeutic index"
+aspect = "square"

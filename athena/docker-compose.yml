@@ -1,0 +1,26 @@
+version: "3.9"
+
+services:
+  athena:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: athena:latest
+    container_name: athena
+    # Interactive stdio — needed for MCP mode
+    stdin_open: true
+    tty: true
+    # MCP communicates over stdio — no ports needed.
+    # For tools like Claude Code Desktop, configure the MCP client
+    # to launch: docker run --rm -i athena mcp
+    #
+    # Example Claude Desktop config:
+    # {
+    #   "mcpServers": {
+    #     "athena": {
+    #       "command": "docker",
+    #       "args": ["run", "--rm", "-i", "athena", "mcp"]
+    #     }
+    #   }
+    # }
+    command: ["mcp"]

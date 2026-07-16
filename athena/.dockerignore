@@ -1,0 +1,34 @@
+# Git
+.git/
+.gitignore
+
+# Build artifacts
+target/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Documentation source (not needed in builder)
+docs/
+
+# Session/planning notes
+*SESSION*
+*PLAN*
+*TICKET*
+
+# Scripts not needed for build
+scripts/
+athena-launcher.sh
+athena-static
+athena-bin-release
+
+# Not needed
+*.md
+LICENSE-*

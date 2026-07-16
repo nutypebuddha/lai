@@ -1,0 +1,16 @@
+[Unit]
+Description=CID Bridge — universal MCP bridge for AI chatbots
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/root/cid-bridge
+ExecStart=/usr/bin/node /root/cid-bridge/src/index.js
+Environment=CID_BINARY=/root/cid/target/release/cid
+Environment=PORT=3000
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

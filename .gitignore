@@ -1,31 +1,7 @@
 /target
-
-# Editor / IDE
-*.swp
-*.swo
-*~
-.idea/
-.vscode/
-*.code-workspace
-
-# OS
-.DS_Store
-Thumbs.db
-
-# Environment / secrets
-.env
-.env.*
-
-# Profiling / benchmarks
-*.profraw
-*.profdata
-flamegraph.svg
-criterion/
-pprof-
-
-# laverna-wasm build artifacts
-laverna-wasm/target/
-laverna-wasm/www/
-
-# bundled LLM model weights (drop your .gguf here; not committed)
+**/target
+node_modules
+bridge/node_modules
+*.so
 bin/models/*.gguf
+.DS_Store

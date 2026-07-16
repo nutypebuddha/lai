@@ -1,0 +1,33 @@
+# Bridging formulas: Environment ↔ Biology, Economics ↔ Environment
+[[formula]]
+id = "population_growth"
+tags = ["population", "ecology"]
+from = "chandra"
+to = "surya"
+inputs = ["initial", "rate", "time"]
+output = "final_pop"
+expression = "initial * exp(rate * time)"
+description = "Environment-Biology: exponential population growth"
+aspect = "trine"
+
+[[formula]]
+id = "eco_footprint"
+tags = ["ecology", "sustainability"]
+from = "surya"
+to = "budha"
+inputs = ["consumption", "population"]
+output = "footprint"
+expression = "consumption * population / 1000"
+description = "Biology-Economics: ecological footprint estimate"
+aspect = "square"
+
+[[formula]]
+id = "climate_economics"
+tags = ["climate", "economics"]
+from = "chandra"
+to = "budha"
+inputs = ["emissions_tons", "cost_per_ton"]
+output = "total_cost"
+expression = "emissions_tons * cost_per_ton"
+description = "Environment-Economics: carbon cost calculation"
+aspect = "opposition"

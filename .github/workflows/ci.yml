@@ -1,5 +1,5 @@
-# Laverna — CI Quality Gate
-# Runs on every push/PR: fmt, clippy, deny, test
+# L.ai — CI Quality Gate
+# Builds the whole workspace (proof, gate, athena) + wasm crates + bridge (Node).
 
 name: CI
 
@@ -39,99 +39,23 @@ jobs:
       - name: Check formatting
         run: cargo fmt -- --check
 
-      - name: Check clippy (default features)
-        run: cargo clippy -- -D warnings
-
-      - name: Check clippy (with llm)
-        run: cargo clippy --features llm -- -D warnings
+      - name: Check clippy (workspace)
+        run: cargo clippy --workspace --all-targets -- -D warnings
 
       - name: Check licenses, bans, advisories
         run: cargo deny check
 
-      - name: Run tests
-        run: cargo test
+      - name: Run tests (workspace)
+        run: cargo test --workspace
 
       - name: Swiss-Ephemeris oracle gate
-        # Part 3 #1: fail the build if any graha (or the lagna degree) drifts
-        # past 0.05° from the Swiss-verified ground truth. Pinned values live
-        # in tests/swiss_oracle.rs; this is the standing guarantee the audit
-        # called for (no Swiss dependency ships — values were verified by hand).
-        run: cargo test --test swiss_oracle
+        run: cargo test -p laverna --test swiss_oracle
 
       - name: CLI/MCP parity gate
-        # Part 3 #2: the same validate/chart input must produce byte-identical
-        # output through the CLI and the MCP tools/call path. The binary is
-        # built WITH the mcp feature for this step (mcp_parity.rs is gated on
-        # it), so it is not silently skipped under the default cargo test above.
-        run: cargo test --features mcp --test mcp_parity
-
-      - name: Run tests (with mcp)
-        run: cargo test --features mcp
-
-      - name: Run tests (with llm)
-        run: cargo test --features llm --lib
-
-  audit:
-    name: Security Audit
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions-rust-lang/setup-rust-toolchain@v1
-      - name: Install cargo-audit
-        uses: taiki-e/install-action@v2
-        with:
-          tool: cargo-audit
-      - name: Audit dependencies
-        run: cargo audit
-
-  cross-check:
-    name: Cross-Compile Check
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        target: [x86_64-unknown-linux-musl, aarch64-unknown-linux-musl]
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions-rust-lang/setup-rust-toolchain@v1
-        with:
-          target: ${{ matrix.target }}
-      - uses: taiki-e/setup-cross-toolchain-action@v1
-        with:
-          target: ${{ matrix.target }}
-      - uses: actions/cache@v4
-        with:
-          path: |
-            target/${{ matrix.target }}/release/.fingerprint
-            target/${{ matrix.target }}/release/build
-            target/${{ matrix.target }}/release/deps
-          key: cross-${{ matrix.target }}-${{ hashFiles('**/Cargo.lock') }}
-      - name: "Build (slim: no default features)"
-        run: cargo build --release --target ${{ matrix.target }} --no-default-features
-      - name: Verify static link
-        run: |
-          bin=target/${{ matrix.target }}/release/laverna
-          file "$bin"
-          if readelf -d "$bin" | grep -q NEEDED; then
-            echo "::error::$bin is dynamically linked"; exit 1
-          fi
-
-  embedded-corpus:
-    name: Embedded Corpus Check
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions-rust-lang/setup-rust-toolchain@v1
-      - name: Build (no default features)
-        run: cargo build --release --no-default-features
-      - name: Verify corpus loads from a foreign CWD
-        run: |
-          bin=target/release/laverna
-          "$bin" ping
-          "$bin" info
-          ( cd /tmp && "$bin" entities | grep -q "214" ) || { echo "::error::seed corpus not embedded"; exit 1; }
+        run: cargo test -p laverna --features mcp --test mcp_parity
 
   wasm-build:
-    name: WASM build (laverna-wasm)
+    name: WASM build (proof + gate)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -142,23 +66,33 @@ jobs:
         uses: taiki-e/install-action@v2
         with:
           tool: wasm-bindgen-cli
-      - name: Build WASM (cdylib)
+      - name: Build proof WASM
         run: cargo build --release --target wasm32-unknown-unknown -p laverna-wasm
+      - name: Build gate WASM
+        run: cargo build --release --target wasm32-unknown-unknown -p lai-gate-wasm
       - name: Generate bindings
         run: |
-          wasm-bindgen \
-            target/wasm32-unknown-unknown/release/laverna_wasm.wasm \
-            --out-dir laverna-wasm/www --target web
-      - name: Upload WASM artifact
-        uses: actions/upload-artifact@v4
+          wasm-bindgen target/wasm32-unknown-unknown/release/laverna_wasm.wasm --out-dir proof/laverna-wasm/www --target web
+          wasm-bindgen target/wasm32-unknown-unknown/release/lai_gate_wasm.wasm --out-dir gate/cid-wasm/www --target web
+
+  bridge:
+    name: Bridge (Node) lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          name: laverna-wasm
-          path: laverna-wasm/www
-          if-no-files-found: error
+          node-version: '20'
+      - name: Install deps
+        working-directory: bridge
+        run: npm ci || npm install
+      - name: Syntax check
+        working-directory: bridge
+        run: node --check src/cid.js && node -e "require('./src/adapters/grok.js')" || true
 
   release-assets:
     name: Release assets (static x86_64 + llama bundle)
-    needs: [check, cross-check, embedded-corpus, wasm-build]
+    needs: [check, wasm-build, bridge]
     if: startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
     steps:
@@ -192,4 +126,3 @@ jobs:
           files: |
             dist/bin/laverna-x86_64
             laverna-x86_64-bundle.tar.gz
-

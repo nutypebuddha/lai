@@ -1,0 +1,21 @@
+# ☿ Capstone — LLM-gated formulas
+#
+# `formula_type = "llm"` formulas hold a prompt template in `expression`
+# ({input} placeholders), not evaluable arithmetic. Bankai renders the
+# template, asks the capstone model (capstone/athena-qwen.toml) at
+# temperature 0, and admits the value only if it passes the deterministic
+# gates in src/bankai/llm_eval.rs: exactly one finite number in the output.
+# A successful LLM step carries reduced chain confidence — estimated, never
+# proven. Evaluating these requires a build with --features llm and an
+# attached capstone; other builds fail cleanly at eval time.
+
+[[formula]]
+id = "estimate_reading_minutes"
+formula_type = "llm"
+tags = ["capstone", "estimation", "language", "mercury"]
+domain = "budha"
+inputs = ["word_count"]
+output = "reading_minutes"
+expression = "Estimate how many minutes an average adult needs to read {word_count} words of ordinary prose."
+description = "Reading time estimate — capstone generation, numeric-gated"
+evidence = "None — LLM estimate admitted through the llm_eval gates, confidence-penalized"

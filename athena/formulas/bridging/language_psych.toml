@@ -1,0 +1,33 @@
+# Bridging formulas: Language ↔ Psychology, Philosophy ↔ Psychology
+[[formula]]
+id = "sentiment_analysis"
+tags = ["nlp", "emotion"]
+from = "shani"
+to = "brihaspati"
+inputs = ["positive_words", "negative_words", "total_words"]
+output = "sentiment"
+expression = "(positive_words - negative_words) / total_words"
+description = "Language-Psychology: sentiment from word counts"
+aspect = "trine"
+
+[[formula]]
+id = "reading_comprehension"
+tags = ["linguistics", "education"]
+from = "shani"
+to = "brihaspati"
+inputs = ["flesch_score", "education_years"]
+output = "comprehension"
+expression = "min(flesch_score / 100, education_years / 20)"
+description = "Language-Psychology: reading comprehension estimate"
+aspect = "sextile"
+
+[[formula]]
+id = "moral_psychology"
+tags = ["ethics", "psychology"]
+from = "shani"
+to = "brihaspati"
+inputs = ["moral_score", "empathy"]
+output = "ethical_judgment"
+expression = "(moral_score + empathy) / 2"
+description = "Philosophy-Psychology: ethical judgment synthesis"
+aspect = "trine"

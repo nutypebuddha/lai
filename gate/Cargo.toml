@@ -1,0 +1,41 @@
+[package]
+name = "lai-gate"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.70"
+authors = ["nutypebuddha <nutypebuddha@proton.me>"]
+description = "L.ai · Gate — deterministic per-token validation layer for LLMs (math, logic, fact, fallacy)"
+license = "Apache-2.0"
+repository = "https://github.com/nutypebuddha/lai"
+homepage = "https://github.com/nutypebuddha/lai"
+documentation = "https://github.com/nutypebuddha/lai"
+readme = "README.md"
+keywords = ["llm", "validation", "ai", "inference", "lai"]
+categories = ["command-line-utilities", "parser-implementations", "web-programming"]
+exclude = [
+    "target/",
+    "cid-wasm/target/",
+    "*.md",
+    ".gitignore",
+]
+
+[[bin]]
+name = "lai-gate"
+path = "src/main.rs"
+
+[lib]
+name = "cid"
+path = "src/lib.rs"
+
+[[test]]
+name = "integration"
+path = "tests/integration.rs"
+
+[dev-dependencies]
+criterion = { version = "0.5", features = ["html_reports"] }
+
+[dependencies]
+ureq = { version = "3", features = ["json"], optional = true }
+
+[features]
+proxy = ["ureq"]

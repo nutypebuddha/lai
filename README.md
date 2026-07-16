@@ -1,154 +1,87 @@
-# L.ai · Proof — *Laverna*
+# L.ai
 
 > **Verify, don't trust.**
 
-**L.ai** is an offline, deterministic verification engine. It answers factual,
-numeric, and computable questions by running them through a NAND-to-verify
-compute cascade and an embedded, content-addressed corpus — then hands back a
-machine-checkable **proof object** or a typed **refusal**. No guessing, no
-hallucination, no network required at runtime.
+**L.ai** is a single, offline-first verification umbrella for AI. One project,
+four functions — all deterministic, all fail-loud, none requiring a network at
+runtime:
 
-*Laverna* is the internal code name for **L.ai · Proof** (see
-[`docs/brand.md`](docs/brand.md)). The sibling L.ai functions are **L.ai · Gate**
-(CID, per-token validation) and **L.ai · Bridge** (CID-Bridge, chatbot fan-out).
+| Function | Crate / dir | What it does |
+|----------|-------------|--------------|
+| **L.ai · Proof** | `proof/` (`laverna`) | Deterministic reasoning engine: 9-graha wheel, NAND-to-verify proof cascade, embedded corpus, machine-checkable proof objects, local LLM assistant. |
+| **L.ai · Gate** | `gate/` (`lai-gate`) | Per-token validation layer for LLM output — math, logic, fact, fallacy, bias. ~630KB pure Rust + WASM. |
+| **L.ai · Bridge** | `bridge/` (Node/TS) | Universal MCP bridge — any chatbot (Grok, Claude, GPT, Mistral) hooks into Gate validation through one endpoint. |
+| **L.ai · Athena** | `athena/` (`athena`) | Relational reasoning engine — stores formulas, not facts; traverses a cross-domain graph to validate reasoning chains. |
 
-L.ai · Proof never guesses and fails loud: every result either carries a
-derivation back to primitive NAND gates or is explicitly marked unproven. The
-differentiator is the **NAND-to-verify proof cascade** plus the **fail-loud,
-no-hallucination contract** plus **deterministic optimization** — not the Vedic
-chart. The astrology layer is a *classifier profile*, not the product.
+This repository is the **sole L.ai project**. Previously separate repos
+(`Laverna`, `CID`, `CID-Bridge`, `Athena-`) are now archived and merged here.
 
----
+## Persona
 
-## 5-minute offline assistant
+The work has a throughline you can read in a chart, cast for **14 April 1994,
+20:09 CDT, Saint Croix Falls, WI** (Lahiri sidereal):
 
-You get a plain-talking assistant that checks every factual claim before it
-answers — all on-device.
+- **Libra ascending, Jupiter in the ascendant** — the measured counselor; weigh
+  every claim on a balance.
+- **Saturn in Aquarius** — the systems architect; deterministic structure over hype.
+- **Sun in Aries (Ashwini)** — the first-mover.
+- **Moon in Taurus (Rohini)** — plain-spoken, no drama.
+
+So L.ai speaks plainly, builds on structure, and refuses to guess.
+
+## Workspace layout
+
+```
+lai/
+  proof/      L.ai · Proof  (Rust, crate laverna)
+  gate/       L.ai · Gate   (Rust, crate lai-gate + cid-wasm)
+  athena/     L.ai · Athena (Rust, crate athena)
+  bridge/     L.ai · Bridge (Node/TypeScript)
+  bin/        vendored llama.cpp engine + model drop-in
+```
+
+## Build
 
 ```bash
-# 1. Build with the local-LLM + MCP features
-cargo build --release --features "mcp websearch budget llm milp graph"
+# Whole workspace
+cargo build --workspace
 
-# 2. Fetch a small model (one command; no API key, no auth)
-./scripts/get-model.sh
+# A single function
+cargo build -p laverna          # Proof
+cargo build -p lai-gate         # Gate
+cargo build -p athena           # Athena
 
-# 3. Talk to it over MCP (any MCP client, or the bundled stdio server)
-./target/release/laverna mcp
+# WebAssembly (Proof + Gate)
+cargo build --release --target wasm32-unknown-unknown -p laverna-wasm
+cargo build --release --target wasm32-unknown-unknown -p lai-gate-wasm
+
+# Bridge (Node)
+cd bridge && npm install
 ```
 
-No model? The assistant still answers from the verified engine and tells you
-it did — it never fabricates. Run `./scripts/get-model.sh` to give it a voice.
-
-Prebuilt static binaries + the bundled llama.cpp engine are attached to each
-GitHub release (see the `laverna-x86_64-bundle.tar.gz` asset).
-
----
-
-## Architecture
-
-Four layers, deterministically composed (module names are functional):
-
-```
-Layer 3 — verify       Expression verification, diagnostics, confidence scoring
-Layer 2 — nlp/query    NLP tokenization, intent parsing, domain classification
-Layer 1 — aspect       Formula registry, entity registry, ephemeris, charts
-Layer 0 — primitive    NAND gates, descent engine, router (9-graha wheel)
-```
-
-Pipeline: `query → nlp_parse → descent_engine → query_process → verify_solve`.
-
-The embedded corpus (528 formulas, 214 entities) is compiled into the binary by
-`build.rs`, so it works from any working directory.
-
-## Build & test
+## Quick start — offline assistant (Proof + local LLM)
 
 ```bash
-# Default (minimal) build
-cargo build --release
-
-# Full-features build (all capabilities)
 cargo build --release --features "mcp websearch budget llm milp graph"
+./scripts/get-model.sh          # fetch a small model (one command)
+./target/release/laverna mcp    # talk to it over MCP
+```
 
-# CI gate
+No model? Proof still answers from the verified engine and tells you it did —
+it never fabricates.
+
+## Tests & CI
+
+```bash
 cargo fmt -- --check
-cargo clippy --features "graph,milp,llm" -- -D warnings
-cargo test --lib --features "graph,milp"
+cargo clippy --workspace --all-targets -- -D warnings
+cargo test --workspace
 ```
 
-### WebAssembly (L.ai · Proof in the browser)
-
-`laverna-wasm/` compiles the deterministic `solve` / `evaluate` / `verify` /
-`sha256` functions to a ~590KB WASM module.
-
-```bash
-cd laverna-wasm
-bash build.sh                 # -> www/ (JS + .wasm bindings)
-cd www && python3 -m http.server 8080
-# open http://localhost:8080
-```
-
-The browser demo calls the pure functions directly — no server, fully offline.
-`laverna-wasm` exposes: `init`, `evaluate(expr)`, `solve(schema_json)`,
-`verify(proof_json)`, `sha256(input)`.
-
-## Subcommands
-
-| Command | Purpose |
-|---------|---------|
-| `info` | Build/feature/corpus summary |
-| `solve` | Resolve a query through the descent cascade; `--proof-out <path>` writes a proof object |
-| `verify <path>` | Re-check a proof object produced by `solve --proof-out` |
-| `formulas` / `entities` / `entity-get` | Inspect the corpus (`--format json` supported) |
-| `chart` | Vedic chart from a datetime |
-| `route` | Route a query across repositories / the corpus |
-| `build` | Chain chart → graha weighting → optimization |
-| `optimize` | Deterministic 7-pillar / Pareto solver (knapsack, MILP, assignment, shortest-path, MST, max-flow, CSP) |
-| `websearch` | World Bank statistics lookup (ISO-3166 gazetteer) |
-| `corpus` | Corpus tooling — see below |
-| `ping` | Liveness check |
-
-### `laverna corpus`
-
-The corpus is externalized as TOML so it can be versioned and community-extended.
-
-```bash
-laverna corpus export <dir>     # write formulas.toml, entities.toml, version.toml
-laverna corpus validate [dir]   # structural Tanto parsability + graha refs + dup ids
-laverna corpus lint [dir]       # deeper: undeclared variables, missing graha tags
-laverna corpus diff <a> <b>     # JSON diff of two exported corpora
-laverna corpus graph [dir]      # DOT graph of formula input→output dependencies
-laverna corpus hash             # embedded corpus semver + content hash
-```
-
-**Community extension.** Drop `*.toml` files (with `[[formula]]` / `[[entity]]`
-tables) into `~/.laverna/corpus/` or `./corpus/`. They merge over the embedded
-seed corpus; a same-id entry **overrides** the seed. `info` reports
-`corpus-overlay` when an overlay is active.
-
-### Proof objects & MCP
-
-`laverna solve --proof-out proof.json` emits a machine-checkable proof object;
-`laverna verify proof.json` re-derives and checks it. The same surface is exposed
-over MCP (protocol `2025-11-25`) with 10 tools, including `route`, `build`, and
-`laverna_companion` (the plain-language assistant). This is the **L.ai · Proof**
-MCP surface; **L.ai · Gate** (CID) exposes 13 tools and **L.ai · Bridge** fans
-both out to chatbots. See [`docs/mcp-registry.md`](docs/mcp-registry.md) to list
-L.ai in an MCP registry.
-
-## Determinism
-
-Outputs that touch unordered collections (HashMap / petgraph results) are sorted
-by a stable key before printing or aggregating. The same inputs always yield the
-same outputs and the same proof object.
-
-## Brand
-
-Part of the **L.ai** umbrella (offline, WASM-native, fail-loud verification
-substrate). *Laverna* is the code name for **L.ai · Proof**. See
-[`docs/brand.md`](docs/brand.md). Commercial mark: **L.ai** (DBA "Wintermore
-Housekeeping"); "Laverna" is not filed as a trademark.
+CI builds the workspace, both WASM crates, and the Bridge, and attaches static
+release binaries to tagged releases.
 
 ## License
 
-Licensed under the Apache License, Version 2.0. See [LICENSE](LICENSE) and
-[NOTICE](NOTICE). Copyright 2026 nutypebuddha.
+Apache-2.0 for the whole umbrella. See [LICENSE](LICENSE) and [NOTICE](NOTICE).
+Copyright 2026 nutypebuddha.

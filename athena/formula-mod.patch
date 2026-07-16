@@ -1,0 +1,27 @@
+--- athena-src-orig/src/formula/mod.rs	2026-07-07 08:04:35.000000000 +0000
++++ athena-src/src/formula/mod.rs	2026-07-07 16:28:00.650713888 +0000
+@@ -105,6 +105,16 @@
+ 
+     /// Optional evidence or source for this formula's provability.
+     pub evidence: Option<String>,
++
++    /// Additional domains this formula is also registered under.
++    ///
++    /// Populated when a later-loaded formula file declares the same `id`
++    /// with a different `domain` (e.g. `aries_math.toml`'s "add" vs.
++    /// `mangala_math.toml`'s "add" — same content, dual Western/Vedic
++    /// cosmology). Without this, `FormulaRegistry::register` used to
++    /// silently overwrite the earlier domain tag on collision.
++    #[serde(default)]
++    pub also_domains: Vec<Domain>,
+ }
+ 
+ impl Formula {
+@@ -128,6 +138,7 @@
+             description: description.to_string(),
+             zodiac: Vec::new(),
+             evidence: None,
++            also_domains: Vec::new(),
+         }
+     }
+ 

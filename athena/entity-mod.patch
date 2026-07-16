@@ -1,0 +1,35 @@
+--- athena-src-orig/src/entity/mod.rs	2026-07-07 09:23:19.000000000 +0000
++++ athena-src/src/entity/mod.rs	2026-07-07 16:28:39.868491094 +0000
+@@ -494,10 +494,29 @@
+     // ─── Seed Entity Management (Optional Static TOML) ──────────────────
+ 
+     /// Register a seed entity from TOML data.
+-    pub fn register_seed(&mut self, seed: SeedEntity) {
++    pub fn register_seed(&mut self, mut seed: SeedEntity) {
+         let id = seed.id.clone();
+-        if self.seeds.contains_key(&id) {
+-            eprintln!("Warning: duplicate seed entity id '{}' — overwriting", id);
++        if let Some(existing) = self.seeds.get(&id) {
++            eprintln!(
++                "Warning: duplicate seed entity id '{}' — merging tags/properties instead of overwriting",
++                id
++            );
++            // Union the tag sets so the losing file's classification isn't
++            // silently discarded (e.g. entities/libra.toml vs entities/shukra.toml
++            // both declaring the same id with different tags).
++            for tag in &existing.tags {
++                if !seed.tags.contains(tag) {
++                    seed.tags.push(tag.clone());
++                }
++            }
++            // Properties/constants: keep the new file's values, but backfill
++            // any keys the new file didn't set from the existing entry.
++            for (k, v) in &existing.properties {
++                seed.properties.entry(k.clone()).or_insert(*v);
++            }
++            for (k, v) in &existing.constants {
++                seed.constants.entry(k.clone()).or_insert(*v);
++            }
+         }
+         self.seeds.insert(id, seed);
+     }

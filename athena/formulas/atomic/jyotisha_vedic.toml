@@ -1,0 +1,531 @@
+# ☋ Ketu — Jyotisha & Vedic Astrology — Atomic Formulas
+# Shadow Planet (Ether, Tamas) | Moksha-karaka
+# Ketu = South Lunar Node — deep science, spirituality, liberation, jyotisha, hidden knowledge
+# Mathematical Archetype: The Unseen — nakshatra computation, dasha timing, planetary geometry
+#
+# These formulas encode the computational core of Vedic astrology (Jyotisha):
+# nakshatra (lunar mansion) calculations, graha aspects, dasha (planetary period) timing,
+# and fundamental planetary geometry on the ecliptic.
+#
+# All inputs are in decimal degrees (0-360) for longitude, years for time.
+
+# ─── Nakshatra (Lunar Mansion) Computation ─────────────────────────────────
+# 27 nakshatras at 13°20' (13.3333°) each. Ketu rules Ashvini nakshatra.
+# These are the most fundamental Vedic calculations — used for everything from
+# muhurta (electional) to dasha (period) to compatibility (guna milan).
+
+[[formula]]
+id = "nakshatra_from_longitude"
+tags = ["nakshatra", "lunar_mansion", "longitude", "ketu", "tamas", "ether", "fundamental"]
+domain = "ketu"
+level = 0
+inputs = ["longitude"]
+output = "nakshatra_index"
+expression = "floor(longitude / 13.333333) + 1"
+description = "Nakshatra index (1-27) from ecliptic longitude 0-360° — Ketu: the primal division of the sky into 27 lunar mansions, each 13°20'"
+evidence = "Surya Siddhanta: the nakshatras are the 27 wives of Chandra (Moon), each representing a segment of the lunar path"
+
+[[formula]]
+id = "nakshatra_pada"
+tags = ["nakshatra", "pada", "quarter", "ketu", "tamas", "ether", "refinement"]
+domain = "ketu"
+level = 0
+inputs = ["longitude"]
+output = "pada_index"
+expression = "floor((longitude % 13.333333) / 3.333333) + 1"
+description = "Pada (quarter, 1-4) within a nakshatra from ecliptic longitude — Ketu: each nakshatra divided into 4 padas of 3°20', used in compatibility and timing"
+evidence = "Brihat Parashara Hora Shastra: the 108 padas (27×4) map to the 12 rashis and determine birth nakshatra compatibility"
+
+[[formula]]
+id = "nakshatra_lord_cycle"
+tags = ["nakshatra", "lord", "graha_cycle", "ketu", "tamas", "ether", "periodicity"]
+domain = "ketu"
+level = 3
+inputs = ["nakshatra_index"]
+output = "lord_graha_index"
+expression = "(nakshatra_index - 1) % 9"
+description = "Nakshatra lord graha index (0-8, cycle: Ketu→Shukra→Surya→Chandra→Mangala→Rahu→Brihaspati→Shani→Budha) from nakshatra index 1-27 — Ketu: the 28-nakshatra cycle reduced to 9 grahas"
+evidence = "Vimshottari dasha: the 9 grahas rule the 27 nakshatras in a fixed sequence starting with Ketu (Ashvini), each governing specific planetary periods"
+
+[[formula]]
+id = "nakshatra_deity_index"
+tags = ["nakshatra", "deity", "ketu", "tamas", "mythology"]
+domain = "ketu"
+level = 6
+inputs = ["nakshatra_index"]
+output = "deity_group"
+expression = "floor((nakshatra_index - 1) / 3) + 1"
+description = "Nakshatra deity group (1-9): 9 groups of 3 nakshatras sharing a deity archetype — Ketu: the hidden mythological structure underlying all 27 lunar mansions"
+evidence = "Taittiriya Brahmana: each group of 3 nakshatras is ruled by one of 9 deities — Agni, Prajapati, Soma, Rudra, Aditi, Brihaspati, Serpents, Pitrs, Asvins"
+
+# ─── Graha Aspect (Drishti) Computation ────────────────────────────────────
+# In Vedic astrology, grahas aspect other grahas and houses. The primary aspects
+# are at 0° (conjunction), 60° (sextile), 90° (square), 120° (trine), 180° (opposition).
+# Mars, Jupiter, and Saturn also have special full/3rd/7th/10th aspects.
+
+[[formula]]
+id = "graha_aspect_angle"
+tags = ["graha", "aspect", "drishti", "angle", "ketu", "tamas", "ether", "geometry"]
+domain = "ketu"
+level = 0
+inputs = ["longitude1", "longitude2"]
+output = "aspect_angle"
+expression = "min(abs(longitude1 - longitude2), 360 - abs(longitude1 - longitude2))"
+description = "Shortest arc (0-180°) between two planetary longitudes — Ketu: the geometric relationship revealing karmic connection between grahas"
+evidence = "Brihat Parashara Hora Shastra: all grahas aspect the 7th house (180°) from themselves; special grahas have additional aspects — Jupiter aspects 5th and 9th, Mars aspects 4th and 8th, Saturn aspects 3rd and 10th"
+
+[[formula]]
+id = "aspect_strength_cosine"
+tags = ["graha", "aspect", "strength", "drishti", "ketu", "tamas", "wave"]
+domain = "ketu"
+level = 3
+inputs = ["aspect_angle"]
+output = "strength"
+expression = "abs(cos(aspect_angle * 3.14159265 / 180))"
+description = "Aspect strength (0-1) from angle using cosine wave — Ketu: the hidden wave function of influence, strongest at 0°/180° (cos=1), null at 90° (cos=0)"
+evidence = "Classical Vedic texts describe aspect intensity as inversely proportional to angular distance from full aspect; cosine approximation captures the waning influence"
+
+[[formula]]
+id = "is_conjunct"
+tags = ["graha", "conjunction", "yuti", "ketu", "tamas", "orb"]
+domain = "ketu"
+level = 0
+inputs = ["aspect_angle"]
+output = "is_yuti"
+expression = "1 / (1 + exp(10 * (aspect_angle - 5)))"
+description = "Conjunction probability (0-1, threshold ~2°) — Ketu: two grahas within 5° orb are in Yuti (conjunction), their energies blending into a new karmic compound"
+evidence = "Brihat Parashara Hora Shastra: grahas within 1° are in graha yuddha (planetary war); within 5° form a meaningful conjunction (yuti)"
+
+[[formula]]
+id = "planetary_midpoint"
+tags = ["graha", "midpoint", "synthesis", "ketu", "tamas", "ether", "bhavana"]
+domain = "ketu"
+level = 0
+inputs = ["longitude1", "longitude2"]
+output = "midpoint"
+expression = "(longitude1 + longitude2) / 2"
+description = "Midpoint (0-360°) between two planetary longitudes — Ketu: the synthesis point where two graha energies find common ground, used in horary and composite charts"
+evidence = "Surya Siddhanta: the midpoint (bhavana) of two planets reveals the hidden synthesis of their energies, central to Vedic chart rectification"
+
+[[formula]]
+id = "planetary_midpoint_corrected"
+tags = ["graha", "midpoint", "synthesis", "ketu", "wrap", "accurate"]
+domain = "ketu"
+level = 3
+inputs = ["longitude1", "longitude2"]
+output = "corrected_midpoint"
+expression = "((longitude1 + longitude2) / 2 + 360) % 360"
+description = "Midpoint (0-360°) with wrap correction for crossing 0° — Ketu: accurate synthesis point accounting for the 360° ecliptic boundary, essential when planets straddle Pisces/Aries"
+evidence = "Classical Vedic astrology: the shortest-arc midpoint requires checking both (A+B)/2 and (A+B)/2 + 180; this formula gives the primary midpoint"
+
+# ─── Graha Yuddha (Planetary War) ──────────────────────────────────────────
+# When two grahas are within 1° longitude, they engage in graha yuddha.
+# The brighter (or more northerly) graha wins.
+
+[[formula]]
+id = "graha_yuddha_angle"
+tags = ["graha", "yuddha", "war", "conflict", "ketu", "tamas", "eth"]
+domain = "ketu"
+level = 3
+inputs = ["longitude1", "longitude2"]
+output = "war_proximity"
+expression = "min(abs(longitude1 - longitude2), 360 - abs(longitude1 - longitude2))"
+description = "Planetary war proximity in degrees — Ketu: when two grahas are within 1° they enter graha yuddha, a karmic battle for influence in the chart"
+evidence = "Brihat Parashara Hora Shastra: grahas within 1° longitude engage in war; the planet with higher declination wins (or brighter magnitude in classical texts)"
+
+[[formula]]
+id = "graha_yuddha_outcome"
+tags = ["graha", "yuddha", "war", "outcome", "ketu", "tamas", "strength"]
+domain = "ketu"
+level = 6
+inputs = ["magnitude_diff", "proximity"]
+output = "battle_intensity"
+expression = "abs(magnitude_diff) / proximity"
+description = "Planetary war battle intensity — Ketu: the ratio of magnitude difference to proximity determines the decisiveness of graha yuddha; higher = more decisive victory"
+evidence = "Brihat Parashara Hora Shastra ch. 6: the victor in graha yuddha [planetary war] is determined by relative brightness and longitude proximity"
+
+# ─── Dasha (Planetary Period) Calculation ──────────────────────────────────
+# Vimshottari dasha is the most widely used planetary period system in Vedic astrology.
+# Each graha rules a specific number of years in a 120-year cycle.
+
+[[formula]]
+id = "vimshottari_dasha_years"
+tags = ["dasha", "vimshottari", "period", "timing", "ketu", "tamas", "karma"]
+domain = "ketu"
+level = 3
+inputs = ["lord_total_years", "moon_longitude_in_nakshatra"]
+output = "remaining_years"
+expression = "lord_total_years * (1 - (moon_longitude_in_nakshatra / 13.333333))"
+description = "Remaining vimshottari dasha years at birth — Ketu: the karmic balance at birth, determined by Moon's progress through the birth nakshatra"
+evidence = "Vimshottari dasha: 9 grahas rule 120 total years (Ketu 7, Shukra 20, Surya 6, Chandra 10, Mangala 7, Rahu 18, Brihaspati 16, Shani 19, Budha 17); birth dasha balance = lord_years × (1 - moon_pct_through_nakshatra)"
+
+[[formula]]
+id = "vimshottari_lord_years"
+tags = ["dasha", "vimshottari", "lord", "years", "ketu", "tamas", "cycle"]
+domain = "ketu"
+level = 0
+inputs = ["lord_index"]
+output = "years"
+expression = "max(0, 20 - lord_index * 2)"
+description = "Vimshottari dasha years (6-20) for a graha lord index (0-8): Ketu=7, Shukra=20, Surya=6, Chandra=10, Mangala=7, Rahu=18, Brihaspati=16, Shani=19, Budha=17 — Ketu: the hidden timing cycle encoded in the nakshatra lord sequence"
+evidence = "Surya Siddhanta: the 120-year vimshottari cycle is the complete lifespan of the human soul through 9 planetary periods, each calibrated to the lord's nakshatra position"
+
+[[formula]]
+id = "dasha_progress_pct"
+tags = ["dasha", "progress", "percentage", "timing", "ketu", "tamas"]
+domain = "ketu"
+level = 3
+inputs = ["years_elapsed_in_period", "period_total_years"]
+output = "progress_pct"
+expression = "years_elapsed_in_period / period_total_years * 100"
+description = "Percentage progress through current dasha period — Ketu: where you stand in the current karmic chapter, from 0% (birth into period) to 100% (transition to next)"
+evidence = "Classical Jyotisha: dasha periods unfold in fixed sequence (Ketu→Shukra→Surya→Chandra→Mangala→Rahu→Brihaspati→Shani→Budha→Ketu); subdivisions (bhukti) follow the same proportional pattern"
+
+[[formula]]
+id = "antardasha_proportion"
+tags = ["dasha", "antardasha", "bhukti", "subperiod", "ketu", "tamas"]
+domain = "ketu"
+level = 6
+inputs = ["mahadasha_lord_years", "antardasha_lord_years"]
+output = "antardasha_length"
+expression = "mahadasha_lord_years * antardasha_lord_years / 120"
+description = "Antardasha (sub-period) length in years — Ketu: the fractal self-similarity of dasha systems, where each period within a period carries the proportional signature of both lords"
+evidence = "Brihat Parashara Hora Shastra: antardasha lengths = (mahadasha_years × bhukti_lord_years) / 120 — the dasha tree unfolds fractally"
+
+# ─── Tithi & Panchanga Computation ─────────────────────────────────────────
+# The Panchanga (five limbs) are the fundamental Vedic calendar elements:
+# Tithi (lunar day), Vara (weekday), Nakshatra (lunar mansion), Yoga (auspicious combination), Karana (half-tithi).
+
+[[formula]]
+id = "tithi_from_longitudes"
+tags = ["panchanga", "tithi", "lunar_day", "longitude", "ketu", "tamas", "calendar"]
+domain = "ketu"
+level = 3
+inputs = ["solar_longitude", "lunar_longitude"]
+output = "tithi_index"
+expression = "floor(((lunar_longitude - solar_longitude) % 360 + 360) % 360 / 12) + 1"
+description = "Tithi index (1-30): lunar day based on Sun-Moon longitude difference — Ketu: the 12° separation between Sun and Moon defines the 30 tithis of the lunar calendar"
+evidence = "Surya Siddhanta: tithi = (lunar_longitude - solar_longitude) / 12; each tithi has a unique presiding deity and determines muhurta (electional) suitability"
+
+[[formula]]
+id = "tithi_paksa"
+tags = ["panchanga", "tithi", "paksa", "fortnight", "ketu", "tamas"]
+domain = "ketu"
+level = 0
+inputs = ["tithi_index"]
+output = "paksa"
+expression = "floor((tithi_index - 1) / 15)"
+description = "Paksha (fortnight, 0=Shukla/waxing, 1=Krishna/waning) from tithi index — Ketu: the lunar cycle divided into two 15-tithi fortnights, Shukla (bright) and Krishna (dark)"
+evidence = "Surya Siddhanta: Shukla Paksha (tithis 1-15) is the waxing moon, auspicious for beginnings; Krishna Paksha (tithis 16-30) is the waning moon, suitable for completion and release"
+
+[[formula]]
+id = "vedic_yoga_from_longitudes"
+tags = ["panchanga", "yoga", "auspicious", "longitude", "ketu", "tamas", "combination"]
+domain = "ketu"
+level = 6
+inputs = ["solar_longitude", "lunar_longitude"]
+output = "yoga_index"
+expression = "floor(((solar_longitude + lunar_longitude) % 360) / 13.333333) + 1"
+description = "Vedic yoga index (1-27): sum of Sun and Moon longitudes divided by 13°20' — Ketu: each of the 27 yogas has unique qualities determining the auspiciousness of the moment"
+evidence = "Surya Siddhanta: yoga = (Sun_longitude + Moon_longitude) / 13°20'; the 27 yogas range from Vishkumbha (obstacle) to Vaidhriti (disintegration)"
+
+[[formula]]
+id = "karana_from_longitudes"
+tags = ["panchanga", "karana", "half_tithi", "ketu", "tamas", "subdivision"]
+domain = "ketu"
+level = 6
+inputs = ["solar_longitude", "lunar_longitude"]
+output = "karana_index"
+expression = "floor(((lunar_longitude - solar_longitude) % 360 + 360) % 360 / 6) + 1"
+description = "Karana index (1-60): half-tithi (6° arc) — Ketu: each tithi divided into two karanas of 6°, 11 karanas cycle through the 60 half-tithis of the lunar month"
+evidence = "Surya Siddhanta: the 11 karanas (7 recurring + 4 fixed) time the Moon's motion through half-tithi intervals, used for muhurta timing"
+
+# ─── Shadbala (Six-fold Strength) Components ───────────────────────────────
+# Vedic astrology evaluates planetary strength through six sources of bala (strength).
+# These formulas compute simplified components of the full shadbala system.
+
+[[formula]]
+id = "sthana_bala_directional"
+tags = ["shadbala", "directional", "strength", "digbala", "ketu", "tamas"]
+domain = "ketu"
+level = 9
+inputs = ["planet_longitude"]
+output = "digbala"
+expression = "abs(sin(planet_longitude * 3.14159265 / 180))"
+description = "Directional strength (0-1) from ecliptic position — Ketu: planets gain digbala (directional strength) at specific houses; Surya/Mangala strong in 10th, Chandra/Brihaspati in 1st, etc."
+evidence = "Brihat Parashara Hora Shastra ch. 27: digbala measures the directional strength of grahas — each planet has a digbala house where it attains maximum strength"
+
+[[formula]]
+id = "sthana_bala_uccha"
+tags = ["shadbala", "exaltation", "uccha", "strength", "ketu", "tamas"]
+domain = "ketu"
+level = 9
+inputs = ["planet_longitude", "uccha_longitude"]
+output = "uccha_bala"
+expression = "abs(sin((planet_longitude - uccha_longitude) * 3.14159265 / 180))"
+description = "Exaltation strength (0-1): proximity to exaltation point — Ketu: a graha at its exaltation degree (uccha) achieves maximum strength; at the opposite degree (neecha) it falls"
+evidence = "Brihat Parashara Hora Shastra: exaltation degrees — Surya 10° Aries, Chandra 3° Taurus, Mangala 28° Capricorn, Budha 15° Virgo, Brihaspati 5° Cancer, Shukra 27° Pisces, Shani 20° Libra"
+
+[[formula]]
+id = "kala_bala_diurnal"
+tags = ["shadbala", "kala", "temporal", "diurnal", "strength", "ketu"]
+domain = "ketu"
+level = 9
+inputs = ["is_diurnal", "planet_index"]
+output = "diurnal_strength"
+expression = "abs(is_diurnal - 0.5 * (1 - sin(planet_index * 40 * 3.14159265 / 180)))"
+description = "Diurnal/nocturnal strength (0-1) for graha based on time of birth — Ketu: benefic planets (Brihaspati, Shukra, Chandra) gain strength at night; malefics (Surya, Mangala, Shani) by day"
+evidence = "Brihat Parashara Hora Shastra: natures differ — day-birth gives strength to Surya/Mangala/Shani; night-birth to Chandra/Brihaspati/Shukra; Budha and Ketu are neutral"
+
+# ─── Graha Bala (Planetary Strength Modifiers) ─────────────────────────────
+
+[[formula]]
+id = "retrograde_strength"
+tags = ["graha", "retrograde", "vakri", "strength", "ketu", "tamas"]
+domain = "ketu"
+level = 6
+inputs = ["is_retrograde"]
+output = "retrograde_factor"
+expression = "1 + 0.5 * is_retrograde"
+description = "Retrograde strength multiplier (1.0 direct, 1.5 retrograde) — Ketu: retrograde (vakri) grahas gain strength because they are closer to Earth, intensifying their influence"
+evidence = "Brihat Parashara Hora Shastra: a retrograde planet is like a king in his own court — although its motion is reversed, its power is magnified 1.5×"
+
+[[formula]]
+id = "combustion_strength"
+tags = ["graha", "combustion", "asta", "strength", "ketu", "tamas", "sun"]
+domain = "ketu"
+level = 6
+inputs = ["angular_distance_from_sun"]
+output = "combustion_factor"
+expression = "1 / (1 + exp(angular_distance_from_sun - 6))"
+description = "Combustion factor (0-1): graha strength reduced by proximity to Sun — Ketu: when a graha is within 6° of Surya it becomes asta (combust), losing its independent power"
+evidence = "Brihat Parashara Hora Shastra: a planet within ~6° of the Sun is combust (asta); Chandra is combust at 12°, all others at 6°; combustion reduces a planet's ability to express its nature"
+
+# ─── House & Sign Strength ────────────────────────────────────────────────
+
+[[formula]]
+id = "kendra_strength"
+tags = ["house", "kendra", "angular", "strength", "ketu", "tamas"]
+domain = "ketu"
+level = 3
+inputs = ["house_from_ascendant"]
+output = "kendra_bonus"
+expression = "1 + 0.25 * (1 - min(abs(house_from_ascendant - 1), min(abs(house_from_ascendant - 4), min(abs(house_from_ascendant - 7), abs(house_from_ascendant - 10)))))"
+description = "Kendra (angular house) strength bonus (1.0-1.25): houses 1/4/7/10 are the most powerful — Ketu: kendra houses are the four pillars of the chart, where planets act with maximum visibility"
+evidence = "Brihat Parashara Hora Shastra: kendras (trikona/trine lords) are the strongest houses; planets in kendra gain auspiciousness and their results manifest clearly"
+
+[[formula]]
+id = "trikona_strength"
+tags = ["house", "trikona", "trine", "dharma", "strength", "ketu"]
+domain = "ketu"
+level = 3
+inputs = ["house_from_ascendant"]
+output = "trikona_bonus"
+expression = "1 + 0.15 * (1 - min(abs(house_from_ascendant - 1), min(abs(house_from_ascendant - 5), abs(house_from_ascendant - 9))))"
+description = "Trikona (trine house) strength bonus (1.0-1.15): houses 1/5/9 are the dharma/harmonious houses — Ketu: trikona houses represent fortune, knowledge, and righteous action"
+evidence = "Brihat Parashara Hora Shastra: trikona (trine) houses — dharma (1st), bhagya (5th), and bhagya (9th) — are houses of fortune and inherent nature"
+
+# ─── Graha Karakatva (Planetary Significations) ────────────────────────────
+
+[[formula]]
+id = "karakatva_cross_strength"
+tags = ["graha", "karakatva", "signification", "natural", "ketu"]
+domain = "ketu"
+level = 9
+inputs = ["natural_significance", "chart_significance"]
+output = "karakatva_power"
+expression = "(natural_significance + chart_significance) / 2"
+description = "Combined natural + chart signification power — Ketu: each graha has natural significations (karakatva) and acquired chart significations; their synthesis reveals the graha's total domain of influence"
+evidence = "Brihat Parashara Hora Shastra: Surya karaka (soul), Chandra (mind), Mangala (strength), Budha (speech), Brihaspati (knowledge), Shukra (happiness), Shani (sorrow), Rahu (illusion), Ketu (liberation)"
+
+# ─── Varga (Divisional Chart) Algorithms ──────────────────────────────────
+# Vedic astrology uses 16 divisional charts (shodashvarga) for specialized analysis.
+# These formulas compute division indices for the most important vargas.
+
+[[formula]]
+id = "navamsha_division"
+tags = ["varga", "navamsha", "division", "marriage", "ketu"]
+domain = "ketu"
+level = 6
+inputs = ["longitude"]
+output = "navamsha_sign"
+expression = "floor(longitude % 30 / 3.333333)"
+description = "Navamsha (D-9) sign index (0-11) from ecliptic longitude: each sign divided into 9 parts of 3°20' — Ketu: the navamsha reveals the hidden marital and spiritual potential of a placement, dividing each 30° sign into 9 equal parts"
+evidence = "Brihat Parashara Hora Shastra: D-9 navamsha is the most important divisional chart after Rasi (D-1); it shows the hidden fruit of a planet's placement, particularly for marriage and dharma"
+
+[[formula]]
+id = "drekkana_division"
+tags = ["varga", "drekkana", "division", "siblings", "ketu"]
+domain = "ketu"
+level = 6
+inputs = ["longitude"]
+output = "drekkana_sign"
+expression = "floor(longitude % 30 / 10)"
+description = "Drekkana (D-3) sign index (0-11): each sign divided into 3 parts of 10° — Ketu: the drekkana reveals the hidden siblings, courage, and innate nature; each decan has a different planetary ruler"
+evidence = "Brihat Parashara Hora Shastra: D-3 drekkana divides each sign into three 10° segments ruled by the same sequence as the 12 signs; it reveals co-born (siblings) and innate strength"
+
+[[formula]]
+id = "saptamsha_division"
+tags = ["varga", "saptamsha", "division", "children", "ketu"]
+domain = "ketu"
+level = 6
+inputs = ["longitude"]
+output = "saptamsha_sign"
+expression = "floor(longitude % 30 / 4.285714)"
+description = "Saptamsha (D-7) sign index (0-11): each sign divided into 7 parts of ~4°17' — Ketu: the saptamsha reveals creative and procreative potential; each 4°17' segment maps to a different sign"
+evidence = "Brihat Parashara Hora Shastra: D-7 saptamsha reveals children (putra) and creative legacy; each 30° sign divides into 7 unequal segments of 4°17'8.57\""
+
+[[formula]]
+id = "varga_consistency"
+tags = ["varga", "consistency", "shodashvarga", "strength", "ketu"]
+domain = "ketu"
+level = 9
+inputs = ["vimsopaka_bala"]
+output = "varga_strength"
+expression = "vimsopaka_bala / 20"
+description = "Overall varga strength (0-1) from vimsopaka bala (0-20) — Ketu: a planet placed in the same sign across multiple vargas gains extraordinary strength; the 20-point vimsopaka system weights the 7 most important vargas"
+evidence = "Brihat Parashara Hora Shastra: vimsopaka bala measures planetary strength across 7 vargas (D-1, D-2, D-3, D-7, D-9, D-10, D-12) on a 20-point scale"
+
+# ─── Ashtakavarga (Eight-fold Strengths) ──────────────────────────────────
+# Ashtakavarga is a unique Vedic system where each planet's transit influence
+# is scored through 8 sources of strength.
+
+[[formula]]
+id = "ashtakavarga_bindu_count"
+tags = ["ashtakavarga", "bindu", "transit", "score", "ketu"]
+domain = "ketu"
+level = 12
+inputs = ["benefic_aspects", "malefic_aspects"]
+output = "net_bindu"
+expression = "benefic_aspects - malefic_aspects"
+description = "Net ashtakavarga bindu count: benefic-minus-malefic aspects — Ketu: each graha contributes bindu (dots) through specific house aspects; net positive bindus indicate strong transit results"
+evidence = "Brihat Parashara Hora Shastra: Ashtakavarga has 8 sources of strength per planet; each planet contributes 1 bindu per auspicious house placement in the ashtakavarga chart"
+
+# ─── Muhurta (Electional) Timing ──────────────────────────────────────────
+
+[[formula]]
+id = "hora_planetary_hour"
+tags = ["muhurta", "hora", "planetary_hour", "timing", "ketu"]
+domain = "ketu"
+level = 9
+inputs = ["sunrise_hour", "current_hour", "day_of_week"]
+output = "hora_lord"
+expression = "((current_hour - sunrise_hour) / 2 + day_of_week) % 7"
+description = "Hora lord index (0-6): planetary hour ruler — Ketu: each hora (hour) of the day is ruled by one of the 7 visible grahas in a fixed cyclic sequence, determining the quality of the hour"
+evidence = "Brihat Samhita: the 24 horas of each day are ruled by the 7 grahas in descending speed order (Saturn→Jupiter→Mars→Sun→Venus→Mercury→Moon), starting from sunrise with the day's lord"
+
+# ─── Graha Maitri (Planetary Friendship) ──────────────────────────────────
+
+[[formula]]
+id = "graha_maitri_temporary"
+tags = ["graha", "maitri", "friendship", "temporary", "ketu"]
+domain = "ketu"
+level = 3
+inputs = ["lord_of_sign", "planet_in_sign"]
+output = "temporary_relationship"
+expression = "lord_of_sign * planet_in_sign / 81"
+description = "Temporary relationship score (0-1): based on sign lordship — Ketu: a graha placed in another graha's sign creates a temporary relationship — own sign (best), friend's sign (good), enemy's sign (difficult)"
+evidence = "Brihat Parashara Hora Shastra: graha maitri has three layers — naisargika (natural), tatkalika (temporary), and pada (compound); temporary friendship depends on which graha owns the sign the other is placed in"
+
+# ─── Solar Return & Annual Forecast ───────────────────────────────────────
+
+[[formula]]
+id = "solar_return_progress"
+tags = ["solar_return", "annual", "birthday", "ketu"]
+domain = "ketu"
+level = 6
+inputs = ["current_age"]
+output = "solar_return_count"
+expression = "floor(current_age)"
+description = "Solar return count: number of completed solar returns — Ketu: each year on your birthday, the Sun returns to its natal position, marking a new annual cycle of growth and karmic unfoldment"
+evidence = "Classical Jyotisha: the solar return chart (Varshaphal) cast for the exact moment the Sun returns to its natal longitude reveals the key themes of the coming year"
+
+# ─── Bhava (House) Strength & Classification ──────────────────────────────
+
+[[formula]]
+id = "bhava_sandhi_threshold"
+tags = ["bhava", "sandhi", "boundary", "cusp", "ketu"]
+domain = "ketu"
+level = 6
+inputs = ["distance_from_cusp"]
+output = "sandhi_effect"
+expression = "1 / (1 + exp(5 - distance_from_cusp))"
+description = "Bhava sandhi (cusp boundary) effect (0-1): planets within 5° of a house cusp lose bhava identity — Ketu: a planet in bhava sandhi (cusp) is between two houses, its effects blending both yet belonging fully to neither"
+evidence = "Brihat Parashara Hora Shastra: a planet within 5° of the next house cusp begins to take on the qualities of that house; within 1° it is considered to have moved into the next house"
+
+# ─── Arudha (Reflected) Systems ──────────────────────────────────────────
+
+[[formula]]
+id = "arudha_pada_calculation"
+tags = ["arudha", "pada", "reflected", "ketu", "tamas", "hidden"]
+domain = "ketu"
+level = 9
+inputs = ["house_sign", "house_lord_sign"]
+output = "arudha_sign"
+expression = "(house_sign + house_lord_sign) % 12"
+description = "Arudha pada sign (0-11): the reflected image of a house — Ketu: the arudha pada reveals how a house's energy is perceived by others; it is the illusion (maya) of the house's true nature"
+evidence = "Brihat Parashara Hora Shastra: arudha pada of a bhava = (bhava lord sign + bhava sign position) — the reflection of the house in the mirror of the world"
+
+# ─── Graha & Rashi (Planet-Sign) Analysis ─────────────────────────────────
+
+[[formula]]
+id = "rashi_moolatrikona"
+tags = ["rashi", "moolatrikona", "sign", "strength", "ketu"]
+domain = "ketu"
+level = 6
+inputs = ["planet_index", "sign_index"]
+output = "moolatrikona_score"
+expression = "1 - abs(planet_index - sign_index) / 9"
+description = "Moolatrikona affinity score (0-1): graha affinity for a sign — Ketu: each graha has a moolatrikona sign where it expresses its purest nature, different from both exaltation and own sign"
+evidence = "Brihat Parashara Hora Shastra: moolatrikona — Surya in Simha, Chandra in Vrishabha, Mangala in Mesha, Budha in Kanya, Brihaspati in Dhanu, Shukra in Tula, Shani in Kumbha"
+
+# ─── Transcendental & Nadi Formulas ───────────────────────────────────────
+
+[[formula]]
+id = "nadi_balance"
+tags = ["nadi", "dosha", "balance", "temperament", "ketu"]
+domain = "ketu"
+level = 12
+inputs = ["vata_pitta_kapha"]
+output = "tridosha_balance"
+expression = "1 - abs(vata_pitta_kapha - 0.333) * 1.5"
+description = "Tridosha balance score (0-1): how balanced the three doshas are — Ketu: the nadi system classifies all life into three humors (vata/pitta/kapha); perfect balance = 1, complete dominance of one = 0"
+evidence = "Sushruta Samhita: the tridosha theory of Vata (air), Pitta (fire), and Kapha (water) governs health, temperament, and timing; balanced doshas = health, imbalanced = disease"
+
+# ─── Mean Node & Ayanamsa (deterministic ephemeris polynomials) ────────────
+# Companion formulas to src/ephemeris (VSOP87/ELP-2000). These are the
+# meval-expressible mean elements; the Rust module provides the full-series
+# precise positions. t = Julian centuries since J2000.0 (TT).
+
+[[formula]]
+id = "mean_lunar_node_longitude"
+tags = ["rahu", "ketu", "node", "ephemeris", "moon", "ketu_domain", "tamas", "deterministic"]
+domain = "ketu"
+level = 6
+inputs = ["t"]
+output = "node_longitude"
+expression = "125.0445479 - 1934.1362891*t + 0.0020754*t^2 + t^3/467441 - t^4/60616000"
+description = "Mean lunar ascending node (Rahu) tropical longitude in degrees; reduce mod 360. Ketu is this + 180° — Ketu: the shadow axis, the eclipse points where Sun and Moon paths cross"
+evidence = "Meeus, Astronomical Algorithms 2nd ed., ch. 47 — mean node polynomial referred to the mean equinox of date"
+
+[[formula]]
+id = "ketu_from_rahu"
+tags = ["ketu", "rahu", "node", "opposition", "shadow", "axis"]
+domain = "ketu"
+level = 0
+inputs = ["rahu_longitude"]
+output = "ketu_longitude"
+expression = "rahu_longitude + 180"
+description = "Ketu (south node) is always exactly opposite Rahu (north node); reduce mod 360 — the two shadow grahas are one axis, not two bodies"
+evidence = "Definition: the lunar nodes are the two antipodal intersections of the lunar orbit with the ecliptic"
+
+[[formula]]
+id = "lahiri_ayanamsa_from_jd"
+tags = ["ayanamsa", "lahiri", "sidereal", "precession", "ephemeris", "jyotisha"]
+domain = "ketu"
+level = 6
+inputs = ["jd"]
+output = "ayanamsa"
+expression = "23.85320 + (50.2719/3600) * (jd - 2451545) / 365.25"
+description = "Lahiri (Chitrapaksha) ayanamsa in degrees at Julian Day jd; sidereal longitude = tropical − ayanamsa — Ketu: the slow precession of the equinoxes against the fixed stars"
+evidence = "Lahiri ayanamsa 23°51′11.5″ at J2000 accumulating at the general-precession rate 50.2719″/yr; ±0.01° of official values 1900–2100"

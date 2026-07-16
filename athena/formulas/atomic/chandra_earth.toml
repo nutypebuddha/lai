@@ -1,0 +1,264 @@
+# ♋ Cancer — Earth & Environment — Atomic Formulas
+# Cardinal Water | 4th House | Ruler: Moon | Exaltation: Jupiter | Fall: Mars | Detriment: Saturn
+# Element: Water (fluid, cycles, tides, nurturing, protection, intuition, memory, flow)
+# Modality: Cardinal (initiation, beginnings, leadership, protective action, emotional drive)
+# House: 4th (home, roots, foundation, inner world, emotional security, ancestry, shelter)
+# Anatomical: Breast, stomach (nurturing, digestion, protection, containment, assimilation)
+# Mathematical Archetype: The Tide — fluid cycles, phase transitions, protective boundaries, homeostatic regulation, Moon-driven rhythms
+
+# ─── Water: Fluid Dynamics & Hydrostatics (Moon = Tides, Water = Flow) ────────
+# Cardinal Water = initiating flow, protective currents, nurturing circulation.
+
+[[formula]]
+id = "hydrostatic_pressure"
+tags = ["fluid", "pressure", "water", "cardinal", "moon", "depth", "fourth_house"]
+domain = "chandra"
+level = 3
+inputs = ["density", "gravity", "depth"]
+output = "pressure"
+expression = "density * gravity * depth"
+description = "Hydrostatic pressure: P = ρgh — Cardinal Water: pressure from fluid weight, Moon tides, 4th House foundation"
+evidence = "Force balance: dP/dz = -ρg → P = P₀ + ρgh — exact for incompressible fluid in gravity field"
+
+[[formula]]
+id = "buoyant_force"
+tags = ["fluid", "buoyancy", "archimedes", "water", "cardinal", "moon", "displacement"]
+domain = "chandra"
+level = 6
+inputs = ["fluid_density", "displaced_volume", "gravity"]
+output = "buoyant_force"
+expression = "fluid_density * displaced_volume * gravity"
+description = "Archimedes' principle: F_b = ρ_fluid·V_displaced·g — Cardinal Water: upward support, Moon lifts, nurturing buoyancy"
+evidence = "Pressure integration: ∮P·dA = ρgV — net upward force equals weight of displaced fluid"
+
+[[formula]]
+id = "bernoulli_equation"
+tags = ["fluid", "flow", "bernoulli", "water", "mutable", "energy", "conservation"]
+domain = "chandra"
+level = 9
+inputs = ["pressure", "density", "velocity", "height", "gravity"]
+output = "total_head"
+expression = "pressure + 0.5 * density * velocity^2 + density * gravity * height"
+description = "Bernoulli: P + ½ρv² + ρgh = constant — Water: energy conservation along streamline, flow harmony"
+evidence = "Euler equation integrated: dP + ρv·dv + ρg·dh = 0 — exact for steady, inviscid, incompressible flow"
+
+[[formula]]
+id = "reynolds_number"
+tags = ["fluid", "flow", "turbulence", "laminar", "dimensionless", "water", "transition"]
+domain = "chandra"
+level = 9
+inputs = ["density", "velocity", "length", "viscosity"]
+output = "reynolds"
+expression = "density * velocity * length / viscosity"
+description = "Reynolds number: Re = ρvL/μ — Water: flow regime, transition from laminar (nurture) to turbulent (chaos)"
+evidence = "Dimensional analysis: ratio of inertial to viscous forces — similarity parameter from Navier-Stokes"
+
+[[formula]]
+id = "navier_stokes_incompressible"
+tags = ["fluid", "navier_stokes", "pde", "water", "exact", "momentum"]
+domain = "chandra"
+level = 12
+inputs = ["velocity_x", "velocity_y", "velocity_z", "pressure", "density", "viscosity"]
+output = "momentum_residual"
+expression = "density * (velocity_x + velocity_y + velocity_z) + pressure - viscosity"
+description = "Navier-Stokes (incompressible): ρ(∂u/∂t + u·∇u) = -∇P + μ∇²u — Water: exact momentum, Millennium problem"
+evidence = "Newton's 2nd law for fluid element: mass × acceleration = pressure force + viscous force + body force"
+
+# ─── Water: Phase Transitions & Thermodynamics (Cardinal = Phase Boundaries) ──
+# Cardinal Water = initiating phase change, latent heat, protective boundaries (ice shell, membrane).
+
+[[formula]]
+id = "clausius_clapeyron"
+tags = ["thermodynamics", "phase", "transition", "water", "cardinal", "latent_heat", "boundary"]
+domain = "chandra"
+level = 12
+inputs = ["latent_heat", "temperature", "delta_volume"]
+output = "dP_dT"
+expression = "latent_heat / (temperature * delta_volume)"
+description = "Clausius-Clapeyron: dP/dT = L/(TΔV) — Cardinal Water: phase boundary slope, Water phase transitions"
+evidence = "Gibbs free energy equality: g₁ = g₂ along coexistence → dP/dT = Δs/Δv = L/(TΔv) — exact equilibrium"
+
+[[formula]]
+id = "latent_heat_vaporization"
+tags = ["thermodynamics", "phase", "water", "latent", "heat", "vaporization", "energy"]
+domain = "chandra"
+level = 9
+inputs = ["mass", "latent_heat_vap"]
+output = "energy"
+expression = "mass * latent_heat_vap"
+description = "Latent heat: Q = mL — Water: energy for phase change, Cardinal: initiation of transformation"
+evidence = "First law: ΔU = Q - W; at constant T,P: Q = ΔH = mL — measurable via calorimetry"
+
+[[formula]]
+id = "dew_point"
+tags = ["thermodynamics", "water", "vapor", "condensation", "humidity", "saturation"]
+domain = "chandra"
+level = 6
+inputs = ["temperature", "relative_humidity"]
+output = "dew_point"
+expression = "temperature - (100 - relative_humidity) / 5"
+description = "Dew point approximation: T_d ≈ T - (100-RH)/5 — Water: condensation threshold, protective moisture"
+evidence = "Magnus formula: T_d = (b·γ)/(a-γ) where γ = ln(RH/100) + aT/(b+T), a=17.27, b=237.7°C"
+
+[[formula]]
+id = "heat_transfer_conduction"
+tags = ["thermodynamics", "heat", "conduction", "water", "fourier", "diffusion", "fourth_house"]
+domain = "chandra"
+level = 9
+inputs = ["thermal_conductivity", "area", "temp_gradient", "thickness"]
+output = "heat_flux"
+expression = "thermal_conductivity * area * temp_gradient / thickness"
+description = "Fourier's law: q = -kA∇T — 4th House: heat through protective shell, Water diffusive nurturing"
+evidence = "Fourier's law derived from kinetic theory: q = -k∇T — exact for linear response regime"
+
+[[formula]]
+id = "heat_transfer_convection"
+tags = ["thermodynamics", "heat", "convection", "water", "fluid", "nusselt", "cardinal"]
+domain = "chandra"
+level = 9
+inputs = ["nusselt", "thermal_conductivity", "length", "temp_diff"]
+output = "heat_flux"
+expression = "nusselt * thermal_conductivity * temp_diff / length"
+description = "Convection: q = Nu·kΔT/L — Cardinal Water: fluid-driven heat transfer, Moon-driven circulation"
+evidence = "Nu = hL/k from boundary layer theory — exact for laminar: Nu = 3.66 (pipe), Nu = 0.664 Re¹ᐟ² Pr¹ᐟ³ (plate)"
+
+# ─── Moon: Tidal Forces & Cycles (Ruler = Moon, Exaltation = Jupiter) ─────────
+# Moon rules Cancer = tidal rhythms, cycles, memory, periodic forcing, nurturing periodicity.
+
+[[formula]]
+id = "tidal_potential"
+tags = ["tidal", "moon", "potential", "gravity", "cancer", "ruler", "periodic"]
+domain = "chandra"
+level = 12
+inputs = ["G", "moon_mass", "earth_radius", "distance", "latitude"]
+output = "tidal_potential"
+expression = "G * moon_mass * earth_radius^2 / distance^3 * (3 * sin(latitude)^2 - 1) / 2"
+description = "Tidal potential: V = GM_moon·R²/d³ · (3sin²φ-1)/2 — Moon ruler: lunar potential, Cancer cycles"
+evidence = "Legendre expansion of 1/|r-r'|: P₂(cosθ) = (3cos²θ-1)/2 — exact quadrupole potential"
+
+[[formula]]
+id = "tidal_amplitude"
+tags = ["tidal", "moon", "amplitude", "ocean", "cancer", "water", "response"]
+domain = "chandra"
+level = 9
+inputs = ["tidal_potential", "gravity", "love_number"]
+output = "tide_height"
+expression = "love_number * tidal_potential / gravity"
+description = "Equilibrium tide: h = k₂·V/g — Moon ruler: ocean response, Water flexibility, Cancer nurturing"
+evidence = "Love number k₂ ≈ 0.3 for Earth — ratio of actual deformation to equilibrium tide"
+
+[[formula]]
+id = "spring_neap_cycle"
+tags = ["tidal", "spring", "neap", "moon", "sun", "cycle", "cancer", "periodic"]
+domain = "chandra"
+level = 6
+inputs = ["moon_phase_angle"]
+output = "tidal_range_factor"
+expression = "1 + 0.46 * cos(moon_phase_angle)"
+description = "Spring-neap modulation: range = M₂(1 + 0.46cosΔφ) — Moon ruler: fortnightly cycle, Water memory"
+evidence = "M₂ + S₂ constituents: spring (Δφ=0) = 1.46×M₂, neap (Δφ=π) = 0.54674×M₂ — harmonic superposition"
+
+[[formula]]
+id = "circadian_oscillator"
+tags = ["biology", "circadian", "oscillator", "cycle", "moon", "cancer", "period", "rhythm"]
+domain = "chandra"
+level = 12
+inputs = ["period_hours", "damping", "forcing_strength", "zeitgeber_period"]
+output = "entrainment_range"
+expression = "2 * forcing_strength / (period_hours - zeitgeber_period)"
+description = "Circadian entrainment: Arnold tongue width — Moon ruler: 24h cycle, Cancer: internal clock, rhythmic nurturing"
+evidence = "Kuramoto model: dθ/dt = ω + K sin(ψ-θ) — entrainment when |ω-Ω| < K — phase locking exact for weak forcing"
+
+# ─── 4th House: Protection, Boundaries, Roots, Foundation ─────────────────────
+# 4th House = home, shelter, protective shell, emotional foundation, ancestral memory.
+
+[[formula]]
+id = "diffusion_equation"
+tags = ["diffusion", "pde", "water", "fick", "fourth_house", "protection", "membrane"]
+domain = "chandra"
+level = 12
+inputs = ["diffusion_coeff", "concentration_gradient", "time"]
+output = "flux"
+expression = "-diffusion_coeff * concentration_gradient"
+description = "Fick's first law: J = -D∇c — 4th House: transport across protective boundary, Water permeable shield"
+evidence = "Random walk derivation: D = λ²/2τ — Einstein relation D = μkT — exact for dilute solutes"
+
+[[formula]]
+id = "membrane_potential"
+tags = ["biophysics", "membrane", "potential", "nernst", "fourth_house", "boundary", "protection"]
+domain = "chandra"
+level = 12
+inputs = ["R", "T", "z", "F", "conc_out", "conc_in"]
+output = "nernst_potential"
+expression = "R * T / (z * F) * log(conc_out / conc_in)"
+description = "Nernst potential: E = RT/zF ln([out]/[in]) — 4th House: electrochemical boundary, Water ionic shield"
+evidence = "Boltzmann distribution at equilibrium: μ_in + zFE = μ_out → E = (μ_out-μ_in)/zF = RT/zF ln(c_out/c_in)"
+
+[[formula]]
+id = "osmotic_pressure"
+tags = ["thermodynamics", "osmosis", "pressure", "water", "fourth_house", "membrane", "van_t_hoff"]
+domain = "chandra"
+level = 9
+inputs = ["concentration", "R", "T"]
+output = "osmotic_pressure"
+expression = "concentration * R * T"
+description = "Van't Hoff: π = iCRT — 4th House: osmotic protection, Water potential, cellular homeostasis"
+evidence = "Ideal solution chemical potential: μ = μ₀ + RT ln a → πV = nRT — exact for dilute ideal solutions"
+
+[[formula]]
+id = "surface_tension"
+tags = ["fluid", "surface", "tension", "water", "fourth_house", "boundary", "protection", "young_laplace"]
+domain = "chandra"
+level = 9
+inputs = ["surface_tension", "radius1", "radius2"]
+output = "pressure_jump"
+expression = "surface_tension * (1/radius1 + 1/radius2)"
+description = "Young-Laplace: ΔP = γ(1/R₁ + 1/R₂) — 4th House: protective surface, Water membrane, spherical shield"
+evidence = "Force balance: 2πRγ = πR²ΔP → ΔP = 2γ/R for sphere — exact equilibrium at curved interface"
+
+# ─── Cardinal: Initiation of Cycles, Seasonal Forcing ─────────────────────────
+# Cardinal = initiating seasonal cycles, solstice/equinox boundaries, annual rhythms.
+
+[[formula]]
+id = "solar_declination"
+tags = ["astronomy", "solar", "declination", "season", "cardinal", "solstice", "equinox"]
+domain = "chandra"
+level = 6
+inputs = ["day_of_year"]
+output = "declination_degrees"
+expression = "-23.44 * cos(2 * pi * (day_of_year + 10) / 365.25)"
+description = "Solar declination: δ = -ε cos(2π(t+10)/365) — Cardinal: seasonal initiation, Cancer solstice gate"
+evidence = "Spherical astronomy: sin δ = sin ε sin λ_sun — exact for obliquity ε = 23.44°"
+
+[[formula]]
+id = "insolation"
+tags = ["climate", "insolation", "solar", "radiation", "latitude", "season", "cardinal"]
+domain = "chandra"
+level = 9
+inputs = ["solar_constant", "declination", "latitude", "hour_angle"]
+output = "insolation"
+expression = "solar_constant * (sin(latitude)*sin(declination) + cos(latitude)*cos(declination)*cos(hour_angle))"
+description = "Daily insolation: S₀(cosθ) — Cardinal: seasonal solar forcing, Cancer: summer solstice maximum"
+evidence = "Spherical trigonometry: cosθ = sinφ sinδ + cosφ cosδ cosh — exact instantaneous solar flux"
+
+[[formula]]
+id = "milankovitch_cycles"
+tags = ["climate", "milankovitch", "orbital", "cycles", "cardinal", "long_term", "precession"]
+domain = "chandra"
+level = 12
+inputs = ["eccentricity", "obliquity", "precession_index"]
+output = "insolation_anomaly"
+expression = "eccentricity * cos(precession_index) * sin(obliquity)"
+description = "Milankovitch forcing: precession × obliquity × eccentricity — Cardinal: long cycle initiation, Cancer deep time"
+evidence = "Berger 1978: exact orbital elements from celestial mechanics — deterministic chaos on 10⁵-10⁶ year scales"
+
+[[formula]]
+id = "greenhouse_forcing"
+tags = ["climate", "greenhouse", "forcing", "co2", "radiative", "cardinal", "water_vapor"]
+domain = "chandra"
+level = 12
+inputs = ["co2_concentration", "co2_reference"]
+output = "radiative_forcing"
+expression = "5.35 * log(co2_concentration / co2_reference)"
+description = "CO₂ radiative forcing: ΔF = 5.35 ln(C/C₀) — Cardinal: forcing initiation, Water: vapor feedback amplification"
+evidence = "Myhre et al. 1998: line-by-line radiative transfer — logarithmic from saturation of absorption bands"

@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "athena": {
+      "command": "/root/athena/scripts/athena-mcp.sh",
+      "args": [],
+      "env": {},
+      "description": "Athena — deterministic cross-domain reasoning engine. Compact, token-saving responses by default (detail:\"full\" to override; athena_savings reports tokens saved). Tools: validate, traverse, compose, formula_search, wheel, reason, evaluate, classify, gyro, entity_*, savings."
+    }
+  }
+}

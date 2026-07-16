@@ -1,0 +1,37 @@
+# Non-math formulas: Logic patterns (Aries / Logic)
+[[logic]]
+id = "modus_ponens"
+form = "If P then Q. P. Therefore Q."
+premises = ["If P then Q", "P"]
+conclusion = "Q"
+is_valid = true
+
+[[logic]]
+id = "modus_tollens"
+form = "If P then Q. Not Q. Therefore not P."
+premises = ["If P then Q", "Not Q"]
+conclusion = "Not P"
+is_valid = true
+
+[[logic]]
+id = "syllogism"
+form = "All A are B. All B are C. Therefore all A are C."
+premises = ["All A are B", "All B are C"]
+conclusion = "All A are C"
+is_valid = true
+
+[[logic]]
+id = "affirming_consequent"
+form = "If P then Q. Q. Therefore P."
+premises = ["If P then Q", "Q"]
+conclusion = "P"
+is_valid = false
+counterexample = "If it rains, the ground is wet. The ground is wet. Therefore it rained. (Could be from sprinklers)"
+
+[[logic]]
+id = "denying_antecedent"
+form = "If P then Q. Not P. Therefore not Q."
+premises = ["If P then Q", "Not P"]
+conclusion = "Not Q"
+is_valid = false
+counterexample = "If it rains, the ground is wet. It did not rain. Therefore the ground is not wet. (Could be from sprinklers)"

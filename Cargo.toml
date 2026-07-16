@@ -1,88 +1,27 @@
-[package]
-name = "laverna"
-version = "0.3.0"
+[workspace]
+resolver = "2"
+members = [
+    "proof",
+    "gate",
+    "athena",
+    "proof/laverna-wasm",
+    "gate/cid-wasm",
+]
+
+[workspace.package]
 edition = "2021"
-description = "Ł.AI · Proof — deterministic reasoning engine (9-graha wheel, NAND-to-bankai proof cascade, verifiable proof objects)"
-authors = ["nutypebuddha <nutypebuddha@proton.me>"]
 license = "Apache-2.0"
-publish = true
+authors = ["nutypebuddha <nutypebuddha@proton.me>"]
 repository = "https://github.com/nutypebuddha/lai"
-homepage = "https://github.com/nutypebuddha/Laverna"
-keywords = ["reasoning", "proof", "deterministic", "formula", "mcp", "lai"]
-categories = ["science", "mathematics", "compilers", "cryptography"]
+homepage = "https://github.com/nutypebuddha/lai"
 
-[package.metadata.docs.rs]
-all-features = true
-rustdoc-args = ["--cfg", "docsrs"]
-
-[dependencies]
-# Serialization
-serde = { version = "1", features = ["derive", "rc"] }
-serde_json = "1"
-
-# Pattern matching
-regex = "1"
-
-# CLI
-clap = { version = "4", features = ["derive"] }
-thiserror = "2"
-libc = "0.2"
-
-# TOML parsing
-toml = "0.8"
-
-# Timezone resolution (IANA tz database) — Part 1.1 mandatory explicit timezone
-chrono = "0.4"
-chrono-tz = "0.10"
-
-# Compute
-vsop87 = "3.0.0"
-astro = "2.0.0"
-xalen-vedic = "0.6"
-xalen-houses = "0.6"
-xalen-ayanamsa = "0.6"
-xalen-time = "0.6"
-xalen-coords = "0.6"
-
-# Web search / World Bank stats (optional)
-ureq = { version = "2", default-features = false, features = ["json", "tls"], optional = true }
-
-# MILP solver (optional, T46)
-good_lp = { version = "1", default-features = false, features = ["microlp"], optional = true }
-
-# Graph algorithms (optional, T47)
-petgraph = { version = "0.8", optional = true }
-
-# Benchmark harness (optional)
-criterion = { version = "0.5", features = ["html_reports"], optional = true }
-
-[dev-dependencies]
-tempfile = "3"
-pprof = { version = "0.14", features = ["criterion", "flamegraph"] }
-
-[features]
-default = []  # minimal: no heavy deps, fast builds
-mcp = ["websearch"]
-websearch = ["dep:ureq"]
-budget = []
-bench = ["dep:criterion"]
-llm = []  # marker only — stub inference module, no heavy deps
-milp = ["dep:good_lp"]
-graph = ["dep:petgraph"]
+[workspace.dependencies]
+serde = { version = "1", features = ["derive"] }
+serde_json = "1.0"
 
 [profile.release]
+opt-level = "z"
 lto = "fat"
 codegen-units = 1
-strip = "symbols"
-opt-level = 3
 panic = "abort"
-debug = 0
-
-[profile.dev]
-opt-level = 0
-debug = 0
-
-[profile.ci]
-inherits = "release"
-debug = 0
-strip = "symbols"
+strip = true

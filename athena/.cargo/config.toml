@@ -1,0 +1,48 @@
+# Athena cargo configuration
+# Tools before slipstream — these configs optimize build speed and binary quality.
+
+[build]
+# Use all available CPU cores for codegen-units in dev
+# In release, codegen-units = 1 is set in Cargo.toml for max optimization
+rustflags = []
+
+[target.aarch64-unknown-linux-gnu]
+linker = "gcc"
+# Use 16 codegen units for faster dev iteration
+# (release profile overrides this to 1)
+rustflags = ["-C", "codegen-units=16"]
+
+[target.armv7-unknown-linux-gnueabihf]
+linker = "arm-linux-gnueabihf-gcc"
+rustflags = []
+
+[target.x86_64-unknown-linux-gnu]
+# On native x86_64, use the system linker (fast enough)
+# On aarch64 cross-compile, use the x86_64 cross-compiler
+linker = "x86_64-linux-gnu-gcc"
+rustflags = []
+
+# ==============================================================================
+# Environment-specific overrides (uncomment for your platform)
+# ==============================================================================
+
+# --- For CI (GitHub Actions x86_64) ---
+# [env]
+# CARGO_TERM_COLOR = "always"
+
+# --- For macOS (homebrew mold or ld64) ---
+# [target.x86_64-apple-darwin]
+# linker = "clang"
+# rustflags = ["-C", "link-arg=-fuse-ld=mold"]
+
+# --- For Linux with mold installed ---
+# [target.x86_64-unknown-linux-gnu]
+# linker = "clang"
+# rustflags = ["-C", "link-arg=-fuse-ld=mold"]
+
+# ==============================================================================
+# Future: sccache distributed build cache
+# ==============================================================================
+# Uncomment when sccache is installed:
+# [build]
+# rustc-wrapper = "sccache"

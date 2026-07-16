@@ -1,0 +1,242 @@
+# ♈ Aries — Math & Logic — Atomic Formulas
+# Cardinal Fire | 1st House | Ruler: Mars | Exaltation: Sun | Fall: Saturn | Detriment: Venus
+# Element: Fire (energy, transformation, initiation)
+# Modality: Cardinal (beginnings, action, spark)
+# House: 1st (self, identity, pure potential → actualized)
+# Anatomical: Head, Brain (cognition, initiation)
+# Mathematical Archetype: The Spark — discrete operations, separation, initiation of quantity
+
+# ─── Fire: Energy & Transformation ───────────────────────────────────────────
+# Fire = discrete operations that transform state. Mars = separation/division.
+
+[[formula]]
+id = "add"
+tags = ["arithmetic", "fire", "cardinal", "operation", "initiation"]
+domain = "mangala"
+level = 0
+inputs = ["a", "b"]
+output = "sum"
+expression = "a + b"
+description = "Addition: a + b — Cardinal Fire: combining discrete units, the first synthesis"
+evidence = "Peano arithmetic: S(a) + b = S(a + b) — successor function as cardinal initiation"
+
+[[formula]]
+id = "subtract"
+tags = ["arithmetic", "fire", "mars", "separation", "operation"]
+domain = "mangala"
+level = 0
+inputs = ["a", "b"]
+output = "diff"
+expression = "a - b"
+description = "Subtraction: a - b — Mars separation: removing units, the first analysis"
+evidence = "Peano arithmetic: a - b = c iff a = b + c — Mars as divisor of unity"
+
+[[formula]]
+id = "multiply"
+tags = ["arithmetic", "fire", "cardinal", "operation", "expansion"]
+domain = "mangala"
+level = 3
+inputs = ["a", "b"]
+output = "product"
+expression = "a * b"
+description = "Multiplication: a × b — Cardinal Fire: repeated addition, expansive synthesis"
+evidence = "Peano: a × S(b) = a × b + a — recursive expansion as cardinal action"
+
+[[formula]]
+id = "divide"
+tags = ["arithmetic", "fire", "mars", "separation", "operation", "ratio"]
+domain = "mangala"
+level = 3
+inputs = ["a", "b"]
+output = "quotient"
+expression = "a / b"
+description = "Division: a ÷ b — Mars separation: partitioning into equal parts, ratio"
+evidence = "Field axioms: a / b = a × b⁻¹ — multiplicative inverse as Mars division"
+
+# ─── Fire: Rate of Change (Calculus as Fire) ────────────────────────────────
+# Fire = continuous transformation. Derivative = instantaneous rate = fire essence.
+
+[[formula]]
+id = "derivative_power_rule"
+tags = ["calculus", "fire", "rate_of_change", "differentiation", "instantaneous"]
+domain = "mangala"
+level = 12
+inputs = ["x", "n"]
+output = "derivative"
+expression = "n * x^(n-1)"
+description = "Power rule derivative: d/dx(x^n) = n·x^(n-1) — Fire: instantaneous transformation rate"
+evidence = "Limit definition: lim(h→0) [(x+h)^n - x^n]/h = n·x^(n-1) via binomial theorem"
+
+[[formula]]
+id = "derivative_sum_rule"
+tags = ["calculus", "fire", "linearity", "differentiation"]
+domain = "mangala"
+level = 12
+inputs = ["f_prime", "g_prime"]
+output = "sum_derivative"
+expression = "f_prime + g_prime"
+description = "Sum rule: (f + g)' = f' + g' — Fire linearity: transformation distributes over synthesis"
+evidence = "Limit linearity: lim(h→0) [Δ(f+g)/h] = lim(Δf/h) + lim(Δg/h)"
+
+[[formula]]
+id = "derivative_product_rule"
+tags = ["calculus", "fire", "differentiation", "product"]
+domain = "mangala"
+level = 12
+inputs = ["f", "f_prime", "g", "g_prime"]
+output = "product_derivative"
+expression = "f * g_prime + f_prime * g"
+description = "Product rule: (f·g)' = f·g' + f'·g — Fire: transformation of synthesis"
+evidence = "Limit expansion: lim(h→0) [f(x+h)g(x+h) - f(x)g(x)]/h = f·g' + f'·g"
+
+[[formula]]
+id = "derivative_chain_rule"
+tags = ["calculus", "fire", "differentiation", "composition", "nested"]
+domain = "mangala"
+level = 12
+inputs = ["f_prime_at_g", "g_prime"]
+output = "chain_derivative"
+expression = "f_prime_at_g * g_prime"
+description = "Chain rule: (f∘g)' = f'(g)·g' — Fire: nested transformation, cardinal initiation of composition"
+evidence = "Limit substitution: lim(h→0) [f(g(x+h)) - f(g(x))]/h = f'(g)·g' via continuity"
+
+# ─── Mars: Logic & Separation (Boolean Algebra) ──────────────────────────────
+# Mars = division, separation, distinction. Boolean ops = logical separation.
+
+[[formula]]
+id = "nand"
+tags = ["logic", "mars", "separation", "gate", "functional_complete"]
+domain = "mangala"
+level = 3
+inputs = ["a", "b"]
+output = "nand_out"
+expression = "1 - a * b"
+description = "NAND: ¬(a ∧ b) = 1 - a·b — Mars: separation of conjunction, Sheffer stroke"
+evidence = "Truth table: NAND is functionally complete — all gates derivable from separation"
+
+[[formula]]
+id = "and"
+tags = ["logic", "mars", "conjunction", "gate"]
+domain = "mangala"
+level = 3
+inputs = ["a", "b"]
+output = "and_out"
+expression = "a * b"
+description = "AND: a ∧ b = a·b — Mars: intersection, logical multiplication as separation filter"
+evidence = "Boolean algebra: a ∧ b = ¬(¬a ∨ ¬b) via De Morgan — conjunction via separation"
+
+[[formula]]
+id = "or"
+tags = ["logic", "mars", "disjunction", "gate"]
+domain = "mangala"
+level = 3
+inputs = ["a", "b"]
+output = "or_out"
+expression = "a + b - a * b"
+description = "OR: a ∨ b = a + b - a·b — Mars: union via inclusion-exclusion separation"
+evidence = "Boolean algebra: a ∨ b = ¬(¬a ∧ ¬b) — disjunction as negated separation"
+
+[[formula]]
+id = "not"
+tags = ["logic", "mars", "negation", "separation", "inversion"]
+domain = "mangala"
+level = 0
+inputs = ["a"]
+output = "not_out"
+expression = "1 - a"
+description = "NOT: ¬a = 1 - a — Mars: pure separation, complement in {0,1}"
+evidence = "Boolean algebra: a + ¬a = 1, a · ¬a = 0 — law of excluded middle"
+
+[[formula]]
+id = "xor"
+tags = ["logic", "mars", "exclusive", "separation", "difference"]
+domain = "mangala"
+level = 6
+inputs = ["a", "b"]
+output = "xor_out"
+expression = "a + b - 2 * a * b"
+description = "XOR: a ⊕ b = a + b - 2ab — Mars: exclusive separation, symmetric difference"
+evidence = "Boolean algebra: a ⊕ b = (a ∧ ¬b) ∨ (¬a ∧ b) — separation without overlap"
+
+# ─── Cardinal: Initiation & Limits (Foundations) ─────────────────────────────
+# Cardinal = beginnings. Limits = initiation of calculus.
+
+[[formula]]
+id = "limit_definition"
+tags = ["calculus", "cardinal", "limit", "foundation", "epsilon_delta"]
+domain = "mangala"
+level = 12
+inputs = ["f_x_plus_h", "f_x", "h"]
+output = "difference_quotient"
+expression = "(f_x_plus_h - f_x) / h"
+description = "Difference quotient: Δf/Δx — Cardinal: the initiating ratio, spark of derivative"
+evidence = "ε-δ definition: lim(x→c) f(x) = L iff ∀ε>0 ∃δ>0: 0<|x-c|<δ → |f(x)-L|<ε"
+
+[[formula]]
+id = "prime_factorization"
+tags = ["number_theory", "mars", "prime", "factorization", "indivisible"]
+domain = "mangala"
+level = 9
+inputs = ["n"]
+output = "factors"
+expression = "n"
+description = "Prime factorization: n = p₁^e₁ · p₂^e₂ · ... — Mars: division into indivisible units"
+evidence = "Fundamental Theorem of Arithmetic: unique factorization into primes (Mars atoms)"
+
+[[formula]]
+id = "gcd_euclidean"
+tags = ["number_theory", "mars", "division", "algorithm", "separation"]
+domain = "mangala"
+level = 6
+inputs = ["a", "b"]
+output = "gcd"
+expression = "gcd(a, b)"
+description = "Euclidean GCD: gcd(a,b) = gcd(b, a mod b) — Mars: repeated separation to common measure"
+evidence = "Bézout's identity: gcd(a,b) = ax + by — algorithmic separation yielding unity"
+
+# ─── 1st House: Identity & Self-Reference ────────────────────────────────────
+# 1st House = self, identity. Identity functions, fixed points, self-reference.
+
+[[formula]]
+id = "identity_function"
+tags = ["algebra", "first_house", "identity", "self", "neutral"]
+domain = "mangala"
+level = 0
+inputs = ["x"]
+output = "x"
+expression = "x"
+description = "Identity: id(x) = x — 1st House: pure self, neutral element of composition"
+evidence = "Category theory: id_A : A → A — identity morphism as self-reference"
+
+[[formula]]
+id = "fixed_point"
+tags = ["algebra", "first_house", "fixed_point", "self_reference", "recursion"]
+domain = "mangala"
+level = 12
+inputs = ["f_x", "x"]
+output = "is_fixed"
+expression = "f_x - x"
+description = "Fixed point: f(x) = x — 1st House: self-reference, function equals its argument"
+evidence = "Banach fixed-point theorem: contraction on complete metric space has unique fixed point"
+
+[[formula]]
+id = "successor"
+tags = ["arithmetic", "cardinal", "fire", "initiation", "successor", "peano"]
+domain = "mangala"
+level = 0
+inputs = ["n"]
+output = "next"
+expression = "n + 1"
+description = "Successor: S(n) = n + 1 — Cardinal Fire: the initiating operation, next from now"
+evidence = "Peano axiom: ∀n ∃! S(n) — successor as cardinal initiation of quantity"
+
+[[formula]]
+id = "zero"
+tags = ["arithmetic", "first_house", "zero", "void", "origin"]
+domain = "mangala"
+level = 0
+inputs = []
+output = "zero"
+expression = "0"
+description = "Zero: 0 — 1st House: the void origin, additive identity, potential before actual"
+evidence = "Peano axiom: 0 is a natural number — origin as first house of number"

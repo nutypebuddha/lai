@@ -1,0 +1,12 @@
+[toolchain]
+channel = "stable"
+components = ["rustfmt", "clippy", "llvm-tools"]
+targets = [
+  # Primary targets — Athena is a 64-bit reasoning engine.
+  # No 32-bit targets needed: formula evaluation has no value in 32-bit space.
+  "aarch64-unknown-linux-gnu",
+  "aarch64-unknown-linux-musl",
+  "x86_64-unknown-linux-gnu",
+  "x86_64-unknown-linux-musl",
+]
+profile = "default"

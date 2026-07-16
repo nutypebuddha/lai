@@ -1,0 +1,287 @@
+# ♎ Libra — Engineering & Tech — Atomic Formulas
+# Cardinal Air | 7th House | Ruler: Venus | Exaltation: Saturn | Fall: Sun | Detriment: Mars
+# Element: Air (relation, connection, structure, balance, proportion, design)
+# Modality: Cardinal (initiation, design, architecture, pro-active balancing, justice)
+# House: 7th (partnerships, relations, contracts, equilibrium, symmetry, open systems)
+# Anatomical: Kidneys, lower back (filtration, balance, structural support, coupling)
+# Mathematical Archetype: The Balance — equilibrium, structural integrity, coupled systems, feedback control, symmetric design
+
+# ─── Air: Structural Mechanics (Venus = Harmony of Forces, Saturn = Stability) ────
+# Cardinal Air = initiating structural design. Venus harmony = balanced forces. Saturn exaltation = compressive strength.
+
+[[formula]]
+id = "stress_axial"
+tags = ["mechanics", "stress", "axial", "air", "cardinal", "venus", "saturn", "design"]
+domain = "shukra"
+level = 6
+inputs = ["force", "area"]
+output = "stress"
+expression = "force / area"
+description = "Normal stress: σ = F/A — Cardinal Air: force distribution, Venus harmony of load, Saturn stability"
+evidence = "Cauchy stress: σ_xx = dF_x/dA_x — exact from continuum mechanics, equilibrium of forces on section"
+
+[[formula]]
+id = "strain_axial"
+tags = ["mechanics", "strain", "axial", "air", "deformation", "venus", "flexibility"]
+domain = "shukra"
+level = 6
+inputs = ["change_length", "original_length"]
+output = "strain"
+expression = "change_length / original_length"
+description = "Normal strain: ε = ΔL/L — Cardinal Air: relative deformation, Venus flexibility, Saturn proportional response"
+evidence = "Definition: ε_xx = du/dx for small deformation — Green-Lagrange strain: ε = ½(du/dx + du/dx + (du/dx)²)"
+
+[[formula]]
+id = "hookes_law_linear"
+tags = ["mechanics", "hooke", "elasticity", "air", "cardinal", "venus", "saturn", "modulus"]
+domain = "shukra"
+level = 6
+inputs = ["elastic_modulus", "strain"]
+output = "stress"
+expression = "elastic_modulus * strain"
+description = "Hooke's law: σ = E·ε — Cardinal Air: linear elastic response, Venus proportional harmony, Saturn modulus"
+evidence = "Born-von Kármán lattice model: σ = Eε from interatomic potential minimum — exact for small displacement"
+
+[[formula]]
+id = "poisson_ratio"
+tags = ["mechanics", "poisson", "lateral", "strain", "air", "cardinal", "venus"]
+domain = "shukra"
+level = 9
+inputs = ["lateral_strain", "axial_strain"]
+output = "poisson_ratio"
+expression = "-lateral_strain / axial_strain"
+description = "Poisson's ratio: ν = -ε_lat/ε_ax — Cardinal Air: lateral compensation, Venus volumetric balance"
+evidence = "Isotropy: ν = (3K-2G)/(6K+2G) from elastic moduli relation — bounds: -1 ≤ ν ≤ 0.5 for stability"
+
+[[formula]]
+id = "beam_bending_moment"
+tags = ["mechanics", "beam", "bending", "moment", "air", "cardinal", "saturn", "euler_bernoulli"]
+domain = "shukra"
+level = 9
+inputs = ["youngs_modulus", "moment_of_inertia", "curvature"]
+output = "bending_moment"
+expression = "youngs_modulus * moment_of_inertia * curvature"
+description = "Euler-Bernoulli: M = EI·κ — Cardinal Air: beam bending, Saturn stiffness, Venus elastic curve"
+evidence = "σ = My/I from planar sections remain plane assumption — integral: M = ∫σ·y dA = EI·d²y/dx²"
+
+[[formula]]
+id = "shear_stress"
+tags = ["mechanics", "shear", "stress", "cardinal", "air", "venus", "torque"]
+domain = "shukra"
+level = 9
+inputs = ["shear_force", "area"]
+output = "shear_stress"
+expression = "shear_force / area"
+description = "Shear stress: τ = V/A — Cardinal Air: tangential force, Venus lateral balance, Saturn sliding resistance"
+evidence = "Cauchy stress tensor: τ_xy = τ_yx from angular momentum conservation — symmetry of stress tensor"
+
+[[formula]]
+id = "torsion_shaft"
+tags = ["mechanics", "torsion", "shaft", "cardinal", "air", "twist", "saturn", "venus"]
+domain = "shukra"
+level = 9
+inputs = ["torque", "radius", "polar_moment"]
+output = "shear_stress_max"
+expression = "torque * radius / polar_moment"
+description = "Torsion: τ_max = T·R/J — Cardinal Air: torsional resistance, Saturn rotational stiffness, Venus torque balance"
+evidence = "τ = Gγ, γ = r·dθ/dz, T = ∫τ·r dA = GJ·dθ/dz — exact for circular sections (St. Venant torsion)"
+
+# ─── 7th House: Coupling, Connections, Partnerships, Interfaces ────────────────
+# 7th House = coupling, joining, articulation, interfaces, matching, pairs.
+
+[[formula]]
+id = "bolt_preload"
+tags = ["fasteners", "bolt", "preload", "seventh_house", "air", "connection", "assembly"]
+domain = "shukra"
+level = 9
+inputs = ["bolt_stiffness", "member_stiffness", "applied_force"]
+output = "residual_clamp"
+expression = "bolt_stiffness * applied_force / (bolt_stiffness + member_stiffness)"
+description = "Bolt joint: F_b = k_b·P/(k_b+k_m) — 7th House: fastener partnership, Venus joint harmony, Saturn clamp"
+evidence = "Force-displacement compatibility: δ_b = δ_m, F_b + F_m = P → F_b = k_b·P/(k_b+k_m) — exact series coupling"
+
+[[formula]]
+id = "euler_buckling"
+tags = ["mechanics", "buckling", "column", "critical_load", "air", "saturn", "stability", "instability"]
+domain = "shukra"
+level = 12
+inputs = ["youngs_modulus", "moment_of_inertia", "length", "end_condition"]
+output = "critical_buckling_load"
+expression = "end_condition * pi^2 * youngs_modulus * moment_of_inertia / length^2"
+description = "Euler buckling: P_cr = Kπ²EI/L² — Cardinal Air: stability boundary, Saturn critical balance, Venus design limit"
+evidence = "d²y/dx² + P·y/(EI) = 0 → y = A sin(kx), k = √P/EI — exact eigenvalue: P_cr = n²π²EI/L²"
+
+[[formula]]
+id = "spring_coupling"
+tags = ["dynamics", "spring", "coupling", "seventh_house", "air", "oscillation", "pair"]
+domain = "shukra"
+level = 9
+inputs = ["spring1", "spring2"]
+output = "equivalent_series"
+expression = "1 / (1/spring1 + 1/spring2)"
+description = "Series springs: k_eq = 1/(1/k₁+1/k₂) — 7th House: paired compliance, Venus flexible coupling"
+evidence = "Series: same force F, δ₁+δ₂ = F/k₁+F/k₂ → k_eq = F/(δ₁+δ₂) = 1/(1/k₁+1/k₂) — exact force equilibrium"
+
+[[formula]]
+id = "damper_coupling"
+tags = ["dynamics", "damper", "coupling", "seventh_house", "air", "dissipation", "pair"]
+domain = "shukra"
+level = 9
+inputs = ["damper1", "damper2"]
+output = "equivalent_parallel"
+expression = "damper1 + damper2"
+description = "Parallel dampers: c_eq = c₁ + c₂ — 7th House: paired dissipation, Venus joint damping"
+evidence = "Parallel: same velocity v, F = c₁v + c₂v = (c₁+c₂)v → c_eq = c₁+c₂ — exact force summation"
+
+# ─── Cardinal Air: Control Systems, Feedback, Equilibrium Seeking ─────────────
+# Cardinal = active balancing. Air = information flow. Venus = harmonious set point.
+
+[[formula]]
+id = "pid_controller"
+tags = ["control", "pid", "feedback", "cardinal", "air", "venus", "set_point", "regulation"]
+domain = "shukra"
+level = 12
+inputs = ["error", "Kp", "Ki", "Kd", "dt"]
+output = "control_output"
+expression = "Kp * error + Ki * sum(error)*dt + Kd * delta_error/dt"
+description = "PID controller: u(t) = K_p e(t) + K_i ∫e dt + K_d de/dt — Cardinal Air: active balancing, Venus equilibrium seeking"
+evidence = "Proportional: present; Integral: past (eliminate offset); Derivative: future (damping) — exact linear control law"
+
+[[formula]]
+id = "transfer_function"
+tags = ["control", "transfer_function", "system", "cardinal", "air", "laplace", "response"]
+domain = "shukra"
+level = 12
+inputs = ["numerator_coeff", "denominator_coeff"]
+output = "transfer_function"
+expression = "numerator_coeff / denominator_coeff"
+description = "Transfer function: G(s) = N(s)/D(s) — Cardinal Air: input-output relationship, Venus system harmony"
+evidence = "Laplace transform: L{d^n y/dt^n} = s^n Y(s) — exact mapping of linear ODE to algebraic equation"
+
+[[formula]]
+id = "damping_ratio"
+tags = ["vibration", "damping", "zeta", "cardinal", "air", "venus", "oscillation", "stability"]
+domain = "shukra"
+level = 9
+inputs = ["mass", "spring", "damper"]
+output = "damping_ratio"
+expression = "damper / (2 * sqrt(mass * spring))"
+description = "Damping ratio: ζ = c/(2√km) — Cardinal Air: oscillation decay, Venus harmonious return, Saturn stability"
+evidence = "mẍ + cẋ + kx = 0 → λ = -ζωₙ ± ωₙ√(ζ²-1) — exact from characteristic equation"
+
+[[formula]]
+id = "natural_frequency"
+tags = ["vibration", "frequency", "resonance", "cardinal", "air", "venus", "oscillation"]
+domain = "shukra"
+level = 6
+inputs = ["spring_constant", "mass"]
+output = "natural_frequency_rad_s"
+expression = "sqrt(spring_constant / mass)"
+description = "Natural frequency: ω_n = √(k/m) — Cardinal Air: free vibration, Venus period, Saturn restoring force"
+evidence = "Simple harmonic oscillator: ẍ + (k/m)x = 0 → ω_n = √(k/m) — exact solution: x = A cos(ωt+φ)"
+
+# ─── Saturn Exaltation: Material Strength & Reliability (Saturn = Structure) ──
+# Saturn exalted in Libra = compressive strength, structural integrity, reliability engineering.
+
+[[formula]]
+id = "von_mises_stress"
+tags = ["mechanics", "von_mises", "yield", "stress", "saturn", "failure", "ductile"]
+domain = "shukra"
+level = 12
+inputs = ["sigma_xx", "sigma_yy", "sigma_xy"]
+output = "von_mises_stress"
+expression = "sqrt(sigma_xx^2 + sigma_yy^2 - sigma_xx*sigma_yy + 3*sigma_xy^2)"
+description = "Von Mises stress: σ_v = √(σ_xx²+σ_yy²-σ_xxσ_yy+3τ_xy²) — Saturn: yield criterion, Venus design limit"
+evidence = "Distortion energy theory: U_dist = (1+ν)/3E · σ_v² — yield when σ_v = σ_y — exact for ductile materials"
+
+[[formula]]
+id = "fatigue_life_sn"
+tags = ["mechanics", "fatigue", "sn_curve", "saturn", "endurance", "cycles", "basquin"]
+domain = "shukra"
+level = 12
+inputs = ["stress_amplitude", "ultimate_strength"]
+output = "cycles_to_failure"
+expression = "(ultimate_strength / stress_amplitude)^10"
+description = "Basquin's law: N = (S_u/S_a)^k — Saturn: endurance limit, Venus sustained loading, Cardinal cycle count"
+evidence = "S-N curve: S^m·N = C from Paris law (da/dN = C·ΔK^m) — empirical but power-law from crack growth"
+
+[[formula]]
+id = "safety_factor"
+tags = ["reliability", "safety", "margin", "saturn", "venus", "cardinal", "design"]
+domain = "shukra"
+level = 6
+inputs = ["ultimate_strength", "allowable_stress"]
+output = "safety_factor"
+expression = "ultimate_strength / allowable_stress"
+description = "Safety factor: SF = S_ult/S_allow — Saturn: design margin, Venus conservative harmony, Cardinal prudence"
+evidence = "SF > 1 ensures operation below yield/ultimate — probabilistic: reliability = P(S_ult > S_applied)"
+
+# ─── Venus: Fluid Power, Hydraulics, Pneumatics (Venus = Flow Harmony) ────────
+# Venus rules Libra = flow through channels, harmony of pressure, fluid balance.
+
+[[formula]]
+id = "hydraulic_pressure"
+tags = ["hydraulics", "pascal", "pressure", "venus", "air", "cardinal", "fluid_power"]
+domain = "shukra"
+level = 3
+inputs = ["input_force", "input_area", "output_area"]
+output = "output_force"
+expression = "input_force * output_area / input_area"
+description = "Pascal's law: F_out = F_in·A_out/A_in — Cardinal Air: force multiplication, Venus hydraulic balance"
+evidence = "P = F₁/A₁ = F₂/A₂ for static fluid — exact from incompressibility + pressure equality (Pascal 1648)"
+
+[[formula]]
+id = "archimedes_screw"
+tags = ["mechanics", "screw", "inclined_plane", "venus", "air", "cardinal", "transport"]
+domain = "shukra"
+level = 6
+inputs = ["force", "pitch", "radius"]
+output = "torque"
+expression = "force * pitch / (2 * pi)"
+description = "Screw thread: T = F·p/(2π) — Cardinal Air: rotational-to-linear, Venus harmonic motion, Saturn mechanical advantage"
+evidence = "Work conservation: F·p = 2πT → T = F·p/(2π) — exact from virtual work principle"
+
+[[formula]]
+id = "gear_ratio"
+tags = ["mechanics", "gear", "ratio", "venus", "air", "cardinal", "transmission"]
+domain = "shukra"
+level = 6
+inputs = ["input_teeth", "output_teeth"]
+output = "gear_ratio"
+expression = "output_teeth / input_teeth"
+description = "Gear ratio: GR = N_out/N_in — Cardinal Air: speed-torque trade, Venus coupling harmony"
+evidence = "Mesh condition: linear velocity at pitch circle: v = r₁ω₁ = r₂ω₂, pitch ∝ teeth → ω₁/ω₂ = N₂/N₁"
+# ─── Fundamentals: Circuits ──────────────────────────────────────────────────
+
+[[formula]]
+id = "ohms_law"
+tags = ["circuits", "electricity", "voltage", "fundamental", "resistance"]
+domain = "shukra"
+level = 1
+inputs = ["current", "resistance"]
+output = "voltage"
+expression = "current * resistance"
+description = "Ohm's law: V = IR — voltage across a resistor is current times resistance"
+evidence = "Ohm (1827), empirical linear law for ohmic conductors"
+
+[[formula]]
+id = "electrical_power"
+tags = ["circuits", "electricity", "power", "fundamental"]
+domain = "shukra"
+level = 1
+inputs = ["voltage", "current"]
+output = "power"
+expression = "voltage * current"
+description = "Electrical power: P = VI — energy per unit time delivered to a circuit element"
+evidence = "P = dW/dt = V·dq/dt = VI"
+
+[[formula]]
+id = "joule_heating"
+tags = ["circuits", "electricity", "power", "heat", "resistance"]
+domain = "shukra"
+level = 2
+inputs = ["current", "resistance"]
+output = "power"
+expression = "current^2 * resistance"
+description = "Joule heating: P = I²R — power dissipated in a resistor"
+evidence = "Substitute V = IR into P = VI"
