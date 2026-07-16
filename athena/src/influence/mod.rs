@@ -389,10 +389,10 @@ mod tests {
 
     #[test]
     fn test_influence_matrix_is_symmetric() {
-        for i in 0..GRAHA_COUNT {
-            for j in 0..GRAHA_COUNT {
+        for (i, row) in INFLUENCE_MATRIX.iter().enumerate() {
+            for (j, &val) in row.iter().enumerate() {
                 assert!(
-                    (INFLUENCE_MATRIX[i][j] - INFLUENCE_MATRIX[j][i]).abs() < 1e-12,
+                    (val - INFLUENCE_MATRIX[j][i]).abs() < 1e-12,
                     "matrix not symmetric at [{i}][{j}]"
                 );
             }
@@ -401,9 +401,9 @@ mod tests {
 
     #[test]
     fn test_influence_matrix_self_is_1() {
-        for i in 0..GRAHA_COUNT {
+        for (i, row) in INFLUENCE_MATRIX.iter().enumerate() {
             assert!(
-                (INFLUENCE_MATRIX[i][i] - 1.0).abs() < 1e-12,
+                (row[i] - 1.0).abs() < 1e-12,
                 "self-influence at [{i}] is not 1.0"
             );
         }
@@ -411,28 +411,25 @@ mod tests {
 
     #[test]
     fn test_influence_matrix_all_nonzero() {
-        for i in 0..GRAHA_COUNT {
-            for j in 0..GRAHA_COUNT {
-                assert!(
-                    INFLUENCE_MATRIX[i][j] > 0.0,
-                    "zero coefficient at [{i}][{j}]"
-                );
+        for (i, row) in INFLUENCE_MATRIX.iter().enumerate() {
+            for (j, &val) in row.iter().enumerate() {
+                assert!(val > 0.0, "zero coefficient at [{i}][{j}]");
             }
         }
     }
 
     #[test]
     fn test_influence_matrix_values_match_aspect() {
-        for i in 0..GRAHA_COUNT {
-            for j in 0..GRAHA_COUNT {
+        for (i, row) in INFLUENCE_MATRIX.iter().enumerate() {
+            for (j, &val) in row.iter().enumerate() {
                 let a = Domain::from_index(i);
                 let b = Domain::from_index(j);
                 let aspect = Aspect::between(a, b);
                 let expected = aspect.confidence();
                 assert!(
-                    (INFLUENCE_MATRIX[i][j] - expected).abs() < 1e-12,
+                    (val - expected).abs() < 1e-12,
                     "matrix[{i}][{j}] = {}, expected {} for {:?}",
-                    INFLUENCE_MATRIX[i][j],
+                    val,
                     expected,
                     aspect
                 );
@@ -445,8 +442,8 @@ mod tests {
     #[test]
     fn test_empty_map_has_zero_weights() {
         let map = InfluenceMap::new();
-        for i in 0..GRAHA_COUNT {
-            assert!((map.weights[i] - 0.0).abs() < 1e-12);
+        for &w in &map.weights {
+            assert!((w - 0.0).abs() < 1e-12);
         }
         assert!(!map.has_significant_influence);
         assert!(map.dominant_domain().is_none());

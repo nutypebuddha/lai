@@ -8,7 +8,7 @@
 
 use std::process::Command;
 
-const BIN: &str = env!("CARGO_BIN_EXE_laverna");
+const BIN: &str = env!("CARGO_BIN_EXE_lai");
 
 fn run_validate(expr: &str) -> std::process::Output {
     Command::new(BIN)

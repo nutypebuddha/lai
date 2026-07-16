@@ -112,7 +112,8 @@ fn test_knowledge_base() {
     assert!(kb.lookup("nonexistent").is_none());
 
     let pi = kb.lookup("pi").unwrap();
-    assert!((pi.value - 3.141592653589793).abs() < 1e-10);
+    let expected_pi: f64 = std::f64::consts::PI;
+    assert!((pi.value - expected_pi).abs() < 1e-10);
 }
 
 #[test]

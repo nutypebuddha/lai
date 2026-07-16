@@ -548,13 +548,13 @@ mod tests {
             "cusp1 should be start of rising sidereal sign, got {}",
             cusps[0].tropical
         );
-        for i in 0..12 {
+        for (i, cusp) in cusps.iter().enumerate() {
             let expected = (120.0 + i as f64 * 30.0) % 360.0;
             assert!(
-                (cusps[i].tropical - expected).abs() < 1e-6,
+                (cusp.tropical - expected).abs() < 1e-6,
                 "cusp{} = {}, expected {}",
                 i + 1,
-                cusps[i].tropical,
+                cusp.tropical,
                 expected
             );
         }

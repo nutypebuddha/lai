@@ -12,7 +12,7 @@ use serde_json::Value;
 use std::process::Command;
 use std::sync::atomic::{AtomicU64, Ordering};
 
-const BIN: &str = env!("CARGO_BIN_EXE_laverna");
+const BIN: &str = env!("CARGO_BIN_EXE_lai");
 const QUERY: &str = "2 + 3 = 5";
 
 static COUNTER: AtomicU64 = AtomicU64::new(0);

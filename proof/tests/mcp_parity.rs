@@ -28,7 +28,7 @@ const MUST_PASS: &[&str] = &["2 + 3 = 5", "0.1 + 0.2 = 0.3", "5 = 5"];
 /// Spawn the `laverna mcp` binary and send a sequence of JSON-RPC lines,
 /// returning the raw stdout captured.
 fn run_mcp_session(lines: &[&str]) -> String {
-    let bin = env!("CARGO_BIN_EXE_laverna");
+    let bin = env!("CARGO_BIN_EXE_lai");
     let mut child = Command::new(bin)
         .arg("mcp")
         .stdin(Stdio::piped())

@@ -420,6 +420,7 @@ mod tests {
     }
 
     #[test]
+    #[allow(clippy::approx_constant)]
     fn test_parse_number() {
         assert_eq!(parse_json("42").unwrap(), JsonValue::Number(42.0));
         assert_eq!(parse_json("-3.14").unwrap(), JsonValue::Number(-3.14));

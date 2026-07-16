@@ -293,6 +293,7 @@ mod tests {
     }
 
     #[test]
+    #[allow(clippy::approx_constant)]
     fn test_round_decimal() {
         let result = compute_named(b"round", &[3.14159, 2.0]).unwrap();
         assert!((result - 3.14).abs() < 1e-10);
@@ -351,8 +352,8 @@ mod tests {
     #[test]
     fn test_format_f64() {
         assert_eq!(format_f64(42.0), "42");
-        assert_eq!(format_f64(std::f64::NAN), "NaN");
-        assert_eq!(format_f64(std::f64::INFINITY), "Infinity");
-        assert_eq!(format_f64(std::f64::NEG_INFINITY), "-Infinity");
+        assert_eq!(format_f64(f64::NAN), "NaN");
+        assert_eq!(format_f64(f64::INFINITY), "Infinity");
+        assert_eq!(format_f64(f64::NEG_INFINITY), "-Infinity");
     }
 }

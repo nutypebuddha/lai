@@ -10,7 +10,7 @@ use std::process::Command;
 use serde_json::Value;
 
 fn strategize_json(query: &str, budget: &str) -> Value {
-    let out = Command::new(env!("CARGO_BIN_EXE_laverna"))
+    let out = Command::new(env!("CARGO_BIN_EXE_lai"))
         .args([
             "strategize",
             "--query",

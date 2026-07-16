@@ -429,6 +429,7 @@ mod tests {
     }
 
     #[test]
+    #[allow(clippy::approx_constant)]
     fn test_decimal() {
         assert!((eval_math(b"3.14 * 2", &env()).unwrap() - 6.28).abs() < 1e-10);
     }
