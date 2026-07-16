@@ -1,11 +1,11 @@
 const { execSync } = require('child_process');
 const path = require('path');
 
-const CID_BINARY = process.env.CID_BINARY || path.resolve(__dirname, '../../target/release/lai');
+const CID_BINARY = process.env.CID_BINARY || path.resolve(__dirname, '../../../target/release/lai');
 
 async function cidValidate(text, context, metadata) {
   try {
-    const stdout = execSync(`"${CID_BINARY}" validate "${text.replace(/"/g, '\\"')}" ${context}`, {
+    const stdout = execSync(`"${CID_BINARY}" gate validate "${text.replace(/"/g, '\\"')}" ${context}`, {
       encoding: 'utf-8',
       timeout: 10000,
     });

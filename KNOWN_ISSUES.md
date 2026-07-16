@@ -60,17 +60,17 @@ Public, committed, no euphemism. Documented bugs with scope and status.
 **Affects:** bridge shell-outs to CID engine (all validation via bridge)
 **Does not affect:** gate CLI directly, proof, any Rust code
 **Repro:** `node bridge/src/index.js` without `CID_BINARY` env; all `/validate` calls fail silently
-**Detail:** Default path was `../../cid/target/release/cid` — `cid/` directory no longer exists (renamed to `gate/`, binary is `lai-gate`). Fixed to `../../target/release/lai-gate`. Every shell-out from bridge was failing silently, which is what triggered T54's false-positive catch.
+**Detail:** Default path was `../../cid/target/release/cid` — `cid/` directory no longer exists (renamed to `gate/`). Fixed path through `lai-gate`, now `lai` (gate merged into unified binary). Every shell-out from bridge was failing silently, which is what triggered T54's false-positive catch. Additionally, the merge changed the CLI contract: `lai validate` is now Proof's Tanto-expression validator, not Gate's per-token validation. Gate's validate moved to `lai gate validate`. Bridge adapter updated accordingly.
 
 ---
 
 ### [T56] gate CLI: `--help`/`-h`/`help` silently blocks on stdin
 
-**Status:** fixed-pending-release
-**Affects:** `lai-gate --help`, `lai-gate -h`, `lai-gate help`
-**Does not affect:** REPL mode (pipe input), `validate`/`fix`/`compress`/`score`/`mcp`/`proxy` direct CLI args
-**Repro:** `lai-gate --help` (hangs with no output, waiting for stdin)
-**Detail:** Unrecognized CLI args (including `--help`) fell through to an unconditional `stdin.read_to_string()` with zero output. Fixed by adding `"--help" | "-h" | "help"` match arm that prints help and returns. The underlying REPL logic and all other CLI commands were unaffected.
+**Status:** resolved (gate merged into unified `lai` binary)
+**Affects:** standalone gate CLI (no longer exists)
+**Does not affect:** `lai gate <subcommand>`, REPL mode, any current code paths
+**Repro:** `lai-gate --help` (binary no longer exists; gate is lib-only)
+**Detail:** This was a standalone gate binary issue. Gate is now lib-only, folded into the unified `lai` binary. `lai gate --help` works correctly via clap.
 
 ---
 

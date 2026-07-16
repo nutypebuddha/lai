@@ -122,16 +122,17 @@ curl -s -X POST http://localhost/mcp \
 
 ## CID Integration
 
-The bridge shells out to the CID binary:
+The bridge shells out to the L.ai binary:
 
 ```bash
-cid validate "<text>" <context>
+lai gate validate "<text>" <context>
 ```
 
-Set `CID_BINARY` env var to point at your CID binary. Built CID binaries are available at:
+Set `CID_BINARY` env var to point at your `lai` binary. Built via:
 
-- **Source**: [codeberg.org/NutypeBuddha/cid](https://codeberg.org/NutypeBuddha/cid)
-- **WASM**: Built via `cid-wasm/build.sh` (~630KB)
+```bash
+cargo build --release -p laverna    # produces target/release/lai
+```
 
 ## License
 
