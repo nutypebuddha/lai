@@ -401,8 +401,49 @@ fn objective_upper_bound(
     let scores = compute_scores(schema, &stats);
     let current = objective_value(schema, &scores);
 
+    // Add bonus from zero-cost perks whose prerequisites are already met.
+    // This is a correct over-approximation: perks are free, so if prereqs
+    // are met at the current levels, the perk will definitely be taken.
+    let mut perk_bonus = 0.0;
+    for item in &schema.items {
+        if item.is_attribute() {
+            continue;
+        }
+        let total_cost: f64 = item.cost.values().sum();
+        if total_cost > 0.0 {
+            continue;
+        }
+        let mut met = true;
+        if let Some(reqs) = &item.requires {
+            for r in reqs {
+                if let Ok((target, op, threshold)) = parse_prereq(r) {
+                    let lvl = *levels.get(&target).unwrap_or(&0) as f64;
+                    if !op.check(lvl, threshold) {
+                        met = false;
+                        break;
+                    }
+                } else {
+                    met = false;
+                    break;
+                }
+            }
+        }
+        if met {
+            let mut test_stats = stats.clone();
+            for (k, v) in &item.effects {
+                *test_stats.entry(k.clone()).or_insert(0.0) += *v;
+            }
+            let test_scores = compute_scores(schema, &test_stats);
+            let test_obj = objective_value(schema, &test_scores);
+            let contrib = test_obj - current;
+            if contrib > 0.0 {
+                perk_bonus += contrib;
+            }
+        }
+    }
+
     if remaining_attrs.is_empty() {
-        return current;
+        return current + perk_bonus;
     }
 
     // Remaining budget per resource.
@@ -416,7 +457,7 @@ fn objective_upper_bound(
         }
     }
     if min_remaining <= 0.0 {
-        return current;
+        return current + perk_bonus;
     }
 
     // Best marginal value per unit cost among remaining items.
@@ -446,7 +487,7 @@ fn objective_upper_bound(
         }
     }
 
-    current + min_remaining * best_marginal_per_unit
+    current + min_remaining * best_marginal_per_unit + perk_bonus
 }
 
 /// State-space guard: maximum number of nodes the brute-force enumerator may
