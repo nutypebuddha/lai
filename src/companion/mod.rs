@@ -26,16 +26,58 @@ pub enum Verdict {
 }
 
 /// The fixed companion persona. A system prompt, not a fine-tuned model.
-/// The "never fabricate" rule is contractual text the orchestrator must obey.
+/// The voice is practical and plain; it never names the engine's internal
+/// mechanics, brand, or verification substrate.
 pub const PERSONA_SYSTEM_PROMPT: &str = "\
-You are Laverna's companion. You help the user reason about computable \
-questions. RULE: every factual, numeric, or lookup claim MUST be answered \
-via a Laverna tool call (solve, route, chart, entity_get, formulas, \
-optimize, validate, build). If a question is subjective, personal, or outside \
-Laverna's deterministic corpus, you MUST say you cannot verify it and will \
-not guess. Never invent numbers, dates, or claims. If a tool returns a \
-refusal, surface it honestly. Opinions are allowed only when explicitly \
-flagged as opinion, never blended with verified facts.";
+You are Laverna, a practical assistant. Answer directly and concisely. \
+When a question has a factual, numeric, or computable answer, give it \
+straight, and if you cannot check a claim yourself, say so plainly — never \
+invent numbers, dates, or facts. If you are unsure, say \"I can't verify \
+that.\" Keep opinions clearly labelled as opinions and never present them \
+as facts. Do not explain how you work or name any internal systems.";
+
+/// Terms the companion must never surface in a user-facing answer. These name
+/// internal mechanics/branding that are out of scope for the public voice.
+pub const LEAKED_TERMS: &[&str] = &[
+    "Ł.AI",
+    "L.AI",
+    "proof cascade",
+    "NAND",
+    "bankai",
+    "CID",
+    "Gate",
+    "verify-first",
+    "verify first",
+    "pachinko",
+    "9-graha",
+    "9 graha",
+    "Navagraha",
+    "descent cascade",
+    "tanto",
+    "zanpakuto",
+    "shikai",
+    "asauchi",
+    "domain_graph",
+    "MCP server",
+];
+
+/// Pure: does `answer` leak any internal/brand term it must not surface?
+pub fn answer_leaks(answer: &str) -> bool {
+    let lower = answer.to_lowercase();
+    LEAKED_TERMS
+        .iter()
+        .any(|t| lower.contains(&t.to_lowercase()))
+}
+
+/// Pure: strip leaked terms from an answer, replacing each with a redaction.
+/// Used as a final safety net before any answer reaches the user.
+pub fn sanitize_answer(answer: &str) -> String {
+    let mut out = answer.to_string();
+    for term in LEAKED_TERMS {
+        out = out.replace(term, "[redacted]");
+    }
+    out
+}
 
 /// Pure: is `query` a factual / computable claim Laverna can verify?
 ///
@@ -118,9 +160,20 @@ mod tests {
     use super::*;
 
     #[test]
-    fn persona_rule_present() {
-        assert!(PERSONA_SYSTEM_PROMPT.contains("never"));
-        assert!(PERSONA_SYSTEM_PROMPT.contains("will not guess"));
+    fn persona_voice_is_plain() {
+        assert!(PERSONA_SYSTEM_PROMPT.contains("Laverna"));
+        assert!(PERSONA_SYSTEM_PROMPT.contains("I can't verify"));
+        // The persona must not name internal mechanics/brand.
+        assert!(!answer_leaks(PERSONA_SYSTEM_PROMPT));
+    }
+
+    #[test]
+    fn sanitize_blocks_leaks() {
+        assert!(answer_leaks("computed via the NAND proof cascade"));
+        assert!(answer_leaks("routed through Ł.AI gate"));
+        let clean = sanitize_answer("this uses the NAND proof cascade internally");
+        assert!(!answer_leaks(&clean));
+        assert!(clean.contains("[redacted]"));
     }
 
     #[test]

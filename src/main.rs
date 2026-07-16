@@ -3341,6 +3341,19 @@ fn handle_jsonrpc(
                             "required": ["domain"]
                         },
                         "annotations": {"readOnlyHint": true, "openWorldHint": false, "title": "Laverna Build"}
+                    },
+                    {
+                        "name": "laverna_companion",
+                        "title": "Laverna Assistant",
+                        "description": "Talk to Laverna in plain language. She answers practical questions directly, and for any factual, numeric, or computable claim she checks it against her tools before answering. If she cannot verify a claim, she says so plainly and never guesses. Use this for natural conversation, explanations, and everyday questions.",
+                        "inputSchema": {
+                            "type": "object",
+                            "properties": {
+                                "query": {"type": "string", "description": "What you want to ask Laverna"}
+                            },
+                            "required": ["query"]
+                        },
+                        "annotations": {"readOnlyHint": false, "openWorldHint": false, "title": "Laverna Assistant"}
                     }
                 ]
             },
@@ -3420,6 +3433,10 @@ fn handle_jsonrpc(
                         longitude,
                         domain,
                     )
+                }
+                "laverna_companion" => {
+                    let query = args["query"].as_str().unwrap_or("");
+                    companion_tool(query, descent_engine, formula_reg, entity_reg)
                 }
                 _ => Err(format!("unknown tool: {tool_name}")),
             };
@@ -3887,6 +3904,66 @@ fn build_tool(
         }
     }
     Ok(ToolOutput::text_only(out))
+}
+
+/// Laverna as a practical personality agent (companion-only surface).
+///
+/// Classifies the query, routes to the matching engine tool to obtain grounded
+/// context, then returns a plain answer. With `--features llm`, the grounded
+/// context is handed to the local model (`Copilot`) which speaks naturally;
+/// its output is sanitized so internal mechanics never surface. Without `llm`,
+/// a concise templated answer is returned. Either way, unverifiable claims are
+/// refused plainly — never fabricated.
+#[cfg(feature = "mcp")]
+fn companion_tool(
+    query: &str,
+    engine: &DescentEngine,
+    _formula_reg: &FormulaRegistry,
+    _entity_reg: &EntityRegistry,
+) -> Result<ToolOutput, String> {
+    use laverna::companion::{classify, sanitize_answer};
+
+    let (is_factual, suggested) = classify(query);
+
+    if !is_factual {
+        let plain = "I can't verify that one, so I won't guess. If you can phrase it as a \
+                     concrete question — a calculation, a lookup, or something I can check — \
+                     I'll do my best.";
+        return Ok(ToolOutput::text_only(plain.to_string()));
+    }
+
+    // Ground the claim by running the matched engine tool.
+    let grounded = match suggested {
+        Some("chart") => chart_tool(None, None, None, None, None, None, None).map(|o| o.text),
+        Some("entity_get") => entity_get_tool(query, _entity_reg).map(|o| o.text),
+        Some("route") => route_tool(Some(query), None).map(|o| o.text),
+        Some("optimize") => optimize_tool("", 1, false).map(|o| o.text),
+        _ => solve_tool(query, false, engine).map(|o| o.text),
+    };
+
+    let context = match grounded {
+        Ok(text) => text,
+        Err(e) => {
+            return Ok(ToolOutput::text_only(format!(
+                "I looked into that but couldn't produce a verified answer ({e})."
+            )))
+        }
+    };
+
+    #[cfg(feature = "llm")]
+    {
+        let copilot = laverna::inference::Copilot;
+        match copilot.answer(query, &context) {
+            Ok(answer) => return Ok(ToolOutput::text_only(answer)),
+            Err(_) => { /* fall through to templated answer */ }
+        }
+    }
+
+    let answer = format!(
+        "{}\n\n(This came from a verified check — I didn't make it up.)",
+        sanitize_answer(&context)
+    );
+    Ok(ToolOutput::text_only(answer))
 }
 
 // ─── websearch Command ──────────────────────────────────────────────────────
