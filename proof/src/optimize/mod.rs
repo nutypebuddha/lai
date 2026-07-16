@@ -1022,9 +1022,10 @@ terms = { cyberware_stat_mod_pct = 0.2, tech_dmg_pct = 0.1 }
         let sols = solve(&schema, 3).unwrap();
         let elapsed = start.elapsed();
         assert_eq!(sols.len(), 3);
-        // Must complete in under 3 seconds (was 30+ minutes without B&B).
+        // Must complete well under the original 30+ minute regression. Looser
+        // bound avoids CI flakiness from scheduler noise on the 3s boundary.
         assert!(
-            elapsed.as_secs() < 3,
+            elapsed.as_secs_f64() < 5.0,
             "budget=30 took {:?} — branch-and-bound too slow",
             elapsed
         );

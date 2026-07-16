@@ -69,6 +69,9 @@ fn solve_orbit(args: &str) -> Option<String> {
     }
     let mu = vals[0];
     let r = vals[1];
+    if r == 0.0 || !r.is_finite() || !mu.is_finite() {
+        return None;
+    }
     let v = (mu / r).sqrt();
     let t = 2.0 * std::f64::consts::PI * r / v;
     let ke = v * v / 2.0;
@@ -179,6 +182,9 @@ fn solve_ohm(args: &str) -> Option<String> {
     }
     let v = vals[0];
     let r = vals[1];
+    if r == 0.0 || !r.is_finite() || !v.is_finite() {
+        return None;
+    }
     let i = v / r;
     let p = v * i;
     Some(format!(

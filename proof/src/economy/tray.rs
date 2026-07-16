@@ -47,7 +47,7 @@ impl BallEconomy {
 
     pub fn refund(&mut self, amount: u64) {
         self.tray += amount;
-        self.spent -= amount;
+        self.spent = self.spent.saturating_sub(amount);
     }
 
     pub fn balance(&self) -> u64 {

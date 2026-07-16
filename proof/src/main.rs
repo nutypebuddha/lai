@@ -1298,11 +1298,15 @@ fn load_formula_registry() -> FormulaRegistry {
     // Embedded `[[formula]]` corpus + search synonyms. NONMATH_TOML holds
     // `[[grammar]]` tables, which the formula registry ignores (harmless no-op
     // here, but keeps the embedded corpus available should grammar support land).
-    let _ = reg.load_from_toml_str(FORMULAS_TOML);
-    let _ = reg.load_synonyms_from_str(SYNONYMS_TOML);
-    let _ = reg.load_from_toml_str(NONMATH_TOML);
+    reg.load_from_toml_str(FORMULAS_TOML)
+        .expect("embedded FORMULAS_TOML must parse");
+    reg.load_synonyms_from_str(SYNONYMS_TOML)
+        .expect("embedded SYNONYMS_TOML must parse");
+    reg.load_from_toml_str(NONMATH_TOML)
+        .expect("embedded NONMATH_TOML must parse");
     // Overlay corpus (`~/.laverna/corpus`, `./corpus`) merges over the seed —
     // same-id formulas override. Files with no `[[formula]]` table are ignored.
+    // Best-effort: a malformed overlay file is skipped, not fatal.
     for c in corpus_overlay_toml_contents() {
         let _ = reg.load_from_toml_str(&c);
     }
@@ -1311,9 +1315,10 @@ fn load_formula_registry() -> FormulaRegistry {
 
 fn load_entity_registry() -> EntityRegistry {
     let mut reg = EntityRegistry::new();
-    let _ = reg.load_seeds_from_str(ENTITIES_TOML);
+    reg.load_seeds_from_str(ENTITIES_TOML)
+        .expect("embedded ENTITIES_TOML must parse");
     // Overlay entities merge over the seed corpus; files with no `[[entity]]`
-    // table are ignored.
+    // table are ignored. Best-effort: malformed overlay files are skipped.
     for c in corpus_overlay_toml_contents() {
         let _ = reg.load_seeds_from_str(&c);
     }
@@ -1322,7 +1327,9 @@ fn load_entity_registry() -> EntityRegistry {
 
 fn load_shikai_forms() -> ShikaiFormRegistry {
     let mut forms = ShikaiFormRegistry::new();
-    let _ = forms.load_from_str(SHIKAI_FORM_TOML);
+    forms
+        .load_from_str(SHIKAI_FORM_TOML)
+        .expect("embedded SHIKAI_FORM_TOML must parse");
     forms
 }
 
@@ -1334,11 +1341,15 @@ fn load_events() -> EventRegistry {
 
 fn load_athena_registries() -> (AthenaFormulaRegistry, AthenaEntityRegistry) {
     let mut formula_reg = AthenaFormulaRegistry::new();
-    let _ = formula_reg.load_from_toml_str(ATHENA_FORMULAS_TOML);
+    formula_reg
+        .load_from_toml_str(ATHENA_FORMULAS_TOML)
+        .expect("embedded ATHENA_FORMULAS_TOML must parse");
     formula_reg.rebuild_tfidf();
 
     let mut entity_reg = AthenaEntityRegistry::new();
-    let _ = entity_reg.load_seeds_from_str(ATHENA_ENTITIES_TOML, None);
+    entity_reg
+        .load_seeds_from_str(ATHENA_ENTITIES_TOML, None)
+        .expect("embedded ATHENA_ENTITIES_TOML must parse");
 
     (formula_reg, entity_reg)
 }
@@ -3010,11 +3021,10 @@ fn cmd_chart(
     println!();
     println!("grahas:");
     for (i, name) in GRAHA_NAMES.iter().enumerate() {
-        let gp = laverna::ephemeris::graha_position(
-            Graha::from_index(i).unwrap(),
-            jd,
-            chart.ayanamsa_system,
-        );
+        let Some(graha) = Graha::from_index(i) else {
+            continue;
+        };
+        let gp = laverna::ephemeris::graha_position(graha, jd, chart.ayanamsa_system);
         let degree_in_sign = gp.sidereal % 30.0;
         println!(
             "  {name:>12}: tropical {:>7.2}°, sidereal {:>7.2}° ({:?} {degree_in_sign:.2}°, nak {:?} pad {})",
@@ -3580,7 +3590,7 @@ fn cmd_strategize(
                 Ok(weights) => match laverna::build::profile_to_schema(&profile, &weights) {
                     Ok(s) => {
                         // Respect --budget even for a concrete domain profile.
-                        let total = (budget.max(1.0)).round() as u32;
+                        let total = (budget.max(1.0)).round().clamp(0.0, u32::MAX as f64) as u32;
                         let mut b = std::collections::HashMap::new();
                         b.insert("unit".to_string(), total as f64);
                         let mut s = s;
@@ -4398,11 +4408,10 @@ fn chart_tool(
     out.push_str("grahas:\n");
     let mut grahas_json = Vec::new();
     for (i, name) in graha_names.iter().enumerate() {
-        let gp = laverna::ephemeris::graha_position(
-            Graha::from_index(i).unwrap(),
-            jd,
-            chart.ayanamsa_system,
-        );
+        let Some(graha) = Graha::from_index(i) else {
+            continue;
+        };
+        let gp = laverna::ephemeris::graha_position(graha, jd, chart.ayanamsa_system);
         let degree_in_sign = gp.sidereal % 30.0;
         out.push_str(&format!(
             "{name:>12}: tropical {:>7.2}°, sidereal {:>7.2}° ({:?} {degree_in_sign:.2}°)\n",

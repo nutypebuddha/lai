@@ -240,7 +240,7 @@ pub fn build_with(
 /// is one unit-cost attribute item; the solver distributes `budget` points
 /// across them per the pillar-weight vector.
 pub fn pillar_schema(pillars: &[f64; 7], budget: f64) -> optimize::Schema {
-    let total: u32 = (budget.max(1.0)).round() as u32;
+    let total: u32 = (budget.max(1.0)).round().clamp(0.0, u32::MAX as f64) as u32;
     let mut items: Vec<optimize::Item> = Vec::with_capacity(Pillar::COUNT);
     let mut scoring: HashMap<String, optimize::ScoreTerm> = HashMap::new();
     let mut maximize: Vec<String> = Vec::with_capacity(Pillar::COUNT);

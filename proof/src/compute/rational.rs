@@ -5,10 +5,14 @@ pub struct Fraction {
 }
 
 impl Fraction {
-    pub fn new(num: i64, den: i64) -> Self {
+    /// Create a new fraction. Returns None if `den == 0` (would be a division by zero).
+    pub fn new(num: i64, den: i64) -> Option<Self> {
+        if den == 0 {
+            return None;
+        }
         let mut f = Fraction { num, den };
         f.reduce();
-        f
+        Some(f)
     }
 
     #[allow(clippy::cast_abs_to_unsigned)]
@@ -37,6 +41,7 @@ impl Fraction {
             self.num * other.den + other.num * self.den,
             self.den * other.den,
         )
+        .expect("add: denominator is product of two non-zero denominators")
     }
 
     #[allow(clippy::should_implement_trait)]
@@ -45,18 +50,20 @@ impl Fraction {
             self.num * other.den - other.num * self.den,
             self.den * other.den,
         )
+        .expect("sub: denominator is product of two non-zero denominators")
     }
 
     #[allow(clippy::should_implement_trait)]
     pub fn mul(self, other: Fraction) -> Fraction {
         Fraction::new(self.num * other.num, self.den * other.den)
+            .expect("mul: denominator is product of two non-zero denominators")
     }
 
     pub fn checked_div(self, other: Fraction) -> Option<Fraction> {
         if other.num == 0 {
             None
         } else {
-            Some(Fraction::new(self.num * other.den, self.den * other.num))
+            Fraction::new(self.num * other.den, self.den * other.num)
         }
     }
 }
@@ -76,10 +83,13 @@ pub fn parse_fraction(s: &str) -> Option<Fraction> {
     if let Some((num_s, den_s)) = s.split_once('/') {
         let num = num_s.trim().parse::<i64>().ok()?;
         let den = den_s.trim().parse::<i64>().ok()?;
-        Some(Fraction::new(num, den))
+        if den == 0 {
+            return None;
+        }
+        Fraction::new(num, den)
     } else {
         let val = s.parse::<i64>().ok()?;
-        Some(Fraction::new(val, 1))
+        Fraction::new(val, 1)
     }
 }
 
@@ -92,7 +102,7 @@ pub fn eval_rational(expr: &str, env: &super::TantoEnv) -> Option<Fraction> {
     for (name, &val) in env {
         if expr == name {
             let num = (val * 1e10) as i64;
-            return Some(Fraction::new(num, 10_000_000_000));
+            return Fraction::new(num, 10_000_000_000);
         }
     }
 
@@ -105,15 +115,20 @@ mod tests {
 
     #[test]
     fn test_fraction_new() {
-        let f = Fraction::new(6, 4);
+        let f = Fraction::new(6, 4).unwrap();
         assert_eq!(f.num, 3);
         assert_eq!(f.den, 2);
     }
 
     #[test]
+    fn test_fraction_new_zero_den() {
+        assert!(Fraction::new(6, 0).is_none());
+    }
+
+    #[test]
     fn test_fraction_add() {
-        let a = Fraction::new(1, 3);
-        let b = Fraction::new(1, 6);
+        let a = Fraction::new(1, 3).unwrap();
+        let b = Fraction::new(1, 6).unwrap();
         let c = a.add(b);
         assert_eq!(c.num, 1);
         assert_eq!(c.den, 2);
@@ -121,8 +136,8 @@ mod tests {
 
     #[test]
     fn test_fraction_mul() {
-        let a = Fraction::new(1, 3);
-        let b = Fraction::new(3, 1);
+        let a = Fraction::new(1, 3).unwrap();
+        let b = Fraction::new(3, 1).unwrap();
         let c = a.mul(b);
         assert_eq!(c.num, 1);
         assert_eq!(c.den, 1);
@@ -130,8 +145,9 @@ mod tests {
 
     #[test]
     fn test_parse_fraction() {
-        assert_eq!(parse_fraction("1/3").unwrap(), Fraction::new(1, 3));
-        assert_eq!(parse_fraction("5").unwrap(), Fraction::new(5, 1));
+        assert_eq!(parse_fraction("1/3").unwrap(), Fraction::new(1, 3).unwrap());
+        assert_eq!(parse_fraction("5").unwrap(), Fraction::new(5, 1).unwrap());
+        assert!(parse_fraction("1/0").is_none());
     }
 
     #[test]
