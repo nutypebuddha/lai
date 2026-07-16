@@ -1,8 +1,10 @@
-# NLnet grant strategy & draft — Laverna
+# NLnet grant strategy & draft — Ł.AI
 
 > Living draft. Lead with **verification infrastructure** + **local-first / offline
 > trust**, not the astrology engine. The chart engine is one concrete
-> proof-of-capability domain among 528 formulas.
+> proof-of-capability domain among 528 formulas. **Umbrella brand: Ł.AI**
+> (see `docs/brand.md`); Laverna = **Ł.AI · Proof**, CID = **Ł.AI · Gate**,
+> CID-Bridge = **Ł.AI · Bridge**.
 
 ## 0. Current call landscape (verified 2026-07-16)
 
@@ -26,8 +28,9 @@ Do **not** burn the Aug 1 slot on TALER.
 
 ## 1. Applicant & project basics
 
-- **Project:** Laverna — auditable, offline, deterministic verification
-  infrastructure for trustworthy AI.
+- **Project:** Ł.AI — auditable, offline, deterministic verification
+  infrastructure for trustworthy AI. (Laverna = Ł.AI · Proof; plus CID
+  = Ł.AI · Gate per-token validation; CID-Bridge = Ł.AI · Bridge chatbot fan-out.)
 - **License:** Apache-2.0 (recognized FOSS license; NLnet-eligible).
   *Relicensed from MIT on 2026-07-16 as sole author — see
   `docs/copyright-registration-prep.md`.*

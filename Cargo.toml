@@ -2,12 +2,14 @@
 name = "laverna"
 version = "0.3.0"
 edition = "2021"
-description = "Vedic reasoning engine — 9-graha wheel, NAND-to-bankai compute"
+description = "Ł.AI · Proof — deterministic reasoning engine (9-graha wheel, NAND-to-bankai proof cascade, verifiable proof objects)"
 authors = ["nutypebuddha <nutypebuddha@proton.me>"]
 license = "Apache-2.0"
-publish = false
-keywords = ["reasoning", "vedic", "formula", "cross-domain", "mcp"]
-categories = ["science", "mathematics", "compilers"]
+publish = true
+repository = "https://github.com/nutypebuddha/Laverna"
+homepage = "https://github.com/nutypebuddha/Laverna"
+keywords = ["reasoning", "proof", "deterministic", "formula", "mcp", "lai"]
+categories = ["science", "mathematics", "compilers", "cryptography"]
 
 [package.metadata.docs.rs]
 all-features = true
