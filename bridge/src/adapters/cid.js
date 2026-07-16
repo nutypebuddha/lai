@@ -5,7 +5,7 @@ const CID_BINARY = process.env.CID_BINARY || path.resolve(__dirname, '../../../t
 
 async function cidValidate(text, context, metadata) {
   try {
-    const stdout = execSync(`"${CID_BINARY}" gate validate "${text.replace(/"/g, '\\"')}" ${context}`, {
+    const stdout = execSync(`"${CID_BINARY}" gate validate --format json "${text.replace(/"/g, '\\"')}" "${context}"`, {
       encoding: 'utf-8',
       timeout: 10000,
     });

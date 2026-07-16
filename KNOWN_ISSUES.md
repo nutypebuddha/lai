@@ -82,4 +82,14 @@ Public, committed, no euphemism. Documented bugs with scope and status.
 **Repro:** `grep "13 tools" gate/README.md`
 **Detail:** README claimed 13 MCP tools. Actual `list_tools()` returns 22 (8 original + 3 dynamic KB + 11 Tanto merged). Updated both references in README.
 
+---
+
+### [T58] `gate` subcommands have no JSON output mode; bridge `JSON.parse()` always fell through to fallback
+
+**Status:** fixed
+**Affects:** `bridge /validate` endpoint — could never distinguish correct from incorrect answers
+**Does not affect:** `lai gate validate` CLI usage (text output), proof-side subcommands (already had `--format json`)
+**Repro:** `POST /validate {"text":"2+2=4","context":"math"}` always returned `confidence: 0.5, passed: false`
+**Detail:** `adapters/cid.js` did `JSON.parse(stdout)` on `gate validate`'s plaintext output (`Validated: ... Confidence: ...`). This always threw, landing in the catch block and returning the hardcoded fallback. Masked by T55 (wrong path) and the CLI contract bug — once both were fixed, the parse failure surfaced. Fixed by adding `--format json` to `gate validate`, `gate fix`, and `gate score` in `proof/src/main.rs` (matching the pattern used by proof-side subcommands), and wiring `adapters/cid.js` to pass `--format json`.
+
 

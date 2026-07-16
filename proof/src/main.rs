@@ -333,6 +333,8 @@ enum GateAction {
         context: String,
         /// Domain for fact-checking (e.g., "math", "astronomy")
         domain: Option<String>,
+        #[arg(long, value_enum, default_value_t = OutputFormat::Text)]
+        format: OutputFormat,
     },
     /// Auto-fix a failing response (append verdict, replace bare numbers)
     Fix {
@@ -340,6 +342,8 @@ enum GateAction {
         text: String,
         /// Context (original prompt/query)
         context: String,
+        #[arg(long, value_enum, default_value_t = OutputFormat::Text)]
+        format: OutputFormat,
     },
     /// Compress a prompt to a target token budget
     Compress {
@@ -354,6 +358,8 @@ enum GateAction {
         text: String,
         /// Optional context (original prompt/query)
         context: Option<String>,
+        #[arg(long, value_enum, default_value_t = OutputFormat::Text)]
+        format: OutputFormat,
     },
     /// Start Gate MCP server on stdin/stdout
     Mcp,
@@ -702,17 +708,18 @@ fn main() {
                 text,
                 context,
                 domain,
+                format,
             } => {
-                cmd_gate_validate(&text, &context, domain.as_deref());
+                cmd_gate_validate(&text, &context, domain.as_deref(), format);
             }
-            GateAction::Fix { text, context } => {
-                cmd_gate_fix(&text, &context);
+            GateAction::Fix { text, context, format } => {
+                cmd_gate_fix(&text, &context, format);
             }
             GateAction::Compress { text, level } => {
                 cmd_gate_compress(&text, level.as_deref());
             }
-            GateAction::Score { text, context } => {
-                cmd_gate_score(&text, context.as_deref());
+            GateAction::Score { text, context, format } => {
+                cmd_gate_score(&text, context.as_deref(), format);
             }
             GateAction::Mcp => {
                 cmd_gate_mcp();
@@ -4511,7 +4518,7 @@ mod proof_tests {
 
 // ─── Gate Command Handlers ──────────────────────────────────────────────────
 
-fn cmd_gate_validate(text: &str, context: &str, domain: Option<&str>) {
+fn cmd_gate_validate(text: &str, context: &str, domain: Option<&str>, format: OutputFormat) {
     use cid::inference::{InferenceEngine, ValidationRequest};
     let mut engine = InferenceEngine::new();
     let mut request = ValidationRequest::new(text, context);
@@ -4520,30 +4527,65 @@ fn cmd_gate_validate(text: &str, context: &str, domain: Option<&str>) {
     }
     match engine.validate(request) {
         Ok(result) => {
-            println!("Validated: {}", result.validated_text);
-            println!("Confidence: {:.4}", result.confidence);
-            println!("Passed: {}", result.passed);
-            println!("Fixes: {}", result.fix_count());
-            println!("State: {:?}", result.state);
-            println!("Cost: ${:.6}", result.cost_usd);
+            if format == OutputFormat::Json {
+                let value = serde_json::json!({
+                    "validated_text": result.validated_text,
+                    "original_text": result.original_text,
+                    "confidence": result.confidence,
+                    "passed": result.passed,
+                    "fix_count": result.fix_count(),
+                    "state": format!("{:?}", result.state),
+                    "cost_usd": result.cost_usd,
+                });
+                println!("{}", serde_json::to_string(&value).unwrap());
+            } else {
+                println!("Validated: {}", result.validated_text);
+                println!("Confidence: {:.4}", result.confidence);
+                println!("Passed: {}", result.passed);
+                println!("Fixes: {}", result.fix_count());
+                println!("State: {:?}", result.state);
+                println!("Cost: ${:.6}", result.cost_usd);
+            }
         }
         Err(e) => {
-            eprintln!("Error: {}", e);
+            if format == OutputFormat::Json {
+                let value = serde_json::json!({ "error": e.to_string() });
+                eprintln!("{}", serde_json::to_string(&value).unwrap());
+            } else {
+                eprintln!("Error: {}", e);
+            }
             std::process::exit(1);
         }
     }
 }
 
-fn cmd_gate_fix(text: &str, context: &str) {
+fn cmd_gate_fix(text: &str, context: &str, format: OutputFormat) {
     use cid::inference::InferenceEngine;
     let mut engine = InferenceEngine::new();
     let (fixed, fixes) = engine.fix(text, context);
-    println!("Original: {}", text);
-    println!("Fixed: {}", fixed);
-    if !fixes.is_empty() {
-        println!("Fixes:");
-        for fix in &fixes {
-            println!("  {} -> {} ({})", fix.original, fix.fixed, fix.reason);
+    if format == OutputFormat::Json {
+        let fix_objs: Vec<serde_json::Value> = fixes
+            .iter()
+            .map(|f| serde_json::json!({
+                "original": f.original,
+                "fixed": f.fixed,
+                "reason": f.reason,
+            }))
+            .collect();
+        let value = serde_json::json!({
+            "original": text,
+            "fixed": fixed,
+            "fixes": fix_objs,
+        });
+        println!("{}", serde_json::to_string(&value).unwrap());
+    } else {
+        println!("Original: {}", text);
+        println!("Fixed: {}", fixed);
+        if !fixes.is_empty() {
+            println!("Fixes:");
+            for fix in &fixes {
+                println!("  {} -> {} ({})", fix.original, fix.fixed, fix.reason);
+            }
         }
     }
 }
@@ -4566,21 +4608,41 @@ fn cmd_gate_compress(text: &str, level: Option<&str>) {
     );
 }
 
-fn cmd_gate_score(text: &str, context: Option<&str>) {
+fn cmd_gate_score(text: &str, context: Option<&str>, format: OutputFormat) {
     use cid::inference::ResponseScorer;
     let scorer = ResponseScorer::new();
     let ctx = context.unwrap_or("general");
     let report = scorer.score(text, ctx);
-    println!("Quality Score: {:.2}", report.overall_score);
-    println!("Confidence: {:.2}", report.confidence);
-    println!("Action: {:?}", report.action);
-    if !report.issues.is_empty() {
-        println!("Issues:");
-        for issue in &report.issues {
-            println!(
-                "  [{:?}] {}: {}",
-                issue.severity, issue.category, issue.description
-            );
+    if format == OutputFormat::Json {
+        let issue_objs: Vec<serde_json::Value> = report
+            .issues
+            .iter()
+            .map(|issue| serde_json::json!({
+                "category": format!("{:?}", issue.category),
+                "description": issue.description,
+                "severity": format!("{:?}", issue.severity),
+                "confidence": issue.confidence,
+            }))
+            .collect();
+        let value = serde_json::json!({
+            "overall_score": report.overall_score,
+            "confidence": report.confidence,
+            "action": format!("{:?}", report.action),
+            "issues": issue_objs,
+        });
+        println!("{}", serde_json::to_string(&value).unwrap());
+    } else {
+        println!("Quality Score: {:.2}", report.overall_score);
+        println!("Confidence: {:.2}", report.confidence);
+        println!("Action: {:?}", report.action);
+        if !report.issues.is_empty() {
+            println!("Issues:");
+            for issue in &report.issues {
+                println!(
+                    "  [{:?}] {}: {}",
+                    issue.severity, issue.category, issue.description
+                );
+            }
         }
     }
 }
