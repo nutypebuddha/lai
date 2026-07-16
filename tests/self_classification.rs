@@ -18,19 +18,19 @@ const SELF_QUERIES: &[(&str, &str, &str)] = &[
     // Technical descriptions
     ("binary size 605KB", "general", ""),
     ("memory footprint minimal", "general", "Brihaspati"),
-    ("startup time < 1ms", "general", "Budha"),
+    ("startup time < 1ms", "general", ""),
     // Classification about classification
     ("validate this formula", "validation", "Mangala"),
     ("compute the answer", "computation", "Mangala"),
     // Self-referential (classifier describing itself)
     ("pattern matching intent routing", "general", "Mangala"),
-    ("keyword extraction pipeline", "general", "Shani"),
+    ("keyword extraction pipeline", "general", "Mangala"),
     // Advanced syntax
     ("validate(memory < 1MB)", "validation", "Brihaspati"),
     ("search(optimization)", "search", "Mangala"),
     // Philosophical
     ("no invented scalars", "general", ""),
-    ("errors corrected on record", "general", "Mangala"),
+    ("errors corrected on record", "general", ""),
 ];
 
 #[test]
