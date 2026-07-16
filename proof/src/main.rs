@@ -19,6 +19,7 @@ use std::collections::HashMap;
 // Athena type aliases (prefixed to avoid shadowing laverna::prelude types)
 use athena::asauchi::Asauchi as AthenaAsauchi;
 use athena::astrology::Aspect as AthenaAspect;
+use athena::astrology::Sign as AthenaSign;
 use athena::bankai::Bankai as AthenaBankai;
 use athena::descent::DescentEngine as AthenaDescentEngine;
 use athena::entity::EntityRegistry as AthenaEntityRegistry;
@@ -220,6 +221,9 @@ enum Commands {
         /// Dump the per-item marginal-value trace for each solution
         #[arg(short, long)]
         explain: bool,
+        /// Output format: text (default) or json
+        #[arg(long, value_enum, default_value_t = OutputFormat::Text)]
+        format: OutputFormat,
     },
     /// Build: chart → graha weight mapping → optimize in one command
     Build {
@@ -983,7 +987,8 @@ fn main() {
             schema,
             top_k,
             explain,
-        } => cmd_optimize(&schema, top_k, explain),
+            format,
+        } => cmd_optimize(&schema, top_k, explain, &format),
         Commands::Build {
             domain,
             datetime,
@@ -3343,7 +3348,7 @@ fn cmd_schema(name: &str) {
     }
 }
 
-fn cmd_optimize(schema_path: &str, top_k: usize, explain: bool) {
+fn cmd_optimize(schema_path: &str, top_k: usize, explain: bool, format: &OutputFormat) {
     let content = match std::fs::read_to_string(schema_path) {
         Ok(c) => c,
         Err(e) => {
@@ -3365,15 +3370,47 @@ fn cmd_optimize(schema_path: &str, top_k: usize, explain: bool) {
             std::process::exit(2);
         }
     };
-    for (i, sol) in solutions.iter().enumerate() {
-        println!("# solution {} (objective {:.4})", i + 1, sol.objective);
-        let mut levels: Vec<(&String, &u32)> = sol.levels.iter().filter(|(_, l)| **l > 0).collect();
-        levels.sort_by_key(|(id, _)| id.as_str());
-        for (id, l) in levels {
-            println!("  {id} = {l}");
+    match format {
+        OutputFormat::Json => {
+            let solutions_json: Vec<serde_json::Value> = solutions
+                .iter()
+                .enumerate()
+                .map(|(i, sol)| {
+                    let mut map = serde_json::Map::new();
+                    map.insert("solution".into(), serde_json::json!(i + 1));
+                    map.insert("objective".into(), serde_json::json!(sol.objective));
+                    let mut levels: Vec<(&String, &u32)> =
+                        sol.levels.iter().filter(|(_, l)| **l > 0).collect();
+                    levels.sort_by_key(|(id, _)| id.as_str());
+                    let levels_map: serde_json::Map<_, _> = levels
+                        .into_iter()
+                        .map(|(id, l)| (id.clone(), serde_json::json!(l)))
+                        .collect();
+                    map.insert("levels".into(), serde_json::Value::Object(levels_map));
+                    if explain {
+                        map.insert(
+                            "explain".into(),
+                            serde_json::json!(laverna::optimize::explain(&schema, sol)),
+                        );
+                    }
+                    serde_json::Value::Object(map)
+                })
+                .collect();
+            println!("{}", serde_json::to_string_pretty(&solutions_json).unwrap());
         }
-        if explain {
-            print!("{}", laverna::optimize::explain(&schema, sol));
+        OutputFormat::Text => {
+            for (i, sol) in solutions.iter().enumerate() {
+                println!("# solution {} (objective {:.4})", i + 1, sol.objective);
+                let mut levels: Vec<(&String, &u32)> =
+                    sol.levels.iter().filter(|(_, l)| **l > 0).collect();
+                levels.sort_by_key(|(id, _)| id.as_str());
+                for (id, l) in levels {
+                    println!("  {id} = {l}");
+                }
+                if explain {
+                    print!("{}", laverna::optimize::explain(&schema, sol));
+                }
+            }
         }
     }
 }
@@ -3568,11 +3605,6 @@ fn cmd_strategize(
     };
 
     // 3. Solve deterministically (shared optimizer; Pareto frontier is byte-stable).
-    eprintln!(
-        "DEBUG strategize: budget={budget} items={} max_level={:?} top_k={top_k}",
-        schema.items.len(),
-        schema.items.first().and_then(|i| i.max_level)
-    );
     let allocations = match laverna::optimize::solve(&schema, top_k) {
         Ok(a) => a,
         Err(e) => {
@@ -5262,6 +5294,160 @@ fn cmd_gate_repl() {
                     out.push_str("=== TESTS COMPLETE ===\n");
                     out
                 }
+                "exit" | "quit" | "q" => {
+                    std::process::exit(0);
+                }
+                "validate" => {
+                    if parts.len() < 2 {
+                        "Usage: validate <text> [context]".to_string()
+                    } else {
+                        let text = parts[1];
+                        let ctx = if parts.len() > 2 { parts[2] } else { "" };
+                        use cid::inference::{InferenceEngine, ValidationRequest};
+                        let mut engine = InferenceEngine::new();
+                        let request = ValidationRequest::new(text, ctx);
+                        match engine.validate(request) {
+                            Ok(result) => format!(
+                                "Validated: {}\nConfidence: {:.4}\nPassed: {}",
+                                result.validated_text, result.confidence, result.passed
+                            ),
+                            Err(e) => format!("Error: {}", e),
+                        }
+                    }
+                }
+                "fix" => {
+                    if parts.len() < 2 {
+                        "Usage: fix <text> [context]".to_string()
+                    } else {
+                        let text = parts[1];
+                        let ctx = if parts.len() > 2 { parts[2] } else { "" };
+                        use cid::inference::InferenceEngine;
+                        let mut engine = InferenceEngine::new();
+                        let (fixed, fixes) = engine.fix(text, ctx);
+                        if fixes.is_empty() {
+                            format!("Already valid: {}", text)
+                        } else {
+                            let mut out = format!("Original: {}\nFixed: {}", text, fixed);
+                            for fix in &fixes {
+                                out.push_str(&format!(
+                                    "\n  {} -> {} ({})",
+                                    fix.original, fix.fixed, fix.reason
+                                ));
+                            }
+                            out
+                        }
+                    }
+                }
+                "compress" => {
+                    if parts.len() < 2 {
+                        "Usage: compress <text> [light|medium|aggressive]".to_string()
+                    } else {
+                        let text = parts[1];
+                        let level_str = if parts.len() > 2 { parts[2] } else { "medium" };
+                        use cid::inference::{CompressionLevel, PromptCompressor};
+                        let lvl = match level_str {
+                            "light" => CompressionLevel::Light,
+                            "aggressive" => CompressionLevel::Aggressive,
+                            _ => CompressionLevel::Medium,
+                        };
+                        let compressor = PromptCompressor::new(lvl);
+                        let (compressed, stats) = compressor.compress(text);
+                        format!(
+                            "Compressed: {}\nOriginal tokens: {}\nCompressed tokens: {}\nSaved: {} tokens ({:.1}%)",
+                            compressed, stats.original_tokens, stats.compressed_tokens, stats.saved_tokens, stats.saved_percent
+                        )
+                    }
+                }
+                "score" => {
+                    if parts.len() < 2 {
+                        "Usage: score <text> [context]".to_string()
+                    } else {
+                        let text = parts[1];
+                        let ctx = if parts.len() > 2 { parts[2] } else { "general" };
+                        use cid::inference::ResponseScorer;
+                        let scorer = ResponseScorer::new();
+                        let report = scorer.score(text, ctx);
+                        format!(
+                            "Score: {:.2}\nConfidence: {:.2}\nAction: {:?}\nIssues: {}",
+                            report.overall_score,
+                            report.confidence,
+                            report.action,
+                            report.issues.len()
+                        )
+                    }
+                }
+                "tanto" => {
+                    if parts.len() < 2 {
+                        "Usage: tanto eval <expr> | tanto convert <val> <from> <to> | tanto formula <name> [args...]".to_string()
+                    } else {
+                        match parts[1] {
+                            "eval" => {
+                                if parts.len() < 3 {
+                                    "Usage: tanto eval <expression>".to_string()
+                                } else {
+                                    let expr = if parts.len() > 3 {
+                                        parts[2..].join(" ")
+                                    } else {
+                                        parts[2].to_string()
+                                    };
+                                    let env = &mut cid::tanto::TantoEnv::new();
+                                    match cid::tanto::evaluate_nl(&expr, env) {
+                                        Some(val) => {
+                                            format!("= {}", cid::tanto::math::format_f64(val))
+                                        }
+                                        None => format!("Error: cannot evaluate '{}'", expr),
+                                    }
+                                }
+                            }
+                            "convert" => {
+                                if parts.len() < 5 {
+                                    "Usage: tanto convert <value> <from_unit> <to_unit>".to_string()
+                                } else {
+                                    let val: f64 = match parts[2].parse() {
+                                        Ok(v) => v,
+                                        Err(_) => {
+                                            return format!("Error: '{}' is not a number", parts[2])
+                                        }
+                                    };
+                                    let query = format!("{} {} {}", val, parts[3], parts[4]);
+                                    match cid::tanto::convert::convert(&query) {
+                                        Some(cr) => format!(
+                                            "= {} {} (from {} to {})",
+                                            cid::tanto::math::format_f64(cr.value),
+                                            cr.to,
+                                            cr.from,
+                                            cr.to
+                                        ),
+                                        None => format!(
+                                            "Error: unknown conversion '{} {} {}'",
+                                            val, parts[3], parts[4]
+                                        ),
+                                    }
+                                }
+                            }
+                            "formula" => {
+                                if parts.len() < 3 {
+                                    "Usage: tanto formula <name> [args...]".to_string()
+                                } else {
+                                    let rest = parts[2..].join(" ");
+                                    match cid::tanto::formulas::compute_formula(&rest) {
+                                        Some(fr) => format!(
+                                            "{} = {}  [{}]",
+                                            fr.name,
+                                            cid::tanto::math::format_f64(fr.result),
+                                            fr.formula
+                                        ),
+                                        None => format!("Error: unknown formula '{}'", rest),
+                                    }
+                                }
+                            }
+                            _ => format!(
+                                "Unknown tanto subcommand: '{}'. Use eval, convert, or formula.",
+                                parts[1]
+                            ),
+                        }
+                    }
+                }
                 _ => format!("Unknown command: {}. Try 'help'.", parts[0]),
             }
         }
@@ -5302,7 +5488,7 @@ fn cmd_tanto_eval(expression: &str) {
 }
 
 fn cmd_tanto_convert(value: f64, from: &str, to: &str) {
-    let query = format!("{} {} to {}", value, from, to);
+    let query = format!("{} {} {}", value, from, to);
     match cid::tanto::convert::convert(&query) {
         Some(cr) => println!(
             "= {} {} (from {} to {})",
@@ -5312,7 +5498,7 @@ fn cmd_tanto_convert(value: f64, from: &str, to: &str) {
             cr.to
         ),
         None => {
-            eprintln!("Error: unknown conversion '{} {} to {}'", value, from, to);
+            eprintln!("Error: unknown conversion '{} {} {}'", value, from, to);
             std::process::exit(1);
         }
     }
@@ -5711,7 +5897,13 @@ fn cmd_athena_chain(formulas: &str, args: &[String], format: OutputFormat) {
             }
         }
         Err(e) => {
-            eprintln!("Chain failed: {e}");
+            let msg = e.to_string();
+            if msg.contains("missing argument") {
+                eprintln!("Chain failed: {e}");
+                eprintln!("Hint: pass --args key=value for each formula input (e.g. --args bias_squared=0.1)");
+            } else {
+                eprintln!("Chain failed: {e}");
+            }
             std::process::exit(1);
         }
     }
@@ -6431,57 +6623,129 @@ fn cmd_athena_entity_get(id: &str, format: OutputFormat) {
 
 fn cmd_athena_entity_aspect(from: &str, to: &str, format: OutputFormat) {
     let (_formula_reg, entity_reg) = load_athena_registries();
-    match entity_reg.aspect_between(from, to) {
-        Some((aspect, a, b)) => {
-            let sign_a = a
-                .dominant_sign()
-                .map(|s| format!("{:?}", s))
-                .unwrap_or_default();
-            let sign_b = b
-                .dominant_sign()
-                .map(|s| format!("{:?}", s))
-                .unwrap_or_default();
-            let aspect_desc = match aspect {
-                AthenaAspect::Conjunction => "Conjunction — same sign, aligned",
-                AthenaAspect::Sextile => "Sextile — adjacent, natural flow",
-                AthenaAspect::Trine => "Trine — harmonious, complementary",
-                AthenaAspect::Square => "Square — tension, requires work",
-                AthenaAspect::Opposition => "Opposition — complementary opposites",
-            };
-            if format == OutputFormat::Json {
-                println!(
-                    "{}",
-                    serde_json::to_string_pretty(&serde_json::json!({
-                        "from": {"id": a.id, "text": a.text, "sign": sign_a},
-                        "to": {"id": b.id, "text": b.text, "sign": sign_b},
-                        "aspect": format!("{:?}", aspect),
-                        "description": aspect_desc,
-                        "arc_distance": AthenaAspect::arc_distance_between(
-                            a.dominant_sign().map_or(0, |s| s.index()),
-                            b.dominant_sign().map_or(0, |s| s.index()),
-                        ),
-                    }))
-                    .unwrap()
-                );
-            } else {
-                println!("=== Aspect: {} <-> {} ===", a.text, b.text);
-                println!("  {} in {:?}", a.text, sign_a);
-                println!("  {} in {:?}", b.text, sign_b);
-                println!("  Aspect:      {:?} ({})", aspect, aspect_desc);
-                println!(
-                    "  Arc Distance: {} steps",
-                    AthenaAspect::arc_distance_between(
+
+    // Try runtime entities first.
+    if let Some((aspect, a, b)) = entity_reg.aspect_between(from, to) {
+        let sign_a = a
+            .dominant_sign()
+            .map(|s| format!("{:?}", s))
+            .unwrap_or_default();
+        let sign_b = b
+            .dominant_sign()
+            .map(|s| format!("{:?}", s))
+            .unwrap_or_default();
+        let aspect_desc = match aspect {
+            AthenaAspect::Conjunction => "Conjunction — same sign, aligned",
+            AthenaAspect::Sextile => "Sextile — adjacent, natural flow",
+            AthenaAspect::Trine => "Trine — harmonious, complementary",
+            AthenaAspect::Square => "Square — tension, requires work",
+            AthenaAspect::Opposition => "Opposition — complementary opposites",
+        };
+        if format == OutputFormat::Json {
+            println!(
+                "{}",
+                serde_json::to_string_pretty(&serde_json::json!({
+                    "from": {"id": a.id, "text": a.text, "sign": sign_a},
+                    "to": {"id": b.id, "text": b.text, "sign": sign_b},
+                    "aspect": format!("{:?}", aspect),
+                    "description": aspect_desc,
+                    "arc_distance": AthenaAspect::arc_distance_between(
                         a.dominant_sign().map_or(0, |s| s.index()),
                         b.dominant_sign().map_or(0, |s| s.index()),
-                    )
-                );
+                    ),
+                }))
+                .unwrap()
+            );
+        } else {
+            println!("=== Aspect: {} <-> {} ===", a.text, b.text);
+            println!("  {} in {:?}", a.text, sign_a);
+            println!("  {} in {:?}", b.text, sign_b);
+            println!("  Aspect:      {:?} ({})", aspect, aspect_desc);
+            println!(
+                "  Arc Distance: {} steps",
+                AthenaAspect::arc_distance_between(
+                    a.dominant_sign().map_or(0, |s| s.index()),
+                    b.dominant_sign().map_or(0, |s| s.index()),
+                )
+            );
+        }
+        return;
+    }
+
+    // Fall back to seed entities.
+    let sign_from_seed = |s: &athena::entity::SeedEntity| -> Option<AthenaSign> {
+        s.rashi.as_ref().and_then(|r| {
+            use athena::astrology::Sign;
+            match r.to_lowercase().as_str() {
+                "mesha" => Some(Sign::Aries),
+                "vrishabha" => Some(Sign::Taurus),
+                "mithuna" => Some(Sign::Gemini),
+                "karka" => Some(Sign::Cancer),
+                "simha" => Some(Sign::Leo),
+                "kanya" => Some(Sign::Virgo),
+                "tula" => Some(Sign::Libra),
+                "vrishchika" => Some(Sign::Scorpio),
+                "dhanu" => Some(Sign::Sagittarius),
+                "makara" => Some(Sign::Capricorn),
+                "kumbha" => Some(Sign::Aquarius),
+                "meena" => Some(Sign::Pisces),
+                _ => None,
+            }
+        })
+    };
+    let seed_a = entity_reg.get_seed(from);
+    let seed_b = entity_reg.get_seed(to);
+    if let (Some(sa), Some(sb)) = (seed_a, seed_b) {
+        if let (Some(sa_sign), Some(sb_sign)) = (sign_from_seed(sa), sign_from_seed(sb)) {
+            if let Some(aspect) =
+                AthenaAspect::between_sign_indices(sa_sign.index(), sb_sign.index())
+            {
+                let aspect_desc = match aspect {
+                    AthenaAspect::Conjunction => "Conjunction — same sign, aligned",
+                    AthenaAspect::Sextile => "Sextile — adjacent, natural flow",
+                    AthenaAspect::Trine => "Trine — harmonious, complementary",
+                    AthenaAspect::Square => "Square — tension, requires work",
+                    AthenaAspect::Opposition => "Opposition — complementary opposites",
+                };
+                if format == OutputFormat::Json {
+                    println!(
+                        "{}",
+                        serde_json::to_string_pretty(&serde_json::json!({
+                            "from": {"id": sa.id, "name": sa.name, "sign": format!("{:?}", sa_sign)},
+                            "to": {"id": sb.id, "name": sb.name, "sign": format!("{:?}", sb_sign)},
+                            "aspect": format!("{:?}", aspect),
+                            "description": aspect_desc,
+                            "arc_distance": AthenaAspect::arc_distance_between(sa_sign.index(), sb_sign.index()),
+                        }))
+                        .unwrap()
+                    );
+                } else {
+                    println!("=== Aspect: {} <-> {} ===", sa.name, sb.name);
+                    println!("  {} in {:?}", sa.name, format!("{:?}", sa_sign));
+                    println!("  {} in {:?}", sb.name, format!("{:?}", sb_sign));
+                    println!("  Aspect:      {:?} ({})", aspect, aspect_desc);
+                    println!(
+                        "  Arc Distance: {} steps",
+                        AthenaAspect::arc_distance_between(sa_sign.index(), sb_sign.index())
+                    );
+                }
+                return;
             }
         }
-        None => {
-            eprintln!("Cannot compute aspect: one or both entities not found ('{from}', '{to}')");
-            std::process::exit(1);
-        }
+        let missing = if sign_from_seed(sa).is_none() {
+            from
+        } else {
+            to
+        };
+        eprintln!(
+            "Cannot compute aspect: seed entity '{}' has no rashi (dominant sign) set",
+            missing
+        );
+        std::process::exit(1);
     }
+
+    eprintln!("Cannot compute aspect: one or both entities not found ('{from}', '{to}')");
+    std::process::exit(1);
 }
 
 fn cmd_athena_entity_search(keyword: &str, format: OutputFormat) {

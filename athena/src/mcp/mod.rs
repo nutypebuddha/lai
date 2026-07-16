@@ -576,34 +576,83 @@ impl AthenaMCP {
     fn handle_entity_aspect(&self, params: &serde_json::Value) -> AthenaResponse {
         let from = self.str_param(params, "from", "");
         let to = self.str_param(params, "to", "");
-        match self.entities.aspect_between(&from, &to) {
-            Some((aspect, a, b)) => {
-                let sign_a = a
-                    .dominant_sign()
-                    .map(|s| format!("{:?}", s))
-                    .unwrap_or_else(|| "unknown".to_string());
-                let sign_b = b
-                    .dominant_sign()
-                    .map(|s| format!("{:?}", s))
-                    .unwrap_or_else(|| "unknown".to_string());
-                AthenaResponse::ok(serde_json::json!({
-                    "entity_a": a.text,
-                    "entity_b": b.text,
-                    "sign_a": sign_a,
-                    "sign_b": sign_b,
-                    "aspect": format!("{:?}", aspect),
-                    "aspect_quality": aspect.quality(),
-                    "arc_distance": Aspect::arc_distance_between(
-                        a.dominant_sign().map_or(0, |s| s.index()),
-                        b.dominant_sign().map_or(0, |s| s.index()),
-                    ),
-                }))
-            }
-            None => AthenaResponse::err(format!(
-                "Cannot compute aspect: '{}' or '{}' not found",
-                from, to
-            )),
+
+        // Try runtime entities first.
+        if let Some((aspect, a, b)) = self.entities.aspect_between(&from, &to) {
+            let sign_a = a
+                .dominant_sign()
+                .map(|s| format!("{:?}", s))
+                .unwrap_or_else(|| "unknown".to_string());
+            let sign_b = b
+                .dominant_sign()
+                .map(|s| format!("{:?}", s))
+                .unwrap_or_else(|| "unknown".to_string());
+            return AthenaResponse::ok(serde_json::json!({
+                "entity_a": a.text,
+                "entity_b": b.text,
+                "sign_a": sign_a,
+                "sign_b": sign_b,
+                "aspect": format!("{:?}", aspect),
+                "aspect_quality": aspect.quality(),
+                "arc_distance": Aspect::arc_distance_between(
+                    a.dominant_sign().map_or(0, |s| s.index()),
+                    b.dominant_sign().map_or(0, |s| s.index()),
+                ),
+            }));
         }
+
+        // Fall back to seed entities.
+        let seed_a = self.entities.get_seed(&from);
+        let seed_b = self.entities.get_seed(&to);
+        if let (Some(sa), Some(sb)) = (seed_a, seed_b) {
+            let sign_from = |s: &crate::entity::SeedEntity| -> Option<crate::astrology::Sign> {
+                s.rashi.as_ref().and_then(|r| {
+                    let r_lower = r.to_lowercase();
+                    match r_lower.as_str() {
+                        "mesha" => Some(crate::astrology::Sign::Aries),
+                        "vrishabha" => Some(crate::astrology::Sign::Taurus),
+                        "mithuna" => Some(crate::astrology::Sign::Gemini),
+                        "karka" => Some(crate::astrology::Sign::Cancer),
+                        "simha" => Some(crate::astrology::Sign::Leo),
+                        "kanya" => Some(crate::astrology::Sign::Virgo),
+                        "tula" => Some(crate::astrology::Sign::Libra),
+                        "vrishchika" => Some(crate::astrology::Sign::Scorpio),
+                        "dhanu" => Some(crate::astrology::Sign::Sagittarius),
+                        "makara" => Some(crate::astrology::Sign::Capricorn),
+                        "kumbha" => Some(crate::astrology::Sign::Aquarius),
+                        "meena" => Some(crate::astrology::Sign::Pisces),
+                        _ => None,
+                    }
+                })
+            };
+            let s_a = sign_from(sa);
+            let s_b = sign_from(sb);
+            if let (Some(sa_sign), Some(sb_sign)) = (s_a, s_b) {
+                if let Some(aspect) =
+                    crate::astrology::Aspect::between_sign_indices(sa_sign.index(), sb_sign.index())
+                {
+                    return AthenaResponse::ok(serde_json::json!({
+                        "entity_a": sa.name,
+                        "entity_b": sb.name,
+                        "sign_a": format!("{:?}", sa_sign),
+                        "sign_b": format!("{:?}", sb_sign),
+                        "aspect": format!("{:?}", aspect),
+                        "aspect_quality": aspect.quality(),
+                        "arc_distance": Aspect::arc_distance_between(sa_sign.index(), sb_sign.index()),
+                    }));
+                }
+            }
+            let missing = if s_a.is_none() { &from } else { &to };
+            return AthenaResponse::err(format!(
+                "Cannot compute aspect: seed entity '{}' has no rashi (dominant sign) set",
+                missing
+            ));
+        }
+
+        AthenaResponse::err(format!(
+            "Cannot compute aspect: '{}' or '{}' not found in runtime or seed registries",
+            from, to
+        ))
     }
 
     fn handle_entity_get(&self, params: &serde_json::Value) -> AthenaResponse {

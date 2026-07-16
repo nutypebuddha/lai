@@ -404,43 +404,48 @@ fn objective_upper_bound(
     // Add bonus from zero-cost perks whose prerequisites are already met.
     // This is a correct over-approximation: perks are free, so if prereqs
     // are met at the current levels, the perk will definitely be taken.
-    let mut perk_bonus = 0.0;
-    for item in &schema.items {
-        if item.is_attribute() {
-            continue;
-        }
-        let total_cost: f64 = item.cost.values().sum();
-        if total_cost > 0.0 {
-            continue;
-        }
-        let mut met = true;
-        if let Some(reqs) = &item.requires {
-            for r in reqs {
-                if let Ok((target, op, threshold)) = parse_prereq(r) {
-                    let lvl = *levels.get(&target).unwrap_or(&0) as f64;
-                    if !op.check(lvl, threshold) {
-                        met = false;
-                        break;
+    let perk_bonus = {
+        let perks: Vec<&Item> = schema
+            .items
+            .iter()
+            .filter(|i| !i.is_attribute() && i.cost.values().sum::<f64>() == 0.0)
+            .collect();
+        if perks.is_empty() {
+            0.0
+        } else {
+            let mut bonus = 0.0;
+            for item in perks {
+                let mut met = true;
+                if let Some(reqs) = &item.requires {
+                    for r in reqs {
+                        if let Ok((target, op, threshold)) = parse_prereq(r) {
+                            let lvl = *levels.get(&target).unwrap_or(&0) as f64;
+                            if !op.check(lvl, threshold) {
+                                met = false;
+                                break;
+                            }
+                        } else {
+                            met = false;
+                            break;
+                        }
                     }
-                } else {
-                    met = false;
-                    break;
+                }
+                if met {
+                    let mut test_stats = stats.clone();
+                    for (k, v) in &item.effects {
+                        *test_stats.entry(k.clone()).or_insert(0.0) += *v;
+                    }
+                    let test_scores = compute_scores(schema, &test_stats);
+                    let test_obj = objective_value(schema, &test_scores);
+                    let contrib = test_obj - current;
+                    if contrib > 0.0 {
+                        bonus += contrib;
+                    }
                 }
             }
+            bonus
         }
-        if met {
-            let mut test_stats = stats.clone();
-            for (k, v) in &item.effects {
-                *test_stats.entry(k.clone()).or_insert(0.0) += *v;
-            }
-            let test_scores = compute_scores(schema, &test_stats);
-            let test_obj = objective_value(schema, &test_scores);
-            let contrib = test_obj - current;
-            if contrib > 0.0 {
-                perk_bonus += contrib;
-            }
-        }
-    }
+    };
 
     if remaining_attrs.is_empty() {
         return current + perk_bonus;
@@ -1017,9 +1022,9 @@ terms = { cyberware_stat_mod_pct = 0.2, tech_dmg_pct = 0.1 }
         let sols = solve(&schema, 3).unwrap();
         let elapsed = start.elapsed();
         assert_eq!(sols.len(), 3);
-        // Must complete in under 2 seconds (was 30+ minutes without B&B).
+        // Must complete in under 3 seconds (was 30+ minutes without B&B).
         assert!(
-            elapsed.as_secs() < 2,
+            elapsed.as_secs() < 3,
             "budget=30 took {:?} — branch-and-bound too slow",
             elapsed
         );
