@@ -478,9 +478,21 @@ fn objective_upper_bound(
         if cost_per_level <= 0.0 {
             continue;
         }
-        // Weighted effect per level.
+        // Weighted effect per level. MUST use the same weight-defaulting as
+        // `objective_value` (a score in `maximize` with no explicit weight
+        // defaults to weight 1.0). Iterating only `objective.weights` here
+        // would under-estimate the bound and let the branch-and-bound prune
+        // (see `enumerate_attributes`) wrongly cut the subtree holding the
+        // true optimum — leaving budget unspent and dropping the
+        // highest-value items. That is the T-LC01 bug.
         let mut weighted_effect = 0.0f64;
-        for (score_name, weight) in &schema.objective.weights {
+        for score_name in schema.objective.maximize.iter() {
+            let weight = schema
+                .objective
+                .weights
+                .get(score_name)
+                .copied()
+                .unwrap_or(1.0);
             let eff = item.effects.get(score_name).copied().unwrap_or(0.0);
             if eff > 0.0 {
                 weighted_effect += weight * eff;
@@ -870,6 +882,72 @@ mod tests {
         let sols = solve(&s, 1).unwrap();
         assert_eq!(sols[0].levels.get("a").copied().unwrap_or(0), 10);
         assert_eq!(sols[0].levels.get("b").copied().unwrap_or(0), 0);
+    }
+
+    /// T-LC01: 4 independent items under a shared linear budget that exactly
+    /// covers all of them, with strictly-positive explicit weights. The solver
+    /// must buy every item and spend the whole budget — "buy everything" is the
+    /// unique dominating solution (objective = sum of all weights). It must NOT
+    /// exclude the highest-weighted item nor leave budget unspent. This guards
+    /// the branch-and-bound upper bound against under-estimating (and thus
+    /// wrongly pruning) the subtree that contains the true optimum when a
+    /// `maximize` score is absent from `objective.weights`.
+    #[test]
+    fn tlc01_buys_all_independent_items_full_budget() {
+        let mut s = base_schema();
+        let scores = ["score_a", "score_b", "score_c", "score_d"];
+        let weights = [0.31_f64, 0.26, 0.12, 0.09];
+        let ids = ["a", "b", "c", "d"];
+        let id_strs: Vec<String> = ids.iter().map(|s| s.to_string()).collect();
+
+        s.objective = Objective {
+            maximize: scores.iter().map(|x| x.to_string()).collect(),
+            weights: {
+                let mut w = HashMap::new();
+                for (sc, wt) in scores.iter().zip(weights.iter()) {
+                    w.insert(sc.to_string(), *wt);
+                }
+                w
+            },
+        };
+        for (id, sc) in ids.iter().zip(scores.iter()) {
+            s.items.push(attr(id, 1.0, 1, (sc, 1.0)));
+            let mut t = HashMap::new();
+            t.insert(sc.to_string(), 1.0);
+            s.scoring.insert(sc.to_string(), ScoreTerm { terms: t });
+        }
+        s.budget.insert("pts".into(), 4.0);
+
+        let sols = solve(&s, 1).unwrap();
+        let best = &sols[0];
+        for id in &id_strs {
+            assert_eq!(
+                best.levels.get(id).copied().unwrap_or(0),
+                1,
+                "item {id} should be bought"
+            );
+        }
+        let spent: f64 = best
+            .levels
+            .iter()
+            .map(|(id, lvl)| {
+                s.items
+                    .iter()
+                    .find(|i| &i.id == id)
+                    .map(|i| i.cost.get("pts").copied().unwrap_or(0.0) * *lvl as f64)
+                    .unwrap_or(0.0)
+            })
+            .sum();
+        assert!(
+            (spent - 4.0).abs() < 1e-9,
+            "budget should be fully spent, got {spent}"
+        );
+        let expected: f64 = weights.iter().sum();
+        assert!(
+            (best.objective - expected).abs() < 1e-9,
+            "objective should be {expected}, got {}",
+            best.objective
+        );
     }
 
     #[test]
