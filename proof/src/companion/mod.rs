@@ -103,6 +103,21 @@ pub fn classify(query: &str) -> (bool, Option<&'static str>) {
         "feel about",
         "should i",
         "would you",
+        "meaning of life",
+        "what is the meaning",
+        "what's the meaning",
+        "purpose of life",
+        "why are we here",
+        "what is love",
+        "what is happiness",
+        "what is truth",
+        "what is good",
+        "what is evil",
+        "what is right",
+        "what is wrong",
+        "who am i",
+        "what am i",
+        "what should i believe",
     ];
     if OPINION.iter().any(|k| q.contains(k)) {
         return (false, None);
@@ -155,6 +170,102 @@ pub fn receipt(tool: &str, corpus_version: &str, digest: &str) -> String {
     format!("tool={tool} corpus={corpus_version} sha256={digest}")
 }
 
+/// Parsed memory command from natural-language input. Detects phrases like
+/// "my name is ada", "remember that I prefer metric", "I am a researcher".
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum MemoryCommand {
+    /// User stated a fact: "my name is X" / "I am X" / "remember X".
+    /// Key is the detected attribute (name/role/unit/preference), value is
+    /// the user-provided text.
+    Store { key: String, value: String },
+    /// Not a memory command.
+    None,
+}
+
+/// Pure: detect "my X is Y" / "I am Y" / "remember Y" patterns in the query
+/// and return a `MemoryCommand::Store` if matched. This is a heuristic for
+/// v0.1; a real deployment would use the LLM for slot-filling.
+pub fn parse_memory_command(query: &str) -> MemoryCommand {
+    let q = query.trim().to_lowercase();
+    let original = query.trim();
+
+    // "my name is <value>"
+    if let Some(rest) = q.strip_prefix("my name is ") {
+        let val = original[original.len() - rest.len()..].trim().to_string();
+        if !val.is_empty() {
+            return MemoryCommand::Store {
+                key: "name".into(),
+                value: val,
+            };
+        }
+    }
+    // "my role is <value>" / "my job is <value>" / "i am a <value>"
+    for prefix in &["my role is ", "my job is "] {
+        if let Some(rest) = q.strip_prefix(prefix) {
+            let val = original[original.len() - rest.len()..].trim().to_string();
+            if !val.is_empty() {
+                return MemoryCommand::Store {
+                    key: "role".into(),
+                    value: val,
+                };
+            }
+        }
+    }
+    if let Some(rest) = q.strip_prefix("i am a ") {
+        let val = original[original.len() - rest.len()..].trim().to_string();
+        if !val.is_empty() {
+            return MemoryCommand::Store {
+                key: "role".into(),
+                value: val,
+            };
+        }
+    }
+    // "my units are <value>" / "i use <value>"
+    if let Some(rest) = q.strip_prefix("my units are ") {
+        let val = original[original.len() - rest.len()..].trim().to_string();
+        if !val.is_empty() {
+            return MemoryCommand::Store {
+                key: "units".into(),
+                value: val,
+            };
+        }
+    }
+    // "remember <value>" (generic)
+    if let Some(rest) = q.strip_prefix("remember ") {
+        let val = original[original.len() - rest.len()..].trim().to_string();
+        if !val.is_empty() {
+            return MemoryCommand::Store {
+                key: "note".into(),
+                value: val,
+            };
+        }
+    }
+    MemoryCommand::None
+}
+
+/// Pure: check if a query is asking about a stored fact (e.g. "what's my name",
+/// "what do you know about me"). Returns the key to look up if matched.
+pub fn parse_recall_query(query: &str) -> Option<&'static str> {
+    let q = query.to_lowercase();
+    if q.contains("my name") || q.contains("what's my name") || q.contains("what is my name") {
+        return Some("name");
+    }
+    if q.contains("my role") || q.contains("what's my role") || q.contains("what is my role") {
+        return Some("role");
+    }
+    if q.contains("my units")
+        || q.contains("what units")
+        || q.contains("what are my units")
+        || q.contains("what unit")
+    {
+        return Some("units");
+    }
+    if q.contains("what do you know about me") || q.contains("what do you know") {
+        return Some("__all__");
+    }
+    None
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -189,6 +300,9 @@ mod tests {
         assert!(!classify("do you think astrology is real?").0);
         assert!(!classify("what did you have for breakfast?").0);
         assert!(!classify("should i quit my job?").0);
+        assert!(!classify("what is the meaning of life?").0);
+        assert!(!classify("who am i?").0);
+        assert!(!classify("what is happiness?").0);
     }
 
     #[test]
@@ -196,5 +310,68 @@ mod tests {
         let r = receipt("solve", "v0.3.0", "abc123");
         assert_eq!(r, "tool=solve corpus=v0.3.0 sha256=abc123");
         assert!(r.contains("sha256="));
+    }
+
+    #[test]
+    fn parse_memory_my_name() {
+        let cmd = parse_memory_command("my name is ada");
+        assert_eq!(
+            cmd,
+            MemoryCommand::Store {
+                key: "name".into(),
+                value: "ada".into()
+            }
+        );
+    }
+
+    #[test]
+    fn parse_memory_my_role() {
+        let cmd = parse_memory_command("I am a researcher");
+        assert_eq!(
+            cmd,
+            MemoryCommand::Store {
+                key: "role".into(),
+                value: "researcher".into()
+            }
+        );
+    }
+
+    #[test]
+    fn parse_memory_remember() {
+        let cmd = parse_memory_command("remember buy groceries");
+        assert_eq!(
+            cmd,
+            MemoryCommand::Store {
+                key: "note".into(),
+                value: "buy groceries".into()
+            }
+        );
+    }
+
+    #[test]
+    fn parse_memory_none() {
+        assert_eq!(
+            parse_memory_command("what is the capital of france"),
+            MemoryCommand::None
+        );
+    }
+
+    #[test]
+    fn recall_query_name() {
+        assert_eq!(parse_recall_query("what's my name"), Some("name"));
+        assert_eq!(parse_recall_query("what is my name"), Some("name"));
+    }
+
+    #[test]
+    fn recall_query_all() {
+        assert_eq!(
+            parse_recall_query("what do you know about me"),
+            Some("__all__")
+        );
+    }
+
+    #[test]
+    fn recall_query_none() {
+        assert_eq!(parse_recall_query("solve x + 1 = 3"), None);
     }
 }

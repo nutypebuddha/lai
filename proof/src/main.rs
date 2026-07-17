@@ -4716,7 +4716,7 @@ fn companion_tool(
     _formula_reg: &FormulaRegistry,
     _entity_reg: &EntityRegistry,
 ) -> Result<ToolOutput, String> {
-    use laverna::companion::{classify, sanitize_answer};
+    use laverna::companion::{classify, receipt, sanitize_answer};
 
     let (is_factual, suggested) = classify(query);
 
@@ -4726,6 +4726,8 @@ fn companion_tool(
                      I'll do my best.";
         return Ok(ToolOutput::text_only(plain.to_string()));
     }
+
+    let tool_name = suggested.unwrap_or("solve");
 
     // Ground the claim by running the matched engine tool.
     let grounded = match suggested {
@@ -4749,7 +4751,10 @@ fn companion_tool(
     {
         let copilot = laverna::inference::Copilot;
         match copilot.answer(query, &context) {
-            Ok(answer) => return Ok(ToolOutput::text_only(answer)),
+            Ok(answer) => {
+                let r = receipt(tool_name, CORPUS_VERSION, CORPUS_CONTENT_HASH);
+                return Ok(ToolOutput::text_only(format!("{answer}\n\n---\n{r}")));
+            }
             Err(laverna::inference::CopilotError::BinaryMissing) => {
                 return Ok(ToolOutput::text_only(
                     "The local assistant engine isn't available. Run ./scripts/get-model.sh \
@@ -4770,9 +4775,11 @@ fn companion_tool(
         }
     }
 
+    let r = receipt(tool_name, CORPUS_VERSION, CORPUS_CONTENT_HASH);
     let answer = format!(
-        "Here's the verified result:\n\n{}\n\nI checked this against my deterministic engine rather than guessing, so the numbers are reproducible.",
-        sanitize_answer(&context)
+        "Here's the verified result:\n\n{}\n\n---\n{}",
+        sanitize_answer(&context),
+        r
     );
     Ok(ToolOutput::text_only(answer))
 }
@@ -4855,17 +4862,57 @@ fn cmd_companion(
     }
 }
 
-/// One companion turn: classify → ground via the matching engine tool → print,
-/// reusing the exact verify-first flow of `companion_tool`. The memory is
-/// owned by the caller (reserved for tone personalisation in a later phase).
+/// One companion turn: detect memory commands, recall stored facts, or classify
+/// → ground via the matching engine tool. Memory is passed as a mutable ref so
+/// auto-detected "my name is X" patterns get persisted across turns.
 #[cfg(feature = "mcp")]
 fn run_companion_turn(
     query: &str,
-    _memory: &mut CompanionMemory,
+    memory: &mut CompanionMemory,
     descent_engine: &DescentEngine,
     formula_reg: &FormulaRegistry,
     entity_reg: &EntityRegistry,
 ) {
+    use laverna::companion::memory::MemorySource;
+    use laverna::companion::{parse_memory_command, parse_recall_query, MemoryCommand};
+
+    // 1. Auto-detect memory commands ("my name is X", "remember X", etc.)
+    match parse_memory_command(query) {
+        MemoryCommand::Store { key, value } => {
+            let ts = chrono::Utc::now().to_rfc3339();
+            memory.set_fact(&key, &value, MemorySource::Stated, &ts);
+            println!("Got it — I'll remember that {key} = {value}.");
+            return;
+        }
+        MemoryCommand::None => {}
+    }
+
+    // 2. Check for recall queries ("what's my name", "what do you know about me")
+    if let Some(recall_key) = parse_recall_query(query) {
+        if recall_key == "__all__" {
+            if memory.facts.is_empty() {
+                println!("I don't have any stored facts about you yet. Tell me something and I'll remember it.");
+            } else {
+                println!("Here's what I know about you:");
+                for item in &memory.facts {
+                    println!("  {} = {}", item.key, item.value);
+                }
+            }
+            return;
+        }
+        match memory.get_fact(recall_key) {
+            Some(item) => {
+                println!("You told me your {recall_key} is {}.", item.value);
+                return;
+            }
+            None => {
+                println!("I don't have a stored {recall_key} yet. Tell me and I'll remember it.");
+                return;
+            }
+        }
+    }
+
+    // 3. Normal verify-first flow
     match companion_tool(query, descent_engine, formula_reg, entity_reg) {
         Ok(out) => println!("{}", out.text),
         Err(e) => println!("I looked into that but couldn't produce a verified answer ({e})."),
