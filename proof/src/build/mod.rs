@@ -268,6 +268,12 @@ pub fn build_with(
 /// across them per the pillar-weight vector.
 pub fn pillar_schema(pillars: &[f64; 7], budget: f64) -> optimize::Schema {
     let total: u32 = (budget.max(1.0)).round().clamp(0.0, u32::MAX as f64) as u32;
+    // Anti-monopoly cap: no single pillar may absorb the whole budget. Capping
+    // at ceil(total/2) guarantees at least two pillars are funded, so a
+    // multi-pillar query spreads proportionally instead of dumping everything
+    // into the single highest-weighted pillar (this is the strategize analogue
+    // of the Lone Cloud uncapped-item monopoly).
+    let cap = total.div_ceil(2).max(1);
     let mut items: Vec<optimize::Item> = Vec::with_capacity(Pillar::COUNT);
     let mut scoring: HashMap<String, optimize::ScoreTerm> = HashMap::new();
     let mut maximize: Vec<String> = Vec::with_capacity(Pillar::COUNT);
@@ -284,7 +290,7 @@ pub fn pillar_schema(pillars: &[f64; 7], budget: f64) -> optimize::Schema {
                 c.insert("unit".to_string(), 1.0);
                 c
             },
-            max_level: Some(total),
+            max_level: Some(cap),
             effects: {
                 let mut e = HashMap::new();
                 e.insert(score.clone(), 1.0);
@@ -772,8 +778,48 @@ terms = { cool_points = 1.0 }
     #[test]
     fn pillar_allocation_single_dominant_pillar() {
         let pillars = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0];
-        let allocs = solve_pillar_allocation(&pillars, 5.0, 1).unwrap();
+        let budget = 5.0;
+        let allocs = solve_pillar_allocation(&pillars, budget, 1).unwrap();
         let stone = allocs[0].levels.get("stone").copied().unwrap_or(0);
-        assert_eq!(stone, 5, "all budget should go to dominant pillar");
+        let cap = (budget as u32).div_ceil(2).max(1);
+        assert_eq!(
+            stone, cap,
+            "dominant pillar should get the anti-monopoly cap, not the whole budget"
+        );
+        // Anti-monopoly invariant: no single pillar may absorb the entire budget.
+        for alloc in &allocs {
+            let top = alloc.levels.values().copied().max().unwrap_or(0);
+            assert!(
+                top <= cap,
+                "a pillar took {top} > cap {cap}: budget monopoly regressed"
+            );
+        }
+    }
+
+    /// T-LC01-adjacent: the generic 7-pillar domain must not let one pillar
+    /// monopolize the whole budget when several pillars resolve non-trivially.
+    /// With two strong pillars the allocation must split rather than dump all
+    /// points into the single highest-weighted one.
+    #[test]
+    fn pillar_allocation_no_single_pillar_monopoly() {
+        // Two co-dominant pillars (Spear, Forge) + two secondary (Council, Loom).
+        let pillars = [0.277, 0.0, 0.277, 0.0, 0.223, 0.223, 0.0];
+        let allocs = solve_pillar_allocation(&pillars, 7.0, 5).unwrap();
+        let cap = 7u32.div_ceil(2).max(1);
+        for alloc in &allocs {
+            let top = alloc.levels.values().copied().max().unwrap_or(0);
+            assert!(
+                top <= cap,
+                "a pillar took {top} > cap {cap}: single-pillar monopoly regressed"
+            );
+            // The two dominant pillars must both receive points (proportional split,
+            // not a 7/0 dump).
+            let spear = alloc.levels.get("spear").copied().unwrap_or(0);
+            let forge = alloc.levels.get("forge").copied().unwrap_or(0);
+            assert!(
+                spear > 0 && forge > 0,
+                "co-dominant pillars must both be funded (got spear={spear}, forge={forge})"
+            );
+        }
     }
 }
